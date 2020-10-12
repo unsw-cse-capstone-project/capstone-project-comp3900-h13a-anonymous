@@ -1,7 +1,7 @@
 import sqlite3
 
 conn = sqlite3.connect('hermes.db')
-print ("Opened database successfully")
+print("Opened database successfully")
 
 conn.execute('''DROP TABLE STOCK''')
 conn.execute('''DROP TABLE USER''')
@@ -13,7 +13,7 @@ conn.execute('''CREATE TABLE STOCK
          PRICE             REAL NOT NULL,
          TIMESTAMP      INTEGER NOT NULL,
          VLOUMN           REAL);''')
-print ("Stock table created successfully")
+print("Stock table created successfully")
 
 conn.execute('''CREATE TABLE USER
          (ID INTEGER PRIMARY KEY autoincrement,
@@ -24,15 +24,15 @@ conn.execute('''CREATE TABLE USER
          NAME               TEXT NOT NULL,
          LOGIN              TEXT NOT NULL,
          LOGOUT             TEXT NOT NULL);''')
-print ("User table created successfully")
+print("User table created successfully")
 
 conn.execute('''CREATE TABLE WATCHLIST
-         (ID                 INTEGER NOT NULL UNIQUE,
+         (ID                 INTEGER NOT NULL,
          CODE                TEXT NOT NULL,
-         DATEADD             DATE,
+         DATEADD             TEXT,
          FOREIGN KEY (ID) REFERENCES USER (ID),
          FOREIGN KEY (CODE) REFERENCES STOCK (CODE));''')
-print ("Watchlist table created successfully")
+print("Watchlist table created successfully")
 
 conn.execute('''CREATE TABLE PURCHASE
          (ID                 INTEGER NOT NULL UNIQUE,
@@ -43,7 +43,7 @@ conn.execute('''CREATE TABLE PURCHASE
          UNITSELL            REAL,
          FOREIGN KEY (ID) REFERENCES USER (ID),
          FOREIGN KEY (CODE) REFERENCES STOCK (CODE));''')
-print ("Purchase table created successfully")
+print("Purchase table created successfully")
 
 conn.commit()
 conn.close()
