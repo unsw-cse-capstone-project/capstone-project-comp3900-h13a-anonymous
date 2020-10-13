@@ -22,4 +22,4 @@ fig.show()
 
 import plotly.express as px
 
-fig.write_html("file.html")
+fig.write_html("sample_historical_data.html")
