@@ -1,4 +1,4 @@
-from search import search
+from api.search import search
 import json
 import sqlite3
 
