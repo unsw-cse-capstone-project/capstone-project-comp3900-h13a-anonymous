@@ -26,7 +26,7 @@ def add(code, user_id):
 
     watchlist_count = conn.execute("SELECT COUNT(*) FROM WATCHLIST WHERE CODE=? AND ID=?", (code,user_id,)).fetchone()[0]
     if(watchlist_count != 0):
-        errors['already_added'] = "Stock {} is already in yor watchlist".format(code)
+        errors['already_added'] = "Stock {} is already in your watchlist".format(code)
         return errors
 
     # add stock to the watchlist
