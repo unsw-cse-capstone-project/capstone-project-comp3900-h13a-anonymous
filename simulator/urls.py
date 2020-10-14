@@ -7,4 +7,7 @@ urlpatterns = [
 
     # 127.0.0.1:8000/stock/1
     path('stock/<int:pk>/', views.stock_detail, name='stock_detail'),
+
+    # 127.0.0.1:8000/signup
+    path('signup/', views.signup, name='signup'),
 ]

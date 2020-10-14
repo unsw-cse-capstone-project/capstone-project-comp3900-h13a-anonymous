@@ -1,0 +1,14 @@
+{% extends 'simulator/base.html' %}
+{% block title %}Sign up{% endblock %}
+
+{% load crispy_forms_tags %}
+{% csrf_token %}
+
+{% block content %}
+    <div style="margin: 10 auto;">
+        <h3 style="text-align: center; font-family: sans-serif">Sign up to sharpen your trading skills today</h3>
+        <div>
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}
