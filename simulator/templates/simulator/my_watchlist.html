@@ -1,0 +1,33 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block content %}
+<h1>
+    My Watch List
+</h1>
+
+{% for key, value in errors.items %}
+<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+{% endfor %}
+
+<table style="width:100%" class="table">
+    <tr>
+    <th>Stock Code</th>
+    <th>Stock Name</th>
+    <th>Datetime Added</th>
+    <th>Current Price</th>
+    <th>Change Since Last Closing</th>
+
+    </tr>
+    {% for w in wlist %}
+    <tr>
+    <td>{{w.code}}</td>
+    <td>{{w.name}}</td>
+    <td>{{w.date}}</td>
+    <td>{{w.current}}</td>
+    <td>{{w.change}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block content %}
+
+<form class="form-inline d-flex justify-content-center md-form form-sm active-purple active-purple-2 mt-2">
+    <i class="fas fa-search" aria-hidden="true"></i>
+    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Enter Stock Code" aria-label="Search" name="code">
+</form>
+
+{% for key, value in errors.items %}
+<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+{% endfor %}
+
+{% if code and not errors %}
+<br></br>
+
+<h1>
+    Stock Code: {{code}}
+</h1>
+<h1>
+    Company Name: {{name}}
+</h1>
+<h1>
+    Price: {{c}}
+</h1>
+<h2>
+    Change since last closing date: {{change}}
+</h2>
+
+<br></br>
+<a href="/add_watchlist/{{code}}" class="btn btn-info">Add To Watch list</a>
+
+{% endif %}
+
+{% endblock %}
