@@ -7,7 +7,11 @@ urlpatterns = [
 
     # 127.0.0.1:8000/stock/1
     path('stock/<int:pk>/', views.stock_detail, name='stock_detail'),
-
+    
     # 127.0.0.1:8000/signup
     path('signup/', views.signup, name='signup'),
+    path('search/', views.search_view, name='search'),
+    path('search/<str:code>/', views.search_view, name='search_code'),
+    path('add_watchlist/<str:code>/', views.add_to_watchlist, name='add'),
+    path('my_watchlist/', views.my_watchlist_view, name='add'),
 ]
