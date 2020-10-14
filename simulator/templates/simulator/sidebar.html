@@ -31,7 +31,8 @@
             <div class="sidebar-header">
                 <h3>Hermes</h3>
             </div>
-
+            
+            {% if user.is_authenticated %}
             <ul class="list-unstyled components">
                 <p>Investment Simulator</p>
                 <li>
@@ -63,14 +64,14 @@
                     <a href="#">Leaderboard</a>
                 </li>
             </ul>
+            {% endif %}
         </nav>
 
         <!-- Page Content  -->
         <div id="content">
-
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-
+                    {% if user.is_authenticated %}
                     <button type="button" id="sidebarCollapse" class="btn btn-info">
                         <i class="fas fa-align-left"></i>
                         <span>Toggle Sidebar</span>
@@ -86,6 +87,7 @@
                             </li>
                         </ul>
                     </div>
+                    {% endif %}
                 </div>
             </nav>
             {% block content %}{% endblock %}

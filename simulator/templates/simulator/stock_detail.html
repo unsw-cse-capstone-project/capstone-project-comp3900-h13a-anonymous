@@ -1,4 +1,6 @@
-{% extends 'simulator/base.html' %}
+{% extends "sidebar.html" %}
+{% load static %}
+
 {% block title %}{{ stock.name }}{% endblock %}
 {% block content %}
   <h1> Stock: {{name}} </h1>
