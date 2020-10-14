@@ -17,9 +17,25 @@ def stock_list(request):
 
 @login_required
 def stock_detail(request, pk):
-    stock = get_object_or_404(Stock, pk=pk)
-    frontend_stock = {'stock': stock}
-    return render(request, 'simulator/stock_detail.html', frontend_stock)
+    # stock = get_object_or_404(Stock, pk=pk)
+    # frontend_stock = {'stock': stock}
+
+    # if("code" in request.GET):
+    #     errors = {}
+    #     api = Api()
+    #     code = request.GET.get('code')
+    #     result = api.search(code)
+    #     print(result)
+    #     if(result == "The stock code you searched was invalid"):
+    #         errors['invalid stock code'] = result
+    #         frontend_stock = {'errors':errors}
+    #     else:
+    #         frontend_stock = result
+    #     return render(request, 'simulator/stock_detail.html', frontend_stock)
+    
+
+    frontend_stock = {'name': pk}
+    return render(request, 'simulator/stock_detail.html')
 
 def signup(request):
     if request.method == 'POST':
@@ -54,7 +70,6 @@ def search_view(request):
 def add_to_watchlist(request, code):
     errors = watchlist.add(code, 1)
     return my_watchlist_view(request, errors)
-
 
 def my_watchlist_view(request, errors={}):
     wlist = watchlist.list_watchlist(1)
