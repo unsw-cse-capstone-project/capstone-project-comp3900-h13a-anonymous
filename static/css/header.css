@@ -3,3 +3,10 @@
     background-color: #7386D5;
     margin-top: 0;
 }
+
+.greet {
+    color: #ffffff;
+    float: right;
+    font-size: 26pt;
+    margin-right: 20px;
+}

@@ -23,6 +23,11 @@
   <body>
     <div class="header">
       <h1><a href="{% url "stock_list" %}"> Hermes Stocks </a></h1>
+        {% if user.is_authenticated %}
+          <p class="greet">Hello, {{ user.username }}
+              <small><a href="{% url 'logout' %}">(Log out)</a></small>
+          </p>
+      {% endif %}
     </div>
 
     <div class="content container">

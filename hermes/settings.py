@@ -29,6 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 LOGIN_REDIRECT_URL = 'stock_list'
+LOGOUT_REDIRECT_URL = '/'
 
 
 # Application definition
