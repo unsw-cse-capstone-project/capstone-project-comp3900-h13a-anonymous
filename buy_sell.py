@@ -1,9 +1,10 @@
-from api.search import search
+from api.search_v2 import Api
 import json
 import sqlite3
 
 def buy(name, amount, id):
-    tgt = search(name)
+    api = Api()
+    tgt = api.search(name)
     stockinfo = json.loads(tgt)
 
     price = stockinfo["data"][0]['p']
@@ -19,8 +20,9 @@ def buy(name, amount, id):
 
 def sell(name, amount, id):
     
-    if check(name, amount, id): 
-        tgt = search(name)
+    if check(name, amount, id):
+        api = Api() 
+        tgt = api.search(name)
         stockinfo = json.loads(tgt)
         price = stockinfo["data"][0]['p']
         money = price * amount

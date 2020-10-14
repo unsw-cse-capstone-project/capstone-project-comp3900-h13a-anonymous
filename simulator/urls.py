@@ -10,4 +10,6 @@ urlpatterns = [
     path('stock/<int:pk>/', views.stock_detail, name='stock_detail'),
     path('search/', views.search_view, name='search'),
     path('search/<str:code>/', views.search_view, name='search_code'),
+    path('add_watchlist/<str:code>/', views.add_to_watchlist, name='add'),
+    path('my_watchlist/', views.my_watchlist_view, name='add'),
 ]
