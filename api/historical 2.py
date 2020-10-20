@@ -23,7 +23,7 @@ def get_historical(code, time, path):
 
      fig.update_layout(xaxis_rangeslider_visible=False)
 
-     fig.write_html("sample_historical_data.html")
+     fig.write_html("sample_historical_data.html", full_html = False)
 
 if __name__ == "__main__":
      get_historical("AAPL", 1601577795, "sample_historical_data.html")

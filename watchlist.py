@@ -2,6 +2,9 @@ from api.search_v2 import Api
 import json
 import sqlite3
 import pandas as pd
+from stock.models import Stock
+from user.models import User
+from watchlist.models import Watchlist
 
 
 def add(code, user_id):
@@ -35,6 +38,10 @@ def add(code, user_id):
     conn.commit()
     print("Total number of rows updated :", conn.total_changes)
     return errors
+
+    '''
+    new_watchlist = Watchlist(id = user_id, code = code, date = timestamp)
+    new_watchlist.save()'''
 
 
 def remove(code, id):

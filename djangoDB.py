@@ -16,7 +16,7 @@ class User(models.Model):
     name = models.CharField(max_length=10)
     email = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=30)
-    phoneNo = models.IntegerField(max_length=10)
+    phoneNo = models.IntegerField()
     balance = models.DecimalField()
 
     def __str__(self):
