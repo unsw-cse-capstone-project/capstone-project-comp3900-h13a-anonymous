@@ -6,18 +6,20 @@ class Api():
         self.base_url = 'https://finnhub.io/api/v1/'
 
     def search(self, code):
-        r = requests.get(f'{self.base_url}quote?symbol={code}&token={self.token}')
-        if r.json()['t'] == 0:
-            return "The stock code you searched was invalid"
-        profile = self.company_profile(code)
-        print(profile)
-        search_result = r.json()
-        search_result["code"] = code
-        search_result["name"] = profile["name"]
-        change = (search_result['c'] - search_result['pc']) / search_result['pc']
-        search_result["change"] = round(change,4)
+        try:
+            r = requests.get(f'{self.base_url}quote?symbol={code}&token={self.token}')
+            if r.json()['t'] == 0:
+                return "The stock code you searched was invalid"
+            profile = self.company_profile(code)
+            search_result = r.json()
+            search_result["code"] = code
+            search_result["name"] = profile["name"]
+            change = (search_result['c'] - search_result['pc']) / search_result['pc']
+            search_result["change"] = round(change,4)
 
-        return search_result
+            return search_result
+        except Exception :
+            pass
 
     def company_profile(self, code):
         r = requests.get(f'{self.base_url}stock/profile2?symbol={code}&token={self.token}')
