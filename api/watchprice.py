@@ -1,36 +1,34 @@
 from search_v2 import Api
 import threading
-import time
-watch = {"AAPL" : 200, "AMZN":100}
 
 
-def check(code, price):
-    count = 0
-    while True:
-        api = Api()
-        tgt = api.search(code)
-        count += 1
-        print(count)
-        try: 
+class watchprice:
+    def __init__(self):
+        self.api = Api()
 
-            print(tgt['c'])
-            a = tgt['c']
-            if a >= price :
-                return
-        except:
-            print("Exception")
-
-
-if __name__ == "__main__":
-    for sb in watch.keys():
-        #print ("hello")
-        th = threading.Thread(target=check, args=(sb, watch[sb]))
-        #th.setDaemon(True)
+    def set(self, code, price, action):
+        th = threading.Thread(target=check, args=(code, price, action))
         th.start()
 
+    def check(self, code, price, action):
+        while True:
+            try:
+                p = self.api.search(code)['c']
+                if action == "sell":
+                    if p <= price:
+                        # add new notification
+                        return
+                elif action == "buy":
+                    if p >= price:
+                        # add new notification
+                        return
+            except:
+                pass
 
-# print("fewiofjwe")
+if __name__ == "__main__":
+    watch = {"AAPL": 200, "AMZN": 3000}
+    action = "sell"
 
-
-# exit()
-# print("fewiofjwe")
+    watchprice = watchprice()
+    for stock in watch.keys():
+        watchprice.set(stock, watch[stock], "sell")
