@@ -9,7 +9,9 @@ class watchprice:
     def set(self, code, price, action):
         th = threading.Thread(target=check, args=(code, price, action))
         th.start()
+        ## add new watch price entry to database
 
+    ## may need to add an argument user id to make notification
     def check(self, code, price, action):
         while True:
             try:
