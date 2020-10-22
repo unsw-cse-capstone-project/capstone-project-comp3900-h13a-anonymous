@@ -44,6 +44,7 @@ def add(code, user_id):
     return errors
 '''
 
+
 def add(code, user_id):
     # get current stock info from Finnhub API
     api = Api()
@@ -59,10 +60,11 @@ def add(code, user_id):
     stocks = Stock.objects.filter(code=code)
     if(stocks.count() != 1):
         Stock.objects.create(name=stockinfo["name"], code=code, price=0.00)
-    user=User.objects.get(email=1)
+    user = User.objects.get(email=1)
     wl = WatchList.objects.filter(user_id=user, code=code)
     if(wl.count() != 0):
-        errors['already_added'] = "Stock {} is already in your watchlist".format(code)
+        errors['already_added'] = "Stock {} is already in your watchlist".format(
+            code)
         return errors
     st = Stock.objects.get(code=code)
     WatchList.objects.create(user_id=user, code=st, date=timestamp)
@@ -87,13 +89,14 @@ def add(code, user_id):
         '''
     return errors
 
+
 def list_watchlist(user_id):
     api = Api()
     errors = {}
 
     # connect to the database
     with connection.cursor() as cursor:
-    # delete the stock from watchlist
+        # delete the stock from watchlist
         result = cursor.execute("SELECT * FROM WATCHLIST JOIN STOCK ON WATCHLIST.CODE = STOCK.CODE \
             WHERE WATCHLIST.ID = %s ORDER BY WATCHLIST.DATEADD", [user_id])
 
@@ -116,7 +119,26 @@ def list_watchlist(user_id):
 def remove(code, user_id):
     api = Api()
     errors = {}
+    stockinfo = api.search(code)
 
+    price = stockinfo['c']
+    print("price is " + str(price))
+    timestamp = stockinfo['t']
+    print("time is " + str(timestamp))
+
+    # connect to the database
+    stocks = Stock.objects.filter(code=code)
+    user = User.objects.get(email=1)
+    wl = WatchList.objects.filter(user_id=user, code=code)
+    if(wl.count() == 0):
+        errors['not_exist'] = "Stock {} is not exist in your watchlist".format(
+            code)
+        return errors
+    st = Stock.objects.get(code=code)
+    WatchList.objects.filter(user_id=user, code=st, date=timestamp).delete()
+
+
+'''
     # connect to the database
     with connection.cursor() as cursor:
         # check if the stock exists on the watchlist
@@ -130,7 +152,6 @@ def remove(code, user_id):
         cursor.commit()
         print("Total number of rows deleted :", cursor.total_changes)
 
-'''
 def remove(code, id):
     # connect to the database
     conn = sqlite3.connect('hermes.db')
@@ -165,23 +186,25 @@ def list_watchlist(user_id):
     return wlist
 '''
 
+
 def plot_watchlist(code, time, path):
-     now =  datetime.now().timestamp()
-     df = pd.read_csv(f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
+    now = datetime.now().timestamp()
+    df = pd.read_csv(
+        f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
 
-     print(df)
+    print(df)
 
-     date = []
-     for d in df['t']:
-          date.append(datetime.fromtimestamp(d))
-     fig = go.Figure(data=[go.Candlestick(x=date,
-                    open=df['o'], high=df['h'],
-                    low=df['l'], close=df['c'])
-                         ])
+    date = []
+    for d in df['t']:
+        date.append(datetime.fromtimestamp(d))
+    fig = go.Figure(data=[go.Candlestick(x=date,
+                                         open=df['o'], high=df['h'],
+                                         low=df['l'], close=df['c'])
+                          ])
 
-     fig.update_layout(xaxis_rangeslider_visible=False)
+    fig.update_layout(xaxis_rangeslider_visible=False)
 
-     fig.write_html("sample_historical_data.html", full_html = False)
+    fig.write_html("sample_historical_data.html", full_html=False)
 
 
 if __name__ == "__main__":
