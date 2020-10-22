@@ -39,7 +39,15 @@ class WatchList(models.Model):
 class Purchase(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     code = models.ForeignKey(Stock, on_delete=models.CASCADE)
-    dateBuy = models.CharField(max_length=30)
-    dateSell = models.CharField(max_length=30)
+    price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    dateBought = models.CharField(max_length=30)
     orignialUnitBought = models.PositiveIntegerField()
-    UnitSold = models.PositiveIntegerField()
+    unitSold = models.PositiveIntegerField()
+
+class Transaction(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    code = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    units = models.PositiveIntegerField()
+    price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    action = models.CharField(max_length=30, primary_key=True)
+    

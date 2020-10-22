@@ -3,35 +3,30 @@ import json
 import sqlite3
 import datetime
 from django.db.models import Sum
+from simulator.models import *
 
-def buy(code, amount, email):
+def buy(code, units, email):
     api = Api()
     errors = {}
     tgt = api.search(code)
 
     price = tgt['c']
     print(price)
-    money = price * amount
+    money = price * units
 
     now = datetime.now().timestamp()
-    '''
-    conn = sqlite3.connect('hermes.db')
-    # interact with database to subtract money
-    conn.execute(
-        "UPDATE USER set BALANCE = BALANCE - ? where ID = ?", (money,id))
-    conn.commit()
-    print ("Total number of rows updated :", conn.total_changes)
-    '''
     balance = User.objects.get(email=email).balance
     if balance >= money:
         newBalance = balance - money
         User.objects.filter(email=email).update(balance=newBalance)
         Purchase.objects.create(
-            user_id=email, code=code, dateBuy=now, dateSell=None, unitBuy=amount, unitSell=None)
+            user_id=email, code=code, price=price, dateBuy=now, orignialUnitBought=units, unitSold=0)
+        Transaction.objects.create(
+            user_id = email, code = code, units = units, price = price, action = "buy")
     else:
         errors['insufficient_fund'] = "Insufficient fund for buying Stock {}".format(
             code)
-        return errors
+    return errors
 
 
 def sell(code, amount, email):
