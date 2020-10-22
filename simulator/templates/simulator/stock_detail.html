@@ -1,32 +1,10 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hermes</title>
-    <link
-      href="//fonts.googleapis.com/css?Tangerine:bold,bolditalic|Inconsolata:italic|Droid+Sans"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <div class="header">
-      <h1><a href="{% url "stock_list" %}"> Hermes Stocks </a></h1>
-    </div>
+{% extends "sidebar.html" %}
+{% load static %}
 
-    <div class="content container">
-      <div class="row">
-        <div class="col-md-8"></div>
-        <h1> {{stock.name}} </h1>
-      </div>
-    </div>
-
-
-  </body>
-</html>
+{% block title %}{{ stock.name }}{% endblock %}
+{% block content %}
+  <h1> Stock: {{name}} </h1>
+  <h1> Stock name: {{stock.name}} </h1>
+  <h1> Stock pk: {{stock.pk}} </h1>
+  <h1> pk: {{pk}} </h1>
+{% endblock %}

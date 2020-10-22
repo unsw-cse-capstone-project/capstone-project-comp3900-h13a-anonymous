@@ -1,0 +1,24 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block title %}Sign up{% endblock %}
+
+{% load crispy_forms_tags %}
+{% csrf_token %}
+
+{% block content %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    <div style="margin: 20 auto;">
+        <h3 style="text-align: center; font-family: sans-serif">Sign up to sharpen your trading skills today</h3>
+        <div>
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}

@@ -7,6 +7,9 @@ verify_ssl = true
 
 [packages]
 django = "*"
+django-crispy-forms = "*"
+requests = "*"
+pandas = "*"
 
 [requires]
 python_version = "3.7"
