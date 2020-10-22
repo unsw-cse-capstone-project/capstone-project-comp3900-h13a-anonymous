@@ -9,6 +9,7 @@ import plotly.express as px
 from django.db import connection
 
 '''
+
 def add(code, user_id):
     # get current stock info from Finnhub API
     api = Api()
