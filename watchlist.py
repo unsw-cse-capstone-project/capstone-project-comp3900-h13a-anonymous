@@ -4,6 +4,7 @@ import sqlite3
 import pandas as pd
 
 
+
 def add(code, user_id):
     # get current stock info from Finnhub API
     api = Api()
@@ -35,6 +36,10 @@ def add(code, user_id):
     conn.commit()
     print("Total number of rows updated :", conn.total_changes)
     return errors
+
+    '''
+    new_watchlist = Watchlist(id = user_id, code = code, date = timestamp)
+    new_watchlist.save()'''
 
 
 def remove(code, id):
