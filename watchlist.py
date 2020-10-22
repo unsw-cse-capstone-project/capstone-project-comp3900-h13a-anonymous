@@ -7,6 +7,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
 from django.db import connection
+from simulator.models import *
 
 '''
 
@@ -55,11 +56,22 @@ def add(code, user_id):
     print("time is " + str(timestamp))
 
     # connect to the database
+    stocks = Stock.objects.filter(code=code)
+    if(stocks.count() != 1):
+        Stock.objects.create(name=stockinfo["name"], code=code, price=0.00)
+    user=User.objects.get(email=1)
+    wl = WatchList.objects.filter(user_id=user, code=code)
+    if(wl.count() != 0):
+        errors['already_added'] = "Stock {} is already in your watchlist".format(code)
+        return errors
+    st = Stock.objects.get(code=code)
+    WatchList.objects.create(user_id=user, code=st, date=timestamp)
+    '''
     with connection.cursor() as cursor:
-        stock_count = cursor.execute("SELECT COUNT(*) FROM STOCK WHERE CODE= %s", [code]).fetchone()[0]
+        stock_count = cursor.execute("SELECT COUNT(*) FROM Stock WHERE CODE= %s", [code]).fetchone()[0]
         print(stock_count)
         if(stock_count != 1):
-            cursor.execute("INSERT INTO STOCK (CODE, NAME) \
+            cursor.execute("INSERT INTO Stock (CODE, NAME) \
                 VALUES (?, ?)", (code, stockinfo["name"]))
 
         watchlist_count = cursor.execute("SELECT COUNT(*) FROM WATCHLIST WHERE CODE=%s AND ID=%s", [code, user_id]).fetchone()[0]
@@ -72,7 +84,8 @@ def add(code, user_id):
         VALUES (%s, %s, %s)", [user_id, code, timestamp])
         cursor.commit()
         print("Total number of rows updated :", cursor.total_changes)
-        return errors
+        '''
+    return errors
 
 def list_watchlist(user_id):
     api = Api()
