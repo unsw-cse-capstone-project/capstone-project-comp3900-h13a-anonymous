@@ -8,6 +8,8 @@ import plotly.graph_objects as go
 import plotly.express as px
 from django.db import connection
 from simulator.models import *
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 '''
 
@@ -188,7 +190,8 @@ def plot_watchlist(code, time, path):
 
     fig.update_layout(xaxis_rangeslider_visible=False)
 
-    return fig.write_image(file="./simulator/templates/simulator/sample_historical_data.jpg", format = "jpg")
+    fig.write_image("./simulator/templates/simulator/sample_historical_data.jpg")
+    #return fig.write_image(file="./simulator/templates/simulator/sample_historical_data.jpg", format = "jpg")
 
 
 if __name__ == "__main__":

@@ -6,6 +6,8 @@ from datetime import datetime
 import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 def get_historical(code, time, path):
      now =  datetime.now().timestamp()
@@ -23,7 +25,7 @@ def get_historical(code, time, path):
 
      fig.update_layout(xaxis_rangeslider_visible=False)
 
-     fig.write_html("sample_historical_data.html")
+     fig.write_image("./simulator/templates/simulator/sample_historical_data.jpg")
 
 if __name__ == "__main__":
      get_historical("AAPL", 1601577795, "sample_historical_data.html")
