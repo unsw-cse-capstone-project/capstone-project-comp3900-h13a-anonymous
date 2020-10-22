@@ -13,6 +13,8 @@ pandas = "*"
 "django.db" = "*"
 plot = "*"
 plotly = "*"
+psutil = "*"
+orca = "*"
 
 [requires]
 python_version = "3.7"

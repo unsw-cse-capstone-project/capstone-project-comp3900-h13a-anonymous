@@ -14,4 +14,5 @@ urlpatterns = [
     path('search/<str:code>/', views.search_view, name='search_code'),
     path('add_watchlist/<str:code>/', views.add_to_watchlist, name='add'),
     path('my_watchlist/', views.my_watchlist_view, name='add'),
+    path('my_watchlist/<str:code>/', views.my_watchlist_view, name='inspect'),
 ]

@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Stock 
+from .models import *
 from api.search_v2 import Api
 import watchlist
 
@@ -57,7 +57,7 @@ def search_view(request):
         api = Api()
         code = request.GET.get('code')
         result = api.search(code)
-        print(result)
+        #print(result)
         if(result == "The stock code you searched was invalid"):
             errors['invalid stock code'] = result
             search_info = {'errors':errors}
@@ -71,8 +71,21 @@ def add_to_watchlist(request, code):
     errors = watchlist.add(code, 1)
     return my_watchlist_view(request, errors)
 
-def my_watchlist_view(request, errors={}):
+def my_watchlist_view(request, code=None, errors={}):
+    context = {}
+    if(code != None):
+        st = Stock.objects.get(code=code)
+        #should use currently logged in user
+        user= User.objects.get(email=1) 
+        entry = WatchList.objects.get(user_id=user, code=st)
+        context['entry'] = entry
+        #graph = entry.plot_watchlist()
+        graph = watchlist.plot_watchlist(code, entry.date, None)
+        #entry.plot_watchlist()
+        context['graph'] = graph
+
     wlist = watchlist.list_watchlist(1)
-    context = {'wlist':wlist, 'errors':errors}
+    context['wlist'] = wlist
+    context['errors'] = errors
     return render(request, 'simulator/my_watchlist.html', context)
 

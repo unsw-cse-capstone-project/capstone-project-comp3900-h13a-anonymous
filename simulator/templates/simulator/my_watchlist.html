@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block content %}
+<style>
+    .clickable-row {
+    cursor: pointer;
+    }
+</style>
+
 <h1>
     My Watch List
 </h1>
@@ -17,6 +23,7 @@
     <th>Datetime Added</th>
     <th>Current Price</th>
     <th>Change Since Last Closing</th>
+    <th>More Info</th>
 
     </tr>
     {% for w in wlist %}
@@ -27,8 +34,16 @@
     <td>{{w.date}}</td>
     <td>{{w.current}}</td>
     <td>{{w.change}}</td>
+    <td>
+        <a href="/my_watchlist/{{w.code}}/" class="btn btn-info">Graph/Sell</a>
+    </td>
     </tr>
     {% endfor %}
 </table>
+
+{% if entry %}
+    hello
+    <img src="sample_historical_data.jpg"/>
+{% endif %}
 
 {% endblock %}
