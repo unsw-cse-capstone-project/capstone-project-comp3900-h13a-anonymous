@@ -7,6 +7,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
 from django.db import connection
+from django.contrib.auth.models import User
 from simulator.models import *
 
 '''
@@ -54,12 +55,12 @@ def add(code, user_id):
     if(stocks.count() != 1):
         Stock.objects.create(name=stockinfo["name"], code=code, price=0.00)
     user=User.objects.get(email=user_id)
-    wl = WatchList.objects.filter(user_id=user, code=code)
+    wl = WatchListItem.objects.filter(user_id=user, code=code)
     if(wl.count() != 0):
         errors['already_added'] = "Stock {} is already in your watchlist".format(code)
         return errors
     st = Stock.objects.get(code=code)
-    WatchList.objects.create(user_id=user, code=st, date=timestamp)
+    WatchListItem.objects.create(user_id=user, code=st, date=timestamp)
     '''
     with connection.cursor() as cursor:
         stock_count = cursor.execute("SELECT COUNT(*) FROM Stock WHERE CODE= %s", [code]).fetchone()[0]
@@ -79,7 +80,7 @@ def add(code, user_id):
         '''
     return errors
 
-def list_watchlist(user_id):
+def list_watchlist(user):
     api = Api()
     errors = {}
     '''
@@ -89,21 +90,22 @@ def list_watchlist(user_id):
         result = cursor.execute("SELECT * FROM WATCHLIST JOIN STOCK ON WATCHLIST.CODE = STOCK.CODE \
             WHERE WATCHLIST.ID = %s ORDER BY WATCHLIST.DATEADD", [user_id])
     '''
-    user = User.objects.get(email=user_id)
-    result = WatchList.objects.filter(user_id=user)
+    # user = User.objects.get(email=user_id)
+    result = WatchListItem.objects.filter(user_id=user)
 
     wlist = []
     for row in result:
         #print(row)
         wlist_entry = {}
-        code = row.code.code
-        stockinfo = api.search(code)
-
+        code = row.stock.code
         wlist_entry['code'] = code
-        wlist_entry['name'] = row.code.name
-        wlist_entry['date'] = pd.to_datetime(row.date, unit='s')
-        wlist_entry['current'] = stockinfo['c']
-        wlist_entry['change'] = stockinfo['change']
+        wlist_entry['name'] = row.stock.name
+        wlist_entry['date'] = row.date # TO DO pd.to_datetime(row.date, unit='s')
+
+        stockinfo = api.search(code)
+        print(stockinfo)
+        wlist_entry['current'] = "test" #stockinfo['c']
+        wlist_entry['change'] = "test 2" # stockinfo['change']
         wlist.append(wlist_entry)
     return wlist
 

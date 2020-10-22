@@ -14,15 +14,15 @@
     <tr>
     <th>Stock Code</th>
     <th>Stock Name</th>
-    <th>Datetime Added</th>
+    <th>Date Added</th>
     <th>Current Price</th>
     <th>Change Since Last Closing</th>
 
     </tr>
     {% for w in wlist %}
     <tr>
-    <td>{{w.stock.code}}</td>
-    <td>{{w.stock.name}}</td>
+    <td>{{w.code}}</td>
+    <td>{{w.name}}</td>
     <td>{{w.date}}</td>
     <td>{{w.current}}</td>
     <td>{{w.change}}</td>

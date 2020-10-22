@@ -40,7 +40,7 @@ class WatchListItem(models.Model):
     tiggered = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.date
+        return self.stock.code
 
 
 class Purchase(models.Model):
