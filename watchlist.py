@@ -2,9 +2,7 @@ from api.search_v2 import Api
 import json
 import sqlite3
 import pandas as pd
-from stock.models import Stock
-from user.models import User
-from watchlist.models import Watchlist
+
 
 
 def add(code, user_id):
