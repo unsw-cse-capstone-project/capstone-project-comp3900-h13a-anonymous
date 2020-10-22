@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Stock, User, WatchList, Purchase
+from .models import Stock, Profile, WatchListItem, Purchase
 
 
 # Register your models here.
 admin.site.register(Stock)
-admin.site.register(User)
-admin.site.register(WatchList)
+admin.site.register(Profile)
+admin.site.register(WatchListItem)
 admin.site.register(Purchase)

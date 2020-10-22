@@ -21,9 +21,8 @@
     </tr>
     {% for w in wlist %}
     <tr>
-    <td>{{w.code}}</td>
-    <td><a href="{% url "stock_detail" pk=w.name %}">{{w.name}}</a></td>
-    <!-- <td>{{w.name}}</td> -->
+    <td>{{w.stock.code}}</td>
+    <td>{{w.stock.name}}</td>
     <td>{{w.date}}</td>
     <td>{{w.current}}</td>
     <td>{{w.change}}</td>

@@ -4,9 +4,12 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Stock 
+from .models import Stock, WatchListItem
 from api.search_v2 import Api
 import watchlist
+from django.views.generic import (
+    ListView
+)
 
 # Create your views here.
 @login_required
@@ -17,8 +20,8 @@ def stock_list(request):
 
 @login_required
 def stock_detail(request, pk):
-    # stock = get_object_or_404(Stock, pk=pk)
-    # frontend_stock = {'stock': stock}
+    stock = get_object_or_404(Stock, pk=pk)
+    frontend_stock = {'stock': stock}
 
     # if("code" in request.GET):
     #     errors = {}
@@ -34,8 +37,8 @@ def stock_detail(request, pk):
     #     return render(request, 'simulator/stock_detail.html', frontend_stock)
     
 
-    frontend_stock = {'name': pk}
-    return render(request, 'simulator/stock_detail.html')
+    # frontend_stock = {'name': pk}
+    return render(request, 'simulator/stock_detail.html', frontend_stock)
 
 def signup(request):
     if request.method == 'POST':
@@ -50,6 +53,28 @@ def signup(request):
     
     return render(request, 'simulator/signup.html', {'form': form})
 
+# @login_required
+# @transaction.atomic
+# def update_profile(request):
+#     if request.method == 'POST':
+#         user_form = UserForm(request.POST, instance=request.user)
+#         profile_form = ProfileForm(request.POST, instance=request.user.profile)
+#         if user_form.is_valid() and profile_form.is_valid():
+#             user_form.save()
+#             profile_form.save()
+#             messages.success(request, _('Your profile was successfully updated!'))
+#             return redirect('settings:profile')
+#         else:
+#             messages.error(request, _('Please correct the error below.'))
+#     else:
+#         user_form = UserForm(instance=request.user)
+#         profile_form = ProfileForm(instance=request.user.profile)
+#     return render(request, 'profiles/profile.html', {
+#         'user_form': user_form,
+#         'profile_form': profile_form
+#     })
+
+@login_required
 def search_view(request):
 
     if("code" in request.GET):
@@ -67,12 +92,18 @@ def search_view(request):
 
     return render(request, 'simulator/search.html')
 
+@login_required
 def add_to_watchlist(request, code):
     errors = watchlist.add(code, 1)
     return my_watchlist_view(request, errors)
 
+@login_required
 def my_watchlist_view(request, errors={}):
-    wlist = watchlist.list_watchlist(1)
+    wlist = watchlist.list_watchlist(User)
     context = {'wlist':wlist, 'errors':errors}
     return render(request, 'simulator/my_watchlist.html', context)
 
+class WatchListView(ListView):
+    template_name = "simulator/my_watchlist.html"
+    queryset = WatchListItem.objects.all()
+    context_object_name = 'wlist'
