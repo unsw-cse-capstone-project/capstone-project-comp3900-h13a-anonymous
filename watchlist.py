@@ -96,7 +96,7 @@ def list_watchlist(user):
     result = WatchListItem.objects.filter(user_id=user)
 
     wlist = []
-    # print("starting to iterate through wlist")
+    
     for row in result:
         #print(row)
         wlist_entry = {}
@@ -110,8 +110,21 @@ def list_watchlist(user):
         wlist_entry['current'] = stockinfo['c']
         wlist_entry['change'] = stockinfo['change']
         wlist.append(wlist_entry)
-    # print("finished appending to wlist")
-    return wlist
+
+        # Get all alerts related to stock
+        stock = Stock.objects.get(code=code)
+        alerts = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
+        for alert in alerts:
+            if wlist_entry['current'] >= alert.watchprice:
+                time = pd.to_datetime(stockinfo['t'], unit='s')
+                errors[f'alert at {time} for {alert.stock.code}'] = f"Stock {alert.stock.name} has passed {alert.watchprice} at {time}"
+                alert.dateTriggered = time  # TO DO UNSURE
+                alert.triggered=True
+                alert.save()
+
+        # TO DO add a column for watch prices not triggered yet
+    
+    return wlist, errors
 
 
 def remove(code,  user):
