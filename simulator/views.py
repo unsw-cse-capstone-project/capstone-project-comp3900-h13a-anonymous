@@ -106,12 +106,12 @@ def my_watchlist_view(request, errors={}):
 
 @login_required
 def buy_stock(request, code):
-    errors = buy_sell.buy(code, 3, 1)
+    errors = buy_sell.buy(code, 3, request.user)
     return my_watchlist_view(request, errors)
 
 @login_required
 def sell_stock(request, code):
-    errors = buy_sell.sell(code, 2, 1)
+    errors = buy_sell.sell(code, 3, request.user)
     return my_watchlist_view(request, errors)
 
 

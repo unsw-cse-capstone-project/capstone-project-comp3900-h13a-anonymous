@@ -7,15 +7,16 @@ from simulator.models import *
 import decimal
 import purchases
 
+# {id: , 'email: , sddd}
+# {'profile': {}}
 
-def buy(code, units, email):
+def buy(code, units, user):
     api = Api()
     errors = {}
     tgt = api.search(code)
-    user = User.objects.get(email=email)
     stocks = Stock.objects.filter(code=code)
     if(stocks.count() != 1):
-        Stock.objects.create(name=tgt["name"], code=code, price=0.00)
+        Stock.objects.create(name=tgt["name"], code=code)
     st = Stock.objects.get(code=code)
 
 
@@ -27,40 +28,40 @@ def buy(code, units, email):
     money = price * units
 
     now = datetime.now().timestamp()
-    balance = User.objects.get(email=email).balance
+    balance = user.profile.balance
     if balance >= money:
         newBalance = balance - money
-        User.objects.filter(email=email).update(balance=newBalance)
+        user.profile.balance = newBalance
+        user.save()
         Purchase.objects.create(
             user_id=user, stock=st, price=price, dateBought=now, orignialUnitBought=units, unitSold=0)
         Transaction.objects.create(
-            user_id=user, stock = st, units = units, price = price, action = "buy")
+            user_id=user, stock = st, units = units, price = price, action = "buy", date=now)
     else:
         errors['insufficient_fund'] = "Insufficient fund for buying Stock {}".format(
             code)
     return errors
 
 
-def sell(code, units, email):
+def sell(code, units, user):
     api = Api()
     errors = {}
     tgt = api.search(code)
-    user = User.objects.get(email=email)
     stocks = Stock.objects.filter(code=code)
     if(stocks.count() != 1):
-        Stock.objects.create(name=tgt["name"], code=code, price=0.00)
+        Stock.objects.create(name=tgt["name"], code=code)
     st = Stock.objects.get(code=code)
 
     price = tgt['c']
     print(price)
     money = price * units
 
-    current_units = purchases.get_total_owned_units(email,code)
+    current_units = purchases.get_total_owned_units(user,code)
     #currentUnit = Purchase.objects.get(user_id=email, code=code).all().aggregate(Sum(orignialUnitBought - UnitSold))
-    balance = User.objects.get(email=email).balance
+    balance = user.profile.balance
     remaining_sell_units = units
     if current_units >= units:
-        ps = purchases.get_unsold_purhases(email,code)
+        ps = purchases.get_unsold_purhases(user,code)
         for p in ps:
             print('Units bought in this purchase' + str(p.orignialUnitBought))
             if(remaining_sell_units == 0):
@@ -80,9 +81,11 @@ def sell(code, units, email):
                 remaining_sell_units = 0
 
         newBalance = balance + decimal.Decimal(float(money))
-        User.objects.filter(email=email).update(balance=newBalance)
+        user.profile.balance=newBalance
+        user.save()
+        now = datetime.now().timestamp()
         Transaction.objects.create(
-            user_id=user, stock = st, units = units, price = price, action = "sell")
+            user_id=user, stock = st, units = units, price = price, action = "sell", date=now)
     else:
         errors['insufficient_share'] = "Insufficient share for selling Stock {}".format(code)
         return errors
