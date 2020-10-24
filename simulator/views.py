@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, BuyForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -21,24 +21,9 @@ def stock_list(request):
 
 @login_required
 def stock_detail(request, code):
-    stock = get_object_or_404(Stock, code=code)
+    # stock = get_object_or_404(Stock, code=code)
+    stock = Stock.objects.get(code=code)
     frontend_stock = {'stock': stock}
-
-    # if("code" in request.GET):
-    #     errors = {}
-    #     api = Api()
-    #     code = request.GET.get('code')
-    #     result = api.search(code)
-    #     print(result)
-    #     if(result == "The stock code you searched was invalid"):
-    #         errors['invalid stock code'] = result
-    #         frontend_stock = {'errors':errors}
-    #     else:
-    #         frontend_stock = result
-    #     return render(request, 'simulator/stock_detail.html', frontend_stock)
-    
-
-    # frontend_stock = {'name': pk}
     return render(request, 'simulator/stock_detail.html', frontend_stock)
 
 def signup(request):
@@ -105,9 +90,22 @@ def my_watchlist_view(request, errors={}):
     return render(request, 'simulator/my_watchlist.html', context)
 
 @login_required
-def buy_stock(request, code):
-    errors = buy_sell.buy(code, 3, request.user)
+def remove_watchlist(request, code):
+    errors = watchlist.remove(code, request.user)
     return my_watchlist_view(request, errors)
+
+@login_required
+def buy_stock(request, code):
+    if request.method == 'POST':
+        form = BuyForm(request.POST)
+        if form.is_valid():
+            amount = form.save()
+            errors = buy_sell.buy(code, amount, request.user)
+            return my_watchlist_view(request, errors)
+    else:
+        form = BuyForm()
+    
+    return render(request, 'simulator/buy_form.html', {'form': form})
 
 @login_required
 def sell_stock(request, code):

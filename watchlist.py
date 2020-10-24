@@ -96,22 +96,39 @@ def list_watchlist(user):
     result = WatchListItem.objects.filter(user_id=user)
 
     wlist = []
+    # print("starting to iterate through wlist")
     for row in result:
         #print(row)
         wlist_entry = {}
         code = row.stock.code
         wlist_entry['code'] = code
         wlist_entry['name'] = row.stock.name
-        wlist_entry['date'] = pd.to_datetime(row.date, unit='s') #row.date # TO DO 
+        wlist_entry['date'] = pd.to_datetime(row.date, unit='s') 
 
         stockinfo = api.search(code)
-        print(stockinfo)
+
         wlist_entry['current'] = stockinfo['c']
         wlist_entry['change'] = stockinfo['change']
         wlist.append(wlist_entry)
+    # print("finished appending to wlist")
     return wlist
 
 
+def remove(code,  user):
+    code = code.upper()
+    errors = {}
+
+    stock_to_remove_from_wl = Stock.objects.get(code=code)
+    wl = WatchListItem.objects.get(user_id=user, stock=stock_to_remove_from_wl)
+    # if(wl.count() == 0):
+    #     errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
+    #     return errors
+
+    wl.delete()
+    errors['removed_from_wl'] = "Stock {} has been removed from your watchlist".format(code)
+    return errors
+
+'''
 def remove(code, user_id):
     api = Api()
     errors = {}
@@ -128,6 +145,7 @@ def remove(code, user_id):
         cursor.execute("DELETE from WATCHLIST where CODE = %s", [code])
         cursor.commit()
         print("Total number of rows deleted :", cursor.total_changes)
+'''
 
 '''
 def remove(code, id):

@@ -8,7 +8,8 @@ from django.contrib.auth import password_validation
 from django.core.exceptions import ValidationError
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Layout
+from crispy_forms.bootstrap import StrictButton
 
 class CustomUserCreationForm(forms.Form):
     username = forms.CharField(label='Enter Username', min_length=3, max_length=15)
@@ -54,6 +55,26 @@ class CustomUserCreationForm(forms.Form):
             self.cleaned_data['password1']
         )
         return user
+
+
+class BuyForm(forms.Form):
+    amount = forms.IntegerField(label='Enter Amount Of Shares To Buy')
+
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.form_class = 'form-horizontal'
+    helper.label_class = 'col-lg-4'
+    helper.field_class = 'col-lg-8'
+    helper.add_input(Submit('Confirm', 'Confirm', css_class='btn-primary'))
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount <= 0:
+            raise ValidationError("Value must be greater than 0")
+        return amount
+
+    def save(self, commit=True):
+        return self.cleaned_data['amount']
     
 # class ProfileForm(forms.ModelForm):
 #     class Meta:

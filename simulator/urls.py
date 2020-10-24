@@ -20,8 +20,9 @@ urlpatterns = [
 
     # Watchlist
     path('add_watchlist/<str:code>/', views.add_to_watchlist, name='add'),
-    path('my_watchlist/', views.my_watchlist_view, name='add'),
+    path('my_watchlist/', views.my_watchlist_view, name='watchlist'),
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
+    path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
 
     # Buy / sell
     path('buy/<str:code>/', views.buy_stock, name='buy'),
