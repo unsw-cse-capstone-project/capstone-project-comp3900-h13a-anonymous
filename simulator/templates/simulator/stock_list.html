@@ -4,7 +4,7 @@
   {% for stock in stocks %}
   <div>
     <h1>
-      <a href="{% url "stock_detail" pk=stock.pk %}">
+      <a href="{% url "stock_detail" code=stock.code %}">
         {{ stock.name }}
       </a>
     </h1>

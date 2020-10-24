@@ -19,8 +19,8 @@ def stock_list(request):
     return render(request, 'simulator/sidebar.html', frontend_stocks)
 
 @login_required
-def stock_detail(request, pk):
-    stock = get_object_or_404(Stock, pk=pk)
+def stock_detail(request, code):
+    stock = get_object_or_404(Stock, code=code)
     frontend_stock = {'stock': stock}
 
     # if("code" in request.GET):
@@ -94,7 +94,7 @@ def search_view(request):
 
 @login_required
 def add_to_watchlist(request, code):
-    errors = watchlist.add(code, 1)
+    errors = watchlist.add(code, request.user)
     return my_watchlist_view(request, errors)
 
 @login_required

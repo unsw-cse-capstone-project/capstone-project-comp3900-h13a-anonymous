@@ -9,7 +9,7 @@ urlpatterns = [
     path('', views.stock_list, name='stock_list'),
 
     # 127.0.0.1:8000/stock/1
-    path('stock/<pk>/', views.stock_detail, name='stock_detail'),
+    path('stock/<str:code>/', views.stock_detail, name='stock_detail'),
 
     # 127.0.0.1:8000/signup
     path('signup/', views.signup, name='signup'),

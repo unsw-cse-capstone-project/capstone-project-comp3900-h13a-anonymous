@@ -39,8 +39,10 @@ def add(code, user_id):
     return errors
 '''
 
-def add(code, user_id):
+def add(code, user):
     # get current stock info from Finnhub API
+    code = code.upper()
+
     api = Api()
     errors = {}
     stockinfo = api.search(code)
@@ -53,14 +55,15 @@ def add(code, user_id):
     # connect to the database
     stocks = Stock.objects.filter(code=code)
     if(stocks.count() != 1):
-        Stock.objects.create(name=stockinfo["name"], code=code, price=0.00)
-    user=User.objects.get(email=user_id)
-    wl = WatchListItem.objects.filter(user_id=user, code=code)
+        Stock.objects.create(name=stockinfo["name"], code=code)
+    
+    stock_to_add_in_wl = Stock.objects.get(code=code)
+    wl = WatchListItem.objects.filter(user_id=user, stock=stock_to_add_in_wl)
     if(wl.count() != 0):
         errors['already_added'] = "Stock {} is already in your watchlist".format(code)
         return errors
-    st = Stock.objects.get(code=code)
-    WatchListItem.objects.create(user_id=user, code=st, date=timestamp)
+    
+    WatchListItem.objects.create(user_id=user, stock=stock_to_add_in_wl, date=timestamp)
     '''
     with connection.cursor() as cursor:
         stock_count = cursor.execute("SELECT COUNT(*) FROM Stock WHERE CODE= %s", [code]).fetchone()[0]
