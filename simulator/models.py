@@ -60,5 +60,5 @@ class Transaction(models.Model):
     units = models.PositiveIntegerField()
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     date = models.CharField(max_length=30)
-    action = models.CharField(max_length=30, primary_key=True)
+    action = models.CharField(max_length=30)
     

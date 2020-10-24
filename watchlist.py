@@ -102,12 +102,12 @@ def list_watchlist(user):
         code = row.stock.code
         wlist_entry['code'] = code
         wlist_entry['name'] = row.stock.name
-        wlist_entry['date'] = row.date # TO DO pd.to_datetime(row.date, unit='s')
+        wlist_entry['date'] = pd.to_datetime(row.date, unit='s') #row.date # TO DO 
 
         stockinfo = api.search(code)
         print(stockinfo)
-        wlist_entry['current'] = "test" #stockinfo['c']
-        wlist_entry['change'] = "test 2" # stockinfo['change']
+        wlist_entry['current'] = stockinfo['c']
+        wlist_entry['change'] = stockinfo['change']
         wlist.append(wlist_entry)
     return wlist
 
