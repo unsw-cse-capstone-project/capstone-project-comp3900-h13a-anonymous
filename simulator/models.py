@@ -18,7 +18,6 @@ class Stock(models.Model):
 class User(models.Model):
     email = models.CharField(max_length=30, primary_key=True)
     name = models.CharField(max_length=10)
-    email = models.CharField(max_length=30, unique=True)
     password = models.CharField(max_length=30)
     phoneNo = models.IntegerField()
     balance = models.DecimalField(decimal_places=2, max_digits=10)
@@ -27,7 +26,7 @@ class User(models.Model):
 
 class WatchList(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     date = models.CharField(max_length=30)
     watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     tiggered = models.BooleanField(default=False)
@@ -38,16 +37,20 @@ class WatchList(models.Model):
 
 class Purchase(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     dateBought = models.CharField(max_length=30)
     orignialUnitBought = models.PositiveIntegerField()
     unitSold = models.PositiveIntegerField()
+    
+
+
 
 class Transaction(models.Model):
+    auto_increment_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
-    code = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     units = models.PositiveIntegerField()
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    action = models.CharField(max_length=30, primary_key=True)
+    action = models.CharField(max_length=30)
     

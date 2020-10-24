@@ -7,6 +7,7 @@ from django.contrib import messages
 from .models import Stock 
 from api.search_v2 import Api
 import watchlist
+import buy_sell
 
 # Create your views here.
 @login_required
@@ -76,3 +77,10 @@ def my_watchlist_view(request, errors={}):
     context = {'wlist':wlist, 'errors':errors}
     return render(request, 'simulator/my_watchlist.html', context)
 
+def buy_stock(request, code):
+    errors = buy_sell.buy(code, 3, 1)
+    return my_watchlist_view(request, errors)
+
+def sell_stock(request, code):
+    errors = buy_sell.sell(code, 2, 1)
+    return my_watchlist_view(request, errors)
