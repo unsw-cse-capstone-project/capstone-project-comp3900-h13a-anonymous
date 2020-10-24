@@ -48,10 +48,13 @@ class Purchase(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     dateBought = models.CharField(max_length=30)
-    originalUnitsBought = models.PositiveIntegerField()
-    unitsSold = models.PositiveIntegerField()
+    orignialUnitBought = models.PositiveIntegerField()
+    unitSold = models.PositiveIntegerField()
+    
+    
 
 class Transaction(models.Model):
+    auto_increment_id = models.AutoField(primary_key=True)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     units = models.PositiveIntegerField()

@@ -10,6 +10,7 @@ import watchlist
 from django.views.generic import (
     ListView
 )
+import buy_sell
 
 # Create your views here.
 @login_required
@@ -103,7 +104,19 @@ def my_watchlist_view(request, errors={}):
     context = {'wlist':wlist, 'errors':errors}
     return render(request, 'simulator/my_watchlist.html', context)
 
+@login_required
+def buy_stock(request, code):
+    errors = buy_sell.buy(code, 3, 1)
+    return my_watchlist_view(request, errors)
+
+@login_required
+def sell_stock(request, code):
+    errors = buy_sell.sell(code, 2, 1)
+    return my_watchlist_view(request, errors)
+
+
 class WatchListView(ListView):
     template_name = "simulator/my_watchlist.html"
     queryset = WatchListItem.objects.all()
     context_object_name = 'wlist'
+

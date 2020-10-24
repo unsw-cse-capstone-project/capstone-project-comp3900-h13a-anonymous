@@ -93,7 +93,6 @@ def list_watchlist(user):
         result = cursor.execute("SELECT * FROM WATCHLIST JOIN STOCK ON WATCHLIST.CODE = STOCK.CODE \
             WHERE WATCHLIST.ID = %s ORDER BY WATCHLIST.DATEADD", [user_id])
     '''
-    # user = User.objects.get(email=user_id)
     result = WatchListItem.objects.filter(user_id=user)
 
     wlist = []
