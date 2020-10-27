@@ -36,12 +36,19 @@ class WatchListItem(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     date = models.CharField(max_length=30)
-    watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    tiggered = models.BooleanField(default=False)
 
     def __str__(self):
         return self.stock.code
 
+class WatchListAlert(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    triggered = models.BooleanField(default=False)
+    dateTriggered = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.stock.code
 
 class Purchase(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
