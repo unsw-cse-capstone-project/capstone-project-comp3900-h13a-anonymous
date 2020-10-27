@@ -8,7 +8,6 @@ class watchprice:
     def __init__(self):
         self.api = Api()
 
-
     def check(self, uid, code, original, price, action):
         while True:
             # db - retrive flag value from watchlist table
@@ -23,6 +22,9 @@ class watchprice:
                 if action == "sell":
                     if p <= price and p >= original:
                         # frontend - add new notification
+                        # db - create new entry of watchlistalerts
+                        WatchListAlert.objects.create(
+                            user_id=uid, stock=code, watchprice=price)
                         # db - set flag to true
                         item.triggered = True
                         item.save()
@@ -30,6 +32,10 @@ class watchprice:
                 elif action == "buy":
                     if p >= price and p <= original:
                         # frontend - add new notification
+                        # db - create new entry of watchlistalerts
+                        WatchListAlert.objects.create(
+                            user_id=uid, stock=code, watchprice=price)
+
                         # db - set flag to true
                         item.triggered = True
                         item.save()
@@ -37,18 +43,20 @@ class watchprice:
             except:
                 pass
 
-    ## frontend will use this method to set a watchprice
-    ## action is either "buy" or "sell"
+    # frontend will use this method to set a watchprice
+    # action is either "buy" or "sell"
     def set(self, uid, code, price, action):
         p = self.api.search(code)['c']
-        ## db - add new watch price entry to database
+        # db - add new watch price entry to database
         # db - get the wid from the insert
-        WatchListItem.objects.create(user_id=uid, stock=code, original=p, watchprice=price, action=action)
+        WatchListItem.objects.create(
+            user_id=uid, stock=code, original=p, watchprice=price, action=action)
 
-        th = threading.Thread(target=self.check, args=(uid, code, p, price, action))
+        th = threading.Thread(target=self.check, args=(
+            uid, code, p, price, action))
         th.start()
 
-    ## frontend will use this method to remove a watchprice
+    # frontend will use this method to remove a watchprice
     def remove(self, uid, code):
         # TODO:
         # db - find the entry in watchlist table given by the wid(watchid)
@@ -59,13 +67,11 @@ class watchprice:
         pass
 
 
-
 if __name__ == "__main__":
     w = watchprice()
     w.set(1, "aapl", 2, "buy")
     time.sleep(5)
     w.remove(1, "aapl")
-
 
 
 # ##########################################################
@@ -103,4 +109,3 @@ if __name__ == "__main__":
 #     w.kill("1")
 #     time.sleep(5)
 #     w.kill("2")
-    
