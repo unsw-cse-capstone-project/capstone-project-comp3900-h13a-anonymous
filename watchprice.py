@@ -1,5 +1,7 @@
-from search_v2 import Api
+from api.search_v2 import Api
 import threading
+from simulator.models import *
+import time
 
 
 class watchprice:
@@ -7,50 +9,63 @@ class watchprice:
         self.api = Api()
 
 
-    def check(self, uid, code, original, price, action, wid):
+    def check(self, uid, code, original, price, action):
         while True:
             # db - retrive flag value from watchlist table
-            # if flag is false:
+            # if flag is true:
             #   break
+            item = WatchListItem.objects.get(user_id=uid, stock=code)
+            if item.triggered:
+                break
+
             try:
                 p = self.api.search(code)['c']
                 if action == "sell":
                     if p <= price and p >= original:
                         # frontend - add new notification
-                        # db - set flag to false
+                        # db - set flag to true
+                        item.triggered = True
+                        item.save()
                         return
                 elif action == "buy":
                     if p >= price and p <= original:
                         # frontend - add new notification
-                        # db - set flag to false
+                        # db - set flag to true
+                        item.triggered = True
+                        item.save()
                         return
             except:
                 pass
 
     ## frontend will use this method to set a watchprice
+    ## action is either "buy" or "sell"
     def set(self, uid, code, price, action):
         p = self.api.search(code)['c']
         ## db - add new watch price entry to database
         # db - get the wid from the insert
-        th = threading.Thread(target=self.check, args=(uid, code, p, price, action, wid))
+        WatchListItem.objects.create(user_id=uid, stock=code, original=p, watchprice=price, action=action)
+
+        th = threading.Thread(target=self.check, args=(uid, code, p, price, action))
         th.start()
 
     ## frontend will use this method to remove a watchprice
-    def remove(self, wid):
+    def remove(self, uid, code):
         # TODO:
         # db - find the entry in watchlist table given by the wid(watchid)
-        # db - set the flag in the entry to be false
+        # db - set the flag in the entry to be true
+        item = WatchListItem.objects.get(user_id=uid, stock=code)
+        item.triggered = True
+        item.save()
         pass
 
 
 
 if __name__ == "__main__":
-    watch = {"AAPL": 200, "AMZN": 3000}
-    action = "sell"
+    w = watchprice()
+    w.set(1, "aapl", 2, "buy")
+    time.sleep(5)
+    w.remove(1, "aapl")
 
-    watchprice = watchprice()
-    for stock in watch.keys():
-        watchprice.set(1, stock, watch[stock], "sell")
 
 
 # ##########################################################
