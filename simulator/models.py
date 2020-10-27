@@ -35,6 +35,7 @@ def save_user_profile(sender, instance, **kwargs):
 class WatchListItem(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    image = models.ImageField(null = True, blank = True, upload_to="images/");
     date = models.CharField(max_length=30)
     watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     tiggered = models.BooleanField(default=False)
