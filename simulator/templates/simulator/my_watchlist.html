@@ -14,19 +14,20 @@
     <tr>
     <th>Stock Code</th>
     <th>Stock Name</th>
-    <th>Datetime Added</th>
+    <th>Date Added</th>
     <th>Current Price</th>
     <th>Change Since Last Closing</th>
+    <th></th>
 
     </tr>
     {% for w in wlist %}
     <tr>
     <td>{{w.code}}</td>
-    <td><a href="{% url "stock_detail" pk=w.name %}">{{w.name}}</a></td>
-    <!-- <td>{{w.name}}</td> -->
+    <td> <a href="/stock/{{w.code}}"> {{w.name}} </a> </td> 
     <td>{{w.date}}</td>
     <td>{{w.current}}</td>
     <td>{{w.change}}</td>
+    <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a><td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from watchlist</a></td>
     </tr>
     {% endfor %}
 </table>
