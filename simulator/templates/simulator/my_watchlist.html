@@ -29,12 +29,27 @@
         <td>{{w.date}}</td>
         <td>{{w.current}}</td>
         <td>{{w.change}}</td>
+        <td> <button class="btn btn-info" onclick="displayStock()">Display</button>
         <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
         <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from watchlist</a></td>
     </tr>
     {% endfor %}
 </table>
-<br>
-    <img src="../media/images/sample_historical_data.jpg" alt="sample-historical-data">
-</br>
+<div id="imageContainer">
+</div>
+<script>
+    function displayStock() {
+        // get the container element
+        var imageContainer = document.getElementById("imageContainer");
+        // clear all the child nodes before switching the stock
+        imageContainer.querySelectorAll('*').forEach(n => n.remove());
+        // get the new stock diagram from backend
+        let imgDisplay = document.createElement('img');
+        imgDisplay.src = "../media/images/sample_historical_data.jpg";
+        imgDisplay.alt = "sample-historical-data";
+        // store it to the image container
+        imageContainer.appendChild(imgDisplay);
+        // display the new graph
+    }
+</script>
 {% endblock %}
