@@ -26,4 +26,7 @@ urlpatterns = [
     # Buy / sell
     path('buy/<str:code>/', views.buy_stock, name='buy'),
     path('sell/<str:code>/', views.sell_stock, name='sell'),
+
+    # Transactions
+    path('transactions/', views.transactions_view, name='buy'),
 ]

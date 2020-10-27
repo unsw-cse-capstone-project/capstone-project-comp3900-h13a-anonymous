@@ -11,6 +11,10 @@ from django.views.generic import (
     ListView
 )
 import buy_sell
+import transactions
+import pandas as pd
+from datetime import datetime
+
 
 # Create your views here.
 @login_required
@@ -113,6 +117,13 @@ def buy_stock(request, code):
 def sell_stock(request, code):
     errors = buy_sell.sell(code, 3, request.user)
     return my_watchlist_view(request, errors)
+
+@login_required
+def transactions_view(request):
+    trans = transactions.get_user_transactions(request.user)
+    date = pd.to_datetime(datetime.now().timestamp(), unit='s')
+    context = {'transactions':trans, 'datetime': date}
+    return render(request, 'simulator/transactions.html', context)
 
 
 class WatchListView(ListView):
