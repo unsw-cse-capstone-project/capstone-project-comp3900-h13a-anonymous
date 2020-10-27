@@ -7,7 +7,7 @@ class watchprice:
         self.api = Api()
 
 
-    def check(self, uid, code, original, price, action):
+    def check(self, uid, code, original, price, action, wid):
         while True:
             # db - retrive flag value from watchlist table
             # if flag is false:
@@ -30,10 +30,12 @@ class watchprice:
     ## frontend will use this method to set a watchprice
     def set(self, uid, code, price, action):
         p = self.api.search(code)['c']
-        th = threading.Thread(target=self.check, args=(uid, code, p, price, action))
+        ## db - add new watch price entry to database
+        # db - get the wid from the insert
+        th = threading.Thread(target=self.check, args=(uid, code, p, price, action, wid))
         th.start()
-        ## add new watch price entry to database
-    
+
+    ## frontend will use this method to remove a watchprice
     def remove(self, wid):
         # TODO:
         # db - find the entry in watchlist table given by the wid(watchid)
