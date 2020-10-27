@@ -23,6 +23,7 @@ class watchprice:
             except:
                 pass
 
+    ## frontend will use this method to set a watchprice
     def set(self, uid, code, price, action):
         p = self.api.search(code)['c']
         th = threading.Thread(target=self.check, args=(uid, code, p, price, action))
@@ -38,3 +39,41 @@ if __name__ == "__main__":
     watchprice = watchprice()
     for stock in watch.keys():
         watchprice.set(1, stock, watch[stock], "sell")
+
+
+# ##########################################################
+# ## template of killing multi threads
+
+# import threading
+# import time
+
+# class w:
+#     def __init__(self):
+#         self.data = {}
+
+#     def check(self, n):
+#         self.data[n] = False
+#         while True:
+#             print(n)
+#             time.sleep(0.5)
+#             if self.data[n]:
+#                 break
+
+#     def set(self, n):
+#         th = threading.Thread(target=self.check, args=(n))
+#         th.start()
+
+
+#     def kill(self, n):
+#         self.data[n] = True
+
+# if __name__ == "__main__":
+#     w = w()
+#     w.set("1")
+#     time.sleep(3)
+#     w.set("2")
+#     time.sleep(10)
+#     w.kill("1")
+#     time.sleep(5)
+#     w.kill("2")
+    
