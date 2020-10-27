@@ -7,18 +7,22 @@ class watchprice:
         self.api = Api()
 
 
-    ## may need to add an argument user id to make notification
     def check(self, uid, code, original, price, action):
         while True:
+            # db - retrive flag value from watchlist table
+            # if flag is false:
+            #   break
             try:
                 p = self.api.search(code)['c']
                 if action == "sell":
                     if p <= price and p >= original:
-                        # add new notification
+                        # frontend - add new notification
+                        # db - set flag to false
                         return
                 elif action == "buy":
                     if p >= price and p <= original:
-                        # add new notification
+                        # frontend - add new notification
+                        # db - set flag to false
                         return
             except:
                 pass
@@ -29,6 +33,12 @@ class watchprice:
         th = threading.Thread(target=self.check, args=(uid, code, p, price, action))
         th.start()
         ## add new watch price entry to database
+    
+    def remove(self, wid):
+        # TODO:
+        # db - find the entry in watchlist table given by the wid(watchid)
+        # db - set the flag in the entry to be false
+        pass
 
 
 
