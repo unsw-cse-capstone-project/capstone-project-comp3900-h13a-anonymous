@@ -20,6 +20,8 @@ from django.views.generic import (
 )
 import buy_sell
 
+User = get_user_model()
+
 # Create your views here.
 @login_required
 def stock_list(request):
@@ -126,7 +128,6 @@ class WatchListView(ListView):
     queryset = WatchListItem.objects.all()
     context_object_name = 'wlist'
 
-User = get_user_model()
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
@@ -134,9 +135,12 @@ class HomeView(View):
 
 
 def get_data(request, *args, **kwargs):
+    qs_count = User.objects.all().count()
+    labels = ["Users", "Blue", "Yellow", "Green", "Purple", "Orange"]
+    default_items = [qs_count, 23, 2, 3, 12, 2]
     data = {
-        "sales": 100,
-        "customers": 10,
+            "labels": labels,
+            "default": default_items,
     }
     return JsonResponse(data) # http response
 

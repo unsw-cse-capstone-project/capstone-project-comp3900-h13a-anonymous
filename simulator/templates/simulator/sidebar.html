@@ -10,9 +10,6 @@
 
     <title>Hermes</title>
 
-    {% include 'base/css.html' %}
-    {% include 'base/bootstrap_defaults.html' %}
-
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css"
         integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
@@ -30,6 +27,8 @@
         integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
         crossorigin="anonymous"></script>
 
+    {% include 'base/css.html' %}
+    {% include 'base/bootstrap_defaults.html' %}
 </head>
 
 <body>
@@ -105,16 +104,13 @@
                     {% endif %}
                 </div>
             </nav>
-            {% block content %}{% endblock content %}
-
-            {% include 'base/js.html' %}
-            <script>
-                $(document).ready(function () {
-                    {% block jquery %} 
-                    {% endblock %}
-                })
-            </script>
         </div>
+        {% include 'base/js.html' %}
+        <script>
+            $(document).ready(function () {
+                {% block jquery %} {% endblock %}
+            })
+        </script>
     </div>
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->

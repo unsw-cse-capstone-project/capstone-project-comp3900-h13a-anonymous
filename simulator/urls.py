@@ -29,6 +29,7 @@ urlpatterns = [
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
 
+    path('home/', views.HomeView.as_view(), name = 'home'),
     path('api/data/', views.get_data, name ='api-data'),
     path('api/chart/data', views.ChartData.as_view()),
 
