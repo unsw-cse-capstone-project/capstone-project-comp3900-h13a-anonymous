@@ -1,45 +1,72 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %}{% endblock %}</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-    <link 
-    rel="stylesheet"
-    href="{% static 'css/header.css' %}"
-    > 
-    <link 
-    rel="stylesheet"
-    href="{% static 'css/sidebar_style.css' %}"
-    > 
-  </head>
-  <body>
-    <div class="sidebar">
-      <div class="header">
-        <h1><a href="{% url "stock_list" %}"> Hermes </a></h1>
-          {% if user.is_authenticated %}
-            <p class="greet">Hello, {{ user.first_name }}
-                <small><a href="{% url 'logout' %}">(Log out)</a></small>
-            </p>
-        {% endif %}
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'css/sidebar_style.css' %}">
+  {% include 'base/css.html' %}
+  {% include 'base/bootstrap_defaults.html' %}
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="header">
+      <h1><a href="{% url "stock_list" %}"> Hermes </a></h1>
+      {% if user.is_authenticated %}
+      <p class="greet">Hello, {{ user.first_name }}
+        <small><a href="{% url 'logout' %}">(Log out)</a></small>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="content container">
+    <div class="row">
+      <div class="col-md-8">
+        {% block content %}
+        {% endblock content %}
       </div>
     </div>
+  </div>
+  {% include 'base/js.html' %}
+  <script>
+    $(document).ready(function () {
+      {% block jquery %} {% endblock %}
+    })
+  </script>
+</body>
 
-    <div class="content container">
-        <div class="row">
-            <div class="col-md-8">
-                {% block content %}
-                {% endblock %}
-            </div>
-        </div>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Django + Charts.js</title>
+
+    {% include 'base/css.html' %}
+    {% include 'base/bootstrap_defaults.html' %}
+  </head>
+  <body>
+    <div class='container'>
+    {% block content %}
+    {% endblock content %}
     </div>
-
+    {% include 'base/js.html' %}
+    <script>
+    $(document).ready(function(){
+      {% block jquery %}
+      {% endblock %}
+    })
+    </script>
   </body>
 </html>
