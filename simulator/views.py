@@ -19,6 +19,13 @@ from django.views.generic import (
     ListView
 )
 import buy_sell
+import pandas as pd
+import requests
+from datetime import datetime
+import plotly.graph_objects as go
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 
 User = get_user_model()
 
@@ -135,12 +142,30 @@ class HomeView(View):
 
 
 def get_data(request, *args, **kwargs):
-    qs_count = User.objects.all().count()
+    #qs_count = User.objects.all().count()
     labels = ["Users", "Blue", "Yellow", "Green", "Purple", "Orange"]
-    default_items = [qs_count, 23, 2, 3, 12, 2]
+    #default_items = [qs_count, 23, 2, 3, 12, 2]
+    time = 1601577795
+    code = "AAPL"
+    now =  datetime.now().timestamp()
+    df = pd.read_csv(f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
+
+    high = df['h'].tolist()
+    low = df['l'].tolist()
+    closePrice = df['c'].tolist()
+    openPrice = df['o'].tolist()
+
+    date = []
+    for d in df['t'].tolist():
+        date.append(datetime.fromtimestamp(d))
+    '''
+    default_items=[go.Candlestick(x=date,
+                open=df['o'], high=df['h'],
+                low=df['l'], close=df['c'])
+                        ]'''
     data = {
-            "labels": labels,
-            "default": default_items,
+            "labels": date,
+            "default": high,
     }
     return JsonResponse(data) # http response
 

@@ -104,14 +104,11 @@
                     {% endif %}
                 </div>
             </nav>
+            {% block content %}{% endblock content %}
         </div>
-        {% include 'base/js.html' %}
-        <script>
-            $(document).ready(function () {
-                {% block jquery %} {% endblock %}
-            })
-        </script>
     </div>
+
+    {% include 'base/js.html' %}
 
     <!-- jQuery CDN - Slim version (=without AJAX) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -128,6 +125,12 @@
     <!-- jQuery Custom Scroller CDN -->
     <script
         src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            {% block jquery %} {% endblock %}
+        })
+    </script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -146,4 +149,3 @@
 </body>
 
 </html>
--->

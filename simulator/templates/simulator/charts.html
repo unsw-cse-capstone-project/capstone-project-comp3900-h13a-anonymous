@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'basic.html' %}
 
 <script>
 {% block jquery %}
@@ -23,11 +23,11 @@ function setChart(){
     var ctx = document.getElementById("myChart");
     var ctx2 = document.getElementById("myChart2");
     var myChart = new Chart(ctx2, {
-    type: 'bar',
+    type: 'line',
     data: {
         labels: labels,
         datasets: [{
-            label: '# of Votes',
+            label: 'Stock Price',
             data: defaultData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -52,7 +52,9 @@ function setChart(){
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero:true
+                    max: 130,
+                    min: 110,
+                    stepSize: 2
                 }
             }]
         }
@@ -64,7 +66,7 @@ function setChart(){
     data: {
         labels: labels,
         datasets: [{
-            label: '# of Votes',
+            label: 'Stock Pricd',
             data: defaultData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -107,7 +109,7 @@ function setChart(){
 
 <div class='row'>
     <div class='col-sm-12' url-endpoint='{% url "api-data" %}'>
-        <h1>Hello World</h1>
+        <h1>Display Chart</h1>
         <div class='col-sm-6'>
             <canvas id="myChart" width="400" height="400"></canvas>
         </div>
