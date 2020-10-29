@@ -112,6 +112,9 @@ def sell_stock(request, code):
     errors = buy_sell.sell(code, 3, request.user)
     return my_watchlist_view(request, errors)
 
+@login_required
+def show_graph(request):
+    return render(request, 'simulator/sample_historical_data.html')
 
 class WatchListView(ListView):
     template_name = "simulator/my_watchlist.html"
