@@ -11,6 +11,8 @@ from django.views.generic import (
     ListView
 )
 import buy_sell
+from api import historical2
+import api
 
 # Create your views here.
 @login_required
@@ -116,8 +118,14 @@ def sell_stock(request, code):
 def show_graph(request):
     return render(request, 'simulator/sample_historical_data.html')
 
+
+@login_required
+def generate_graph(request, code):
+    errors = historical2.get_historical(code)
+    context = {'errors': errors}
+    return render(request, 'simulator/my_watchlist.html', context=errors)
+
 class WatchListView(ListView):
     template_name = "simulator/my_watchlist.html"
     queryset = WatchListItem.objects.all()
     context_object_name = 'wlist'
-

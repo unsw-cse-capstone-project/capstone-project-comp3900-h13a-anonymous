@@ -6,9 +6,12 @@ from datetime import datetime
 import plotly.graph_objects as go
 import pandas as pd
 import plotly.express as px
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
+def get_historical(code):
 
-def get_historical(code, time, path):
+    time = 1601577795
     now = datetime.now().timestamp()
     df = pd.read_csv(
         f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
