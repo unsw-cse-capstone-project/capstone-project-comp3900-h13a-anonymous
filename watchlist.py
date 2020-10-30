@@ -9,6 +9,7 @@ import plotly.express as px
 from django.db import connection
 from django.contrib.auth.models import User
 from simulator.models import *
+from datetime import datetime
 
 '''
 def add(code, user_id):
@@ -63,7 +64,7 @@ def add(code, user):
         errors['already_added'] = "Stock {} is already in your watchlist".format(code)
         return errors
     
-    WatchListItem.objects.create(user_id=user, stock=stock_to_add_in_wl, date=timestamp)
+    WatchListItem.objects.create(user_id=user, stock=stock_to_add_in_wl, timestamp=datetime.utcnow().timestamp())
     '''
     with connection.cursor() as cursor:
         stock_count = cursor.execute("SELECT COUNT(*) FROM Stock WHERE CODE= %s", [code]).fetchone()[0]
@@ -103,7 +104,8 @@ def list_watchlist(user):
         code = row.stock.code
         wlist_entry['code'] = code
         wlist_entry['name'] = row.stock.name
-        wlist_entry['date'] = pd.to_datetime(row.date, unit='s') 
+        wlist_entry['date'] = row.date
+        wlist_entry['timestamp'] = row.timestamp
 
         stockinfo = api.search(code)
 
