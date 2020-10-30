@@ -5,7 +5,9 @@ from django.views.generic import View
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
+from api import historical2
+import api
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CustomUserCreationForm, BuyForm
 from django.contrib.auth.models import User
@@ -30,11 +32,14 @@ ssl._create_default_https_context = ssl._create_unverified_context
 User = get_user_model()
 
 # Create your views here.
+
+
 @login_required
 def stock_list(request):
     stocks = Stock.objects.all()
     frontend_stocks = {'stocks': stocks}
     return render(request, 'simulator/sidebar.html', frontend_stocks)
+
 
 @login_required
 def stock_detail(request, code):
@@ -42,6 +47,7 @@ def stock_detail(request, code):
     stock = Stock.objects.get(code=code)
     frontend_stock = {'stock': stock}
     return render(request, 'simulator/stock_detail.html', frontend_stock)
+
 
 def signup(request):
     if request.method == 'POST':
@@ -53,7 +59,7 @@ def signup(request):
             return redirect('/')
     else:
         form = CustomUserCreationForm()
-    
+
     return render(request, 'simulator/signup.html', {'form': form})
 
 # @login_required
@@ -77,6 +83,7 @@ def signup(request):
 #         'profile_form': profile_form
 #     })
 
+
 @login_required
 def search_view(request):
 
@@ -88,28 +95,32 @@ def search_view(request):
         print(result)
         if(result == "The stock code you searched was invalid"):
             errors['invalid stock code'] = result
-            search_info = {'errors':errors}
+            search_info = {'errors': errors}
         else:
             search_info = result
         return render(request, 'simulator/search.html', search_info)
 
     return render(request, 'simulator/search.html')
 
+
 @login_required
 def add_to_watchlist(request, code):
     errors = watchlist.add(code, request.user)
-    return my_watchlist_view(request, errors)
+    return HttpResponseRedirect('../../my_watchlist/display=false/')
+
+
 
 @login_required
-def my_watchlist_view(request, errors={}):
+def my_watchlist_view(request, errors={}, display='false'):
     wlist = watchlist.list_watchlist(request.user)
-    context = {'wlist':wlist, 'errors':errors}
+    context = {'wlist': wlist, 'errors': errors, 'display': display}
     return render(request, 'simulator/my_watchlist.html', context)
+
 
 @login_required
 def remove_watchlist(request, code):
     errors = watchlist.remove(code, request.user)
-    return my_watchlist_view(request, errors)
+    return HttpResponseRedirect('../../my_watchlist/display=false/')
 
 @login_required
 def buy_stock(request, code):
@@ -121,13 +132,26 @@ def buy_stock(request, code):
             return my_watchlist_view(request, errors)
     else:
         form = BuyForm()
-    
+
     return render(request, 'simulator/buy_form.html', {'form': form})
+
 
 @login_required
 def sell_stock(request, code):
     errors = buy_sell.sell(code, 3, request.user)
     return my_watchlist_view(request, errors)
+
+
+@login_required
+def gen_graph(request, code, date):
+    historical2.get_historical(code, date)
+    return HttpResponseRedirect('../../my_watchlist/display=true/')
+
+
+@login_required
+def show_graph(request):
+    return render(request, 'simulator/graph.html')
+    
 
 
 class WatchListView(ListView):
