@@ -95,4 +95,4 @@ def sell(code, units, user):
 
 
 if __name__ == "__main__":
-    buy("BINANCE:BTCUSDT", 1, 1)
+    buy("IC MARKETS:1", 1, 1)
