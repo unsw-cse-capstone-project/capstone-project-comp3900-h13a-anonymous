@@ -34,7 +34,11 @@
         <td>{{w.date}}</td>
         <td>{{w.current}}</td>
         <td>{{w.change}}</td>
-        <td> <button class="btn btn-info" onclick="load()">Display</button>
+        <td> <button class="btn btn-info" onclick="load()">
+                <a href="">
+                    Display
+                </a>
+            </button>
         <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
         <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from watchlist</a></td>
     </tr>
