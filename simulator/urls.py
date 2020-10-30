@@ -6,7 +6,7 @@ from .views import (
     WatchListView
 )
 
-from .views import HomeView, get_data, ChartData
+from .views import HomeView, get_data
 
 
 urlpatterns = [
@@ -33,7 +33,6 @@ urlpatterns = [
 
     path('charts/', views.HomeView.as_view(), name = 'charts'),
     path('api/data/', views.get_data, name ='api-data'),
-    path('api/chart/data', views.ChartData.as_view()),
 
     # Buy / sell
     path('buy/<str:code>/', views.buy_stock, name='buy'),

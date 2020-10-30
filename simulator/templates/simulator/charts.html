@@ -27,7 +27,7 @@ function setChart(){
     data: {
         labels: labels,
         datasets: [{
-            label: 'Stock Price',
+            label: 'Predicted Stock Price',
             data: defaultData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -52,9 +52,7 @@ function setChart(){
         scales: {
             yAxes: [{
                 ticks: {
-                    max: 130,
-                    min: 110,
-                    stepSize: 2
+                    beginAtZero:false
                 }
             }]
         }
@@ -66,7 +64,7 @@ function setChart(){
     data: {
         labels: labels,
         datasets: [{
-            label: 'Stock Pricd',
+            label: '# of Votes',
             data: defaultData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -103,14 +101,13 @@ function setChart(){
 
 
 {% endblock %}
-
 </script>
 
 {% block content %}
 
 <div class='row'>
     <div class='col-sm-12' url-endpoint='{% url "api-data" %}'>
-        <h1>Display Chart</h1>
+        <h1>Hello World</h1>
         <div class='col-sm-6'>
             <canvas id="myChart" width="400" height="400"></canvas>
         </div>
@@ -121,4 +118,5 @@ function setChart(){
 
     </div>
 </div>
-{% endblock %}
+
+{% endblock content %}

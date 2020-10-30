@@ -109,7 +109,6 @@ def add_to_watchlist(request, code):
     return HttpResponseRedirect('../../my_watchlist/display=false/')
 
 
-
 @login_required
 def my_watchlist_view(request, errors={}, display='false'):
     wlist = watchlist.list_watchlist(request.user)
@@ -121,6 +120,7 @@ def my_watchlist_view(request, errors={}, display='false'):
 def remove_watchlist(request, code):
     errors = watchlist.remove(code, request.user)
     return HttpResponseRedirect('../../my_watchlist/display=false/')
+
 
 @login_required
 def buy_stock(request, code):
@@ -151,7 +151,6 @@ def gen_graph(request, code, date):
 @login_required
 def show_graph(request):
     return render(request, 'simulator/graph.html')
-    
 
 
 class WatchListView(ListView):
@@ -166,45 +165,12 @@ class HomeView(View):
 
 
 def get_data(request, *args, **kwargs):
-    #qs_count = User.objects.all().count()
-    labels = ["Users", "Blue", "Yellow", "Green", "Purple", "Orange"]
-    #default_items = [qs_count, 23, 2, 3, 12, 2]
-    time = 1601577795
-    code = "AAPL"
-    now =  datetime.now().timestamp()
-    df = pd.read_csv(f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
-
-    high = df['h'].tolist()
-    low = df['l'].tolist()
-    closePrice = df['c'].tolist()
-    openPrice = df['o'].tolist()
-
-    date = []
-    for d in df['t'].tolist():
-        date.append(datetime.fromtimestamp(d))
-    '''
-    default_items=[go.Candlestick(x=date,
-                open=df['o'], high=df['h'],
-                low=df['l'], close=df['c'])
-                        ]'''
+    qs_count = User.objects.all().count()
+    labels = ["11.1", "11.2", "11.3", "11.4", "11.5", "11.6"]
+    default_items = [110, 111, 112, 113, 114, 115]
     data = {
-            "labels": date,
-            "default": high,
+        "labels": labels,
+        "default": default_items,
     }
-    return JsonResponse(data) # http response
-
-
-class ChartData(APIView):
-    authentication_classes = []
-    permission_classes = []
-
-    def get(self, request, format=None):
-        qs_count = User.objects.all().count()
-        labels = ["Users", "Blue", "Yellow", "Green", "Purple", "Orange"]
-        default_items = [qs_count, 23, 2, 3, 12, 2]
-        data = {
-                "labels": labels,
-                "default": default_items,
-        }
-        return Response(data)
+    return JsonResponse(data)  # http response
 
