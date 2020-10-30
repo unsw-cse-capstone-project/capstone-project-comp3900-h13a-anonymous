@@ -7,28 +7,49 @@
 </h1>
 
 {% for key, value in errors.items %}
-<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+<center>
+    <h5 style="color:#FF0000;">{{value}}</h5>
+</center>
 {% endfor %}
+<script>
+    function load() {
+        document.getElementById("graph").innerHTML = '<object type="text/html" data="../graph.html" style=" width: 100%; height: 100%;"></object>';
+    }
+</script>
+
 
 <table style="width:100%" class="table">
     <tr>
-    <th>Stock Code</th>
-    <th>Stock Name</th>
-    <th>Datetime Added</th>
-    <th>Current Price</th>
-    <th>Change Since Last Closing</th>
+        <th>Stock Code</th>
+        <th>Stock Name</th>
+        <th>Date Added</th>
+        <th>Current Price</th>
+        <th>Change Since Last Closing</th>
+        <th></th>
 
     </tr>
     {% for w in wlist %}
     <tr>
-    <td>{{w.code}}</td>
-    <td><a href="{% url "stock_detail" pk=w.name %}">{{w.name}}</a></td>
-    <!-- <td>{{w.name}}</td> -->
-    <td>{{w.date}}</td>
-    <td>{{w.current}}</td>
-    <td>{{w.change}}</td>
+        <td>{{w.code}}</td>
+        <td> <a href="/stock/{{w.code}}"> {{w.name}} </a> </td>
+        <td>{{w.date}}</td>
+        <td>{{w.current}}</td>
+        <td>{{w.change}}</td>
+        <td>
+            <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">
+                Display
+            </a>
+        <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
+        <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from watchlist</a></td>
     </tr>
     {% endfor %}
 </table>
+<div id="graph" style=" height: 70vh;"></div>
+
+<script>
+    if ('{{display}}' == 'true') {
+        load();
+    }
+</script>
 
 {% endblock %}
