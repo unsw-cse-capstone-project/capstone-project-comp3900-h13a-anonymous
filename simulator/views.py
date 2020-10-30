@@ -90,21 +90,21 @@ def search_view(request):
 @login_required
 def add_to_watchlist(request, code):
     errors = watchlist.add(code, request.user)
-    return HttpResponseRedirect('../../my_watchlist/')
+    return HttpResponseRedirect('../../my_watchlist/display=false/')
 
 
 
 @login_required
-def my_watchlist_view(request, errors={}):
+def my_watchlist_view(request, errors={}, display='false'):
     wlist = watchlist.list_watchlist(request.user)
-    context = {'wlist': wlist, 'errors': errors}
+    context = {'wlist': wlist, 'errors': errors, 'display': display}
     return render(request, 'simulator/my_watchlist.html', context)
 
 
 @login_required
 def remove_watchlist(request, code):
     errors = watchlist.remove(code, request.user)
-    return HttpResponseRedirect('../../my_watchlist/')
+    return HttpResponseRedirect('../../my_watchlist/display=false/')
 
 @login_required
 def buy_stock(request, code):
@@ -127,14 +127,14 @@ def sell_stock(request, code):
 
 
 @login_required
-def view_graph(request, code, date):
+def gen_graph(request, code, date):
     historical2.get_historical(code, date)
-    return HttpResponseRedirect('../../my_watchlist/')
+    return HttpResponseRedirect('../../my_watchlist/display=true/')
 
 
 @login_required
 def show_graph(request):
-    return render(request, 'simulator/sample_historical_data.html')
+    return render(request, 'simulator/graph.html')
     
 
 

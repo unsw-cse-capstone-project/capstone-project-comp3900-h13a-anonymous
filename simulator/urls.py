@@ -20,7 +20,9 @@ urlpatterns = [
 
     # Watchlist
     path('add_watchlist/<str:code>/', views.add_to_watchlist, name='add'),
-    path('my_watchlist/', views.my_watchlist_view, name='watchlist'),
+    path('my_watchlist/display=<str:display>/', views.my_watchlist_view, name='watchlist'),
+
+
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
 
@@ -28,7 +30,7 @@ urlpatterns = [
     path('buy/<str:code>/', views.buy_stock, name='buy'),
     path('sell/<str:code>/', views.sell_stock, name='sell'),
 
-    path('my_watchlist/<str:code>/<str:date>', views.view_graph, name='gen_graph'),
+    path('my_watchlist/<str:code>/<str:date>', views.gen_graph, name='gen_graph'),
 
-    path('my_watchlist/sample_historical_data.html/', views.show_graph, name='plot')
+    path('my_watchlist/graph.html/', views.show_graph, name='plot')
 ]
