@@ -161,11 +161,11 @@ class WatchListView(ListView):
 
 
 class HomeView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'charts.html', {"customers": 10})
+    def get(self, request, code):
+        return render(request, 'charts.html', {"code": code})
 
 
-def get_data(request, *args, **kwargs):
+def get_data(request, code):
     qs_count = User.objects.all().count()
     labels = []
     default_items = []

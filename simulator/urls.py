@@ -31,8 +31,8 @@ urlpatterns = [
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
 
-    path('charts/', views.HomeView.as_view(), name = 'charts'),
-    path('api/data/', views.get_data, name ='api-data'),
+    path('charts/<str:code>/', views.HomeView.as_view(), name = 'charts'),
+    path('api/data/<str:code>/', views.get_data, name ='api-data'),
 
     # Buy / sell
     path('buy/<str:code>/', views.buy_stock, name='buy'),
