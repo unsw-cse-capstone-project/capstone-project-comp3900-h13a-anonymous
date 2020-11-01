@@ -17,6 +17,7 @@ from django.contrib import messages
 from .models import Stock, WatchListItem
 from api.search_v2 import Api
 import watchlist
+import prediction
 from django.views.generic import (
     ListView
 )
@@ -166,8 +167,13 @@ class HomeView(View):
 
 def get_data(request, *args, **kwargs):
     qs_count = User.objects.all().count()
-    labels = ["11.1", "11.2", "11.3", "11.4", "11.5", "11.6"]
-    default_items = [110, 111, 112, 113, 114, 115]
+    labels = []
+    default_items = []
+    predictData = prediction.predict("AAPL", 30)
+    for i in predictData:
+        labels.append(i[0].strftime("%B %d"));
+        default_items.append(i[1]);
+
     data = {
         "labels": labels,
         "default": default_items,

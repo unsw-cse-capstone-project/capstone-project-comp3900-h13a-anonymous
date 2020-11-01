@@ -91,6 +91,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                         <i class="fas fa-align-justify"></i>
                     </button>
+                    <button class="btn btn-info" onclick="goBack()">Back</button>
 
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="nav navbar-nav ml-auto">
@@ -134,6 +135,11 @@
                 $('a[aria-expanded=true]').attr('aria-expanded', 'false');
             });
         });
+    </script>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
     </script>
 
 </body>

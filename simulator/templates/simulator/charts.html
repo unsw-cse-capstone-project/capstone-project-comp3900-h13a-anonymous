@@ -25,12 +25,12 @@ function setChart(){
     var ctx = document.getElementById("myChart");
     var ctx2 = document.getElementById("myChart2");
     var myChart = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-        labels: labels.slice(0,5),
+        labels: labels.slice(0,7),
         datasets: [{
-            label: 'Predicted Stock Price',
-            data: defaultData.slice(0,5),
+            label: 'Weekly Stock Price',
+            data: defaultData.slice(0,7),
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -62,11 +62,11 @@ function setChart(){
 });
 
     var myChart = new Chart(ctx2, {
-    type: 'polarArea',
+    type: 'line',
     data: {
         labels: labels,
         datasets: [{
-            label: '# of Votes',
+            label: 'Monthly Stock Price',
             data: defaultData,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -91,7 +91,7 @@ function setChart(){
         scales: {
             yAxes: [{
                 ticks: {
-                    beginAtZero:true
+                    beginAtZero:false
                 }
             }]
         }
@@ -110,7 +110,6 @@ function setChart(){
 <div class='row'>
     <div class='col-sm-12' url-endpoint='{% url "api-data" %}'>
         <h1>Stock Price Prediction</h1>
-        <button class="btn btn-info" onclick="goBack()">Back</button>
         <div class='col-sm-6'>
             <canvas id="myChart" width="400" height = "400" ></canvas>
         </div>
@@ -120,9 +119,4 @@ function setChart(){
     </div>
 </div>
 
-<script>
-    function goBack() {
-      window.history.back();
-    }
-    </script>
 {% endblock content %}
