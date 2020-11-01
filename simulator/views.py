@@ -160,7 +160,7 @@ class WatchListView(ListView):
     context_object_name = 'wlist'
 
 
-class HomeView(View):
+class ChartView(View):
     def get(self, request, code):
         return render(request, 'charts.html', {"code": code})
 
@@ -169,7 +169,7 @@ def get_data(request, code):
     qs_count = User.objects.all().count()
     labels = []
     default_items = []
-    predictData = prediction.predict("AAPL", 30)
+    predictData = prediction.predict(code, 30)
     for i in predictData:
         labels.append(i[0].strftime("%B %d"));
         default_items.append(i[1]);
