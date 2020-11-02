@@ -19,7 +19,7 @@ def prediction(code, day):
         sb =  random.uniform(-3,2)
         pre = float(reg.predict([[i+1+len(data),0]])) + sb
         result.append((da,pre))
-    print(result)
+    # print(result)
     return result
 if __name__ == "__main__":
     prediction("AAPL", 30)
