@@ -1,3 +1,13 @@
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.generic import View
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from api import historical2
+import api
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import CustomUserCreationForm, BuyForm
 from django.contrib.auth.models import User
@@ -7,13 +17,20 @@ from django.contrib import messages
 from .models import Stock, WatchListItem
 from api.search_v2 import Api
 import watchlist
+import prediction
 from django.views.generic import (
     ListView
 )
 import buy_sell
-from api import historical2
-import api
-from django.http import HttpResponseRedirect
+import pandas as pd
+import requests
+from datetime import datetime
+import plotly.graph_objects as go
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
+
+User = get_user_model()
 
 # Create your views here.
 
@@ -93,7 +110,6 @@ def add_to_watchlist(request, code):
     return HttpResponseRedirect('../../my_watchlist/display=false/')
 
 
-
 @login_required
 def my_watchlist_view(request, errors={}, display='false'):
     wlist = watchlist.list_watchlist(request.user)
@@ -105,6 +121,7 @@ def my_watchlist_view(request, errors={}, display='false'):
 def remove_watchlist(request, code):
     errors = watchlist.remove(code, request.user)
     return HttpResponseRedirect('../../my_watchlist/display=false/')
+
 
 @login_required
 def buy_stock(request, code):
@@ -135,10 +152,31 @@ def gen_graph(request, code, date):
 @login_required
 def show_graph(request):
     return render(request, 'simulator/graph.html')
-    
 
 
 class WatchListView(ListView):
     template_name = "simulator/my_watchlist.html"
     queryset = WatchListItem.objects.all()
     context_object_name = 'wlist'
+
+
+class ChartView(View):
+    def get(self, request, code):
+        return render(request, 'charts.html', {"code": code})
+
+
+def get_data(request, code):
+    qs_count = User.objects.all().count()
+    labels = []
+    default_items = []
+    predictData = prediction.predict(code, 30)
+    for i in predictData:
+        labels.append(i[0].strftime("%B %d"));
+        default_items.append(i[1]);
+
+    data = {
+        "labels": labels,
+        "default": default_items,
+    }
+    return JsonResponse(data)  # http response
+

@@ -35,12 +35,15 @@
         <td>{{w.date}}</td>
         <td>{{w.current}}</td>
         <td>{{w.change}}</td>
+        <!-- <td> <a href="/charts/" class="btn btn-info" onclick="displayStock()" >Display</a> -->
         <td>
             <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">
                 Display
             </a>
+        </td>
+        <td> <a href="/charts/{{w.code}}" class="btn btn-info">Predict</a>
         <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
-        <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from watchlist</a></td>
+        <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove</a></td>
     </tr>
     {% endfor %}
 </table>
