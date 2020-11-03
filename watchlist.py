@@ -138,8 +138,13 @@ def remove(code,  user):
     #     errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
     #     return errors
 
+    untriggered_alerts = WatchListAlert.objects.filter(user_id=user, stock=stock_to_remove_from_wl, triggered=False)
+    for alert in untriggered_alerts:
+        alert.delete()
+
     wl.delete()
-    errors['removed_from_wl'] = "Stock {} has been removed from your watchlist".format(code)
+
+    errors['removed_from_wl'] = "Stock {} and untriggered alerts have been removed from your watchlist".format(code)
     return errors
 
 '''
