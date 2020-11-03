@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'simulator',
     'crispy_forms',
+    'mathfilters',
     'rest_framework',
 ]
 
