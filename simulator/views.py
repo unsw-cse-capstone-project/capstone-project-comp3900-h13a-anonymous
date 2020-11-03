@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import CustomUserCreationForm, BuyForm, SetWatchPriceForm
+from .forms import CustomUserCreationForm, BuyForm, SellForm, SetWatchPriceForm
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -106,8 +106,16 @@ def buy_stock(request, code):
 
 @login_required
 def sell_stock(request, code):
-    errors = buy_sell.sell(code, 3, request.user)
-    return my_watchlist_view(request, errors)
+    if request.method == 'POST':
+        form = SellForm(request.POST)
+        if form.is_valid():
+            amount = form.save()
+            errors = buy_sell.sell(code, amount, request.user)
+            return my_watchlist_view(request, errors)
+    else:
+        form = SellForm()
+    return render(request, 'simulator/sell_form.html', {'form': form})
+
 
 @login_required
 def alerts(request):

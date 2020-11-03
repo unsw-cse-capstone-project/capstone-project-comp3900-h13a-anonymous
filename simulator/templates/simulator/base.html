@@ -25,9 +25,7 @@
       <div class="header">
         <h1><a href="{% url "stock_list" %}"> Hermes </a></h1>
           {% if user.is_authenticated %}
-            <p class="greet">Hello, {{ user.first_name }}
-                <small><a href="{% url 'logout' %}">(Log out)</a></small>
-            </p>
+            <p class="greet">Hello, {{ user.first_name }} </p>
         {% endif %}
       </div>
     </div>

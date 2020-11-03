@@ -76,6 +76,24 @@ class BuyForm(forms.Form):
     def save(self, commit=True):
         return self.cleaned_data['amount']
 
+class SellForm(forms.Form):
+    amount = forms.IntegerField(label='Enter Amount Of Shares To Sell')
+
+    helper = FormHelper()
+    helper.form_method = 'POST'
+    helper.form_class = 'form-horizontal'
+    helper.label_class = 'col-lg-4'
+    helper.field_class = 'col-lg-8'
+    helper.add_input(Submit('Confirm', 'Confirm', css_class='btn-primary'))
+
+    def clean_amount(self):
+        amount = self.cleaned_data['amount']
+        if amount <= 0:
+            raise ValidationError("Value must be greater than 0")
+        return amount
+
+    def save(self, commit=True):
+        return self.cleaned_data['amount']
 
 class SetWatchPriceForm(forms.Form):
     amount = forms.DecimalField(label='Enter Watch Price to Trigger At')
