@@ -42,7 +42,7 @@ class Watchprice:
     # frontend will use this method to set a watchprice
     # action is either "buy" or "sell"
     def set(self, code, price, user, action):
-        original_price = self.api.search(code)['c']
+        original_price = 0 # TO DO FIX self.api.search(code)['c']
         # db - add new watch price entry to database
         # db - get the wid from the insert
 

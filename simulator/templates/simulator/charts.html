@@ -1,0 +1,111 @@
+{% extends 'sidebar.html' %}
+
+<script>
+    {% block jquery %}
+    var defaultData = []
+    var endpoint = '/api/data/' + "{{code}}";
+    var labels = [];
+    $.ajax({
+        method: "GET",
+        url: endpoint,
+        success: function (data) {
+            labels = data.labels;
+            defaultData = data.default;
+            console.log(labels);
+            console.log(defaultData);
+            setChart()
+        },
+        error: function (error_data) {
+            console.log("error")
+            console.log(error_data)
+        }
+    })
+
+    function setChart() {
+        var ctx = document.getElementById("myChart");
+        var ctx2 = document.getElementById("myChart2");
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels.slice(0, 7),
+                datasets: [{
+                    label: 'Weekly Stock Price',
+                    data: defaultData.slice(0, 7),
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(63, 191, 191, 0.2)'
+
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(63, 191, 191, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                }
+            }
+        });
+
+        var myChart = new Chart(ctx2, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Monthly Stock Price',
+                    data: defaultData,
+                    backgroundColor: 'rgba(191, 63, 63, 0.2)',
+                    borderColor: 'rgba(191,63,63,1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: false
+                        }
+                    }]
+                }
+            }
+        });
+    }
+    // var ctx = document.getElementById("myChart");
+
+
+
+    {% endblock %}
+</script>
+
+{% block content %}
+
+<div class='row'>
+    <h1>{{code}} Price Prediction</h1>
+    <div class='col-sm-12' style="display:flex;align-items: center;justify-content: center;">
+        <div class='col-sm-6' >
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+        <div class='col-sm-6' >
+            <canvas id="myChart2" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

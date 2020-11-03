@@ -7,8 +7,16 @@
 </h1>
 
 {% for key, value in errors.items %}
-<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+<center>
+    <h5 style="color:#FF0000;">{{value}}</h5>
+</center>
 {% endfor %}
+<script>
+    function load() {
+        document.getElementById("graph").innerHTML = '<object type="text/html" data="../graph.html" style=" width: 100%; height: 100%;"></object>';
+    }
+</script>
+
 
 <table style="width:100%" class="table">
     <tr>
@@ -23,24 +31,52 @@
     </tr>
     {% for w in wlist %}
     <tr>
-    <td>{{w.code}}</td>
-    <td> <a href="/stock/{{w.code}}"> {{w.name}} </a> </td> 
-    <td>{{w.date}}</td>
-    <td>{{w.current}}</td>
-    <td>{{w.change}}</td>
-    <td> 
-        <!-- <th>
-            {% for price in w.prices %}
-                <tr> <td>{{price}} </td> </tr>
-            {% endfor %}
-        </th> -->
-        {% for alert in w.alerts %}
-            {{alert.watchprice}} <a href="/remove_watchprice/{{alert}}" class="btn btn-info">Remove </a>
-        {% endfor %}
-    </td>
-    <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a> <a href="/set_watchprice/{{w.code}}" class="btn btn-info">Set Watchprice </a>  <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from watchlist</a></td>
+        <td>{{w.code}}</td>
+        <td> <a href="/stock/{{w.code}}"> {{w.name}} </a> </td>
+        <td>{{w.date}}</td>
+        <td>{{w.current}}</td>
+        <td>{{w.change}}</td>
+        <!-- <td> <a href="/charts/" class="btn btn-info" onclick="displayStock()" >Display</a> -->
+        <td> 
+            <table style="border: 0px; border-collapse: collapse; ">
+                <!-- Header -->
+                <tr style="border:0;">
+                    <!-- Watchprice -->
+                    <th style="border:0;"></th>
+                    <!-- Remove button -->
+                    <th style="border:0;"> </th>
+                </tr>  
+                
+                <!-- Rows -->
+                {% for alert in w.alerts %}
+                <tr>
+                    <!-- Watchprice -->
+                    <th style="border:0;">{{alert.watchprice}}</th>
+                    <!-- Remove button -->
+                    <th style="border:0;"><a href="/remove_watchprice/{{alert}}" class="btn btn-info">Remove</a></th>
+                </tr>
+                {% endfor %}
+            </table>
+            
+            <a href="/set_watchprice/{{w.code}}" class="btn btn-info"> Add </a>
+        </td>
+        <td>
+            <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">
+                Display
+            </a>
+        </td>
+        <td> <a href="/charts/{{w.code}}" class="btn btn-info">Predict</a>
+        <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
+        <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove</a></td>
     </tr>
     {% endfor %}
 </table>
+<div id="graph" style=" height: 70vh;"></div>
+
+<script>
+    if ('{{display}}' == 'true') {
+        load();
+    }
+</script>
 
 {% endblock %}
