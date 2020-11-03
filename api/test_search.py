@@ -1,9 +1,15 @@
 ############################
+
+## commands to run before testing (setting up system)
+## export DJANGO_SETTINGS_MODULE=hermes.settings
+# pip3 install djangorestframework
+
 ## HOW TO RUN
 ## type the command below
 ## py.test
 ## for coverage report run
 ## py.test --cov=. --cov-report html
+
 
 from api.search_v2 import Api
 
