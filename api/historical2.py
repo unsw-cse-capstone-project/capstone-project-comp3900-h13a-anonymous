@@ -23,18 +23,21 @@ def get_historical(code, time):
     now = datetime.now().timestamp()
     now = round(now)
     df = pd.read_csv(
-        f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
+        f'https://finnhub.io/api/v1/stock/candle?symbol={code.upper()}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
     print(df)
-    date = []
-    for d in df['t']:
-        date.append(datetime.fromtimestamp(d))
-    fig = go.Figure(data=[go.Candlestick(x=date,
-                                         open=df['o'], high=df['h'],
-                                         low=df['l'], close=df['c'])
-                          ])
+    if df.empty:
+        return None
+    else:
+        date = []
+        for d in df['t']:
+            date.append(datetime.fromtimestamp(d))
+        fig = go.Figure(data=[go.Candlestick(x=date,
+                                            open=df['o'], high=df['h'],
+                                            low=df['l'], close=df['c'])
+                            ])
 
-    fig.write_html("simulator/templates/simulator/graph.html")
-    return list(df['c'])
+        fig.write_html("simulator/templates/simulator/graph.html")
+    return df
 
 
 def get_historical_data(code, time):

@@ -1,3 +1,6 @@
 *.pyc
 .DS_Store
 simulator/migrations/*
+.cache/*
+.coverage
+htmlcov/*
