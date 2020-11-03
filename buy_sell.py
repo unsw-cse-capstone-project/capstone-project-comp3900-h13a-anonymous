@@ -37,8 +37,10 @@ def buy(code, units, user):
             user_id=user, stock=st, price=price, dateBought=now, orignialUnitBought=units, unitSold=0)
         Transaction.objects.create(
             user_id=user, stock = st, units = units, price = price, action = "buy", date=now)
+        errors['purchase_complete'] = "Successfully bought {} shares of Stock {} costing {}".format(units, 
+            code, round(money, 2))
     else:
-        errors['insufficient_fund'] = "Insufficient fund for buying Stock {}".format(
+        errors['insufficient_fund'] = "Insufficient funds for buying Stock {}".format(
             code)
     return errors
 
@@ -93,4 +95,4 @@ def sell(code, units, user):
 
 
 if __name__ == "__main__":
-    buy("BINANCE:BTCUSDT", 1, 1)
+    buy("IC MARKETS:1", 1, 1)

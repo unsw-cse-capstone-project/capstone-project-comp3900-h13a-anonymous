@@ -44,4 +44,4 @@ def on_open(ws):
 
 
 if __name__ == "__main__":
-    print(search("BINANCE:BTCUSDT"))
+    print(search("IC MARKETS:1"))
