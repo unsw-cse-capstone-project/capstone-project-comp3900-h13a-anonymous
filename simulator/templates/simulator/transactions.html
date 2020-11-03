@@ -23,16 +23,16 @@
     </tr>
     {% for t in transactions %}
     <tr>
-    <td>{{t.stock.code}}</td>
+    <td>{{t.code}}</td>
     <td>{{t.action}}</td> 
     <td>{{t.price}}</td>
     <td>{{t.units}}</td>
     {% if t.action == 'buy' %}
-        <td>{{t.price|mul:t.units}}</td>
-    {% else %}
         <td>-{{t.price|mul:t.units}}</td>
+    {% else %}
+        <td>{{t.price|mul:t.units}}</td>
     {% endif %}
-    <td>{{datetime}}</td>
+    <td>{{t.datetime}}</td>
     </tr>
     {% endfor %}
 </table>

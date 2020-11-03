@@ -1,0 +1,87 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block content %}
+<h1>
+    My Purchases
+</h1>
+
+{% for key, value in errors.items %}
+<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+{% endfor %}
+<br></br>
+
+<h2>My Customers</h2>
+<select id="mylist" onchange="myFunction()" class='form-control'>
+<option></option>
+{% for c in codes %}
+    {% if c == defaultCode %}
+    <option value={{c}} selected="selected">{{c}}</option>
+    {% else %}
+    <option value={{c}}>{{c}}</option>
+    {% endif %}
+{% endfor %}
+</select>
+
+{% if includeSold %}
+<a href="/purchases/" style="float: right;" class="btn btn-info">Exclude purchases with no remaining units</a>
+{% else %}
+<a href="/purchasesIncludeSold/" style="float: right;" class="btn btn-info">Include purchases with no remaining units</a>
+{% endif %}
+
+<table style="width:100%" class="table" id="myTable">
+    <tr>
+    <th>Stock Code</th>
+    <th>Date Purchased</th>
+    <th>Purchase Price</th>
+    <th>Original Units Purchased</th>
+    <th>Units Sold</th>
+    <th>Remaing Units Owned</th>
+    <th>Amount Paid for Units Owned</th>
+    <th>Current Price</th>
+    <th>Current Worth for Units Owned</th>
+    <th>Profit/Loss</th>
+
+    </tr>
+    {% for p in purchases %}
+    <tr>
+    <td>{{p.code}}</td>
+    <td>{{p.dateBought}}</td>
+    <td>{{p.price}}</td>
+    <td>{{p.orignialUnitBought}}</td>
+    <td>{{p.unitsSold}}</td>
+    <td>{{p.unitsOwned}}</td>
+    <td>{{p.paid}}</td>
+    <td>{{p.c}}</td>
+    <td>{{p.worth}}</td>
+    <td>{{p.profit}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<script>
+    function myFunction() {
+      var input, filter, table, tr, td, i;
+      input = document.getElementById("mylist");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }       
+      }
+    }
+</script>
+
+<script>
+    myFunction()
+</script>
+
+
+{% endblock %}

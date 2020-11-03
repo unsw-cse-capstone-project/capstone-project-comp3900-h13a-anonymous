@@ -28,5 +28,14 @@ urlpatterns = [
     path('sell/<str:code>/', views.sell_stock, name='sell'),
 
     # Transactions
-    path('transactions/', views.transactions_view, name='buy'),
+    path('transactions/', views.transactions_view, name='transactions'),
+
+    # Purchases
+    path('purchases/', views.purchases_view, name='purchases'),
+    path('purchasesIncludeSold/', views.purchasesIncludeSold_view, name='purchasesIncludeSold'),
+    path('purchases/<str:defaultCode>/', views.purchases_view, name='purchasesCode'),
+    path('purchasesIncludeSold/<str:defaultCode>/', views.purchasesIncludeSold_view, name='purchasesIncludeSoldCode'),
+
+    # Portfolio
+    path('portfolio/', views.portfolio_view, name='portfolio'),
 ]

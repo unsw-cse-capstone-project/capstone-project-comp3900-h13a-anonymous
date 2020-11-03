@@ -12,6 +12,7 @@ from django.views.generic import (
 )
 import buy_sell
 import transactions
+import purchases
 import pandas as pd
 from datetime import datetime
 
@@ -115,7 +116,7 @@ def buy_stock(request, code):
 
 @login_required
 def sell_stock(request, code):
-    errors = buy_sell.sell(code, 3, request.user)
+    errors = buy_sell.sell(code, 2, request.user)
     return my_watchlist_view(request, errors)
 
 @login_required
@@ -125,6 +126,25 @@ def transactions_view(request):
     context = {'transactions':trans, 'datetime': date}
     return render(request, 'simulator/transactions.html', context)
 
+@login_required
+def purchases_view(request, defaultCode=""):
+    purchase_summary = purchases.get_purchases_info(request.user, False)
+    codes = purchases.get_unique_purchases_codes(request.user, False)
+    context = {'purchases':purchase_summary, 'codes':codes, "defaultCode":defaultCode}
+    return render(request, 'simulator/purchases.html', context)
+
+@login_required
+def purchasesIncludeSold_view(request, defaultCode=""):
+    purchase_summary = purchases.get_purchases_info(request.user, True)
+    codes = purchases.get_unique_purchases_codes(request.user, True)
+    context = {'purchases':purchase_summary, 'includeSold':True, 'codes':codes, "defaultCode":defaultCode}
+    return render(request, 'simulator/purchases.html', context)
+
+@login_required
+def portfolio_view(request):
+    portfolio_summary, total_portfolio_profit = purchases.get_portfolio_info(request.user)
+    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit}
+    return render(request, 'simulator/my_portfolio.html', context)
 
 class WatchListView(ListView):
     template_name = "simulator/my_watchlist.html"
