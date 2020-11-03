@@ -27,7 +27,6 @@
     integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
     crossorigin="anonymous"></script>
 
-  {% include 'base/css.html' %}
   {% include 'base/bootstrap_defaults.html' %}
 </head>
 
@@ -126,6 +125,17 @@
   <script>
     $(document).ready(function () {
       {% block jquery %} {% endblock %}
+      $(document).ready(function () {
+        $("#sidebar").mCustomScrollbar({
+          theme: "minimal"
+        });
+
+        $('#sidebarCollapse').on('click', function () {
+          $('#sidebar, #content').toggleClass('active');
+          $('.collapse.in').toggleClass('in');
+          $('a[aria-expanded=true]').attr('aria-expanded', 'false');
+        });
+      });
     })
 
     function goBack() {
