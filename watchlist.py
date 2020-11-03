@@ -83,9 +83,9 @@ def add(code, user):
         '''
     return errors
 
-def list_watchlist(user):
+def list_watchlist(user, errors):
     api = Api()
-    errors = {}
+    # errors = {}
     '''
     # connect to the database
     with connection.cursor() as cursor:
@@ -103,7 +103,7 @@ def list_watchlist(user):
         code = row.stock.code
         wlist_entry['code'] = code
         wlist_entry['name'] = row.stock.name
-        wlist_entry['date'] = pd.to_datetime(row.date, unit='s') 
+        wlist_entry['date'] = 'Test date' # TO FIX: pd.to_datetime(row.date, unit='s') 
 
         stockinfo = api.search(code)
 
@@ -113,16 +113,17 @@ def list_watchlist(user):
 
         # Get all alerts related to stock
         stock = Stock.objects.get(code=code)
-        alerts = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
-        for alert in alerts:
-            if wlist_entry['current'] >= alert.watchprice:
-                time = pd.to_datetime(stockinfo['t'], unit='s')
-                errors[f'alert at {time} for {alert.stock.code}'] = f"Stock {alert.stock.name} has passed {alert.watchprice} at {time}"
-                alert.dateTriggered = time  # TO DO UNSURE
-                alert.triggered=True
-                alert.save()
-
-        # TO DO add a column for watch prices not triggered yet
+        alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=True, shown=False)
+        for alert in alerts_to_show:
+            errors[f'alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
+            alert.shown=True
+            alert.save()
+        
+        # Column for watch prices not triggered yet
+        alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
+        wlist_entry['alerts'] = []
+        for alert in alerts_not_triggered_yet:
+            wlist_entry['alerts'].append(alert)
     
     return wlist, errors
 
@@ -215,5 +216,6 @@ def plot_watchlist(code, time, path):
 
 
 if __name__ == "__main__":
-    add("IC MARKETS:1", 1)
-    remove("IC MARKETS:1", 1)
+    # add("IC MARKETS:1", 1)
+    # remove("IC MARKETS:1", 1)
+    print("Hello world")

@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from simulator.models import WatchListAlert
+from django.db import models
 
 from django.contrib.auth import password_validation
 
@@ -96,7 +97,14 @@ class SellForm(forms.Form):
         return self.cleaned_data['amount']
 
 class SetWatchPriceForm(forms.Form):
+    
     amount = forms.DecimalField(label='Enter Watch Price to Trigger At')
+    action_choices = (
+        ('', 'Choose...'),
+        ('buy', 'Buy'),
+        ('sell', 'Sell')
+    )
+    action = forms.ChoiceField(choices=action_choices)
 
     helper = FormHelper()
     helper.form_method = 'POST'
@@ -112,7 +120,10 @@ class SetWatchPriceForm(forms.Form):
         return amount
 
     def save(self, commit=True):
-        return self.cleaned_data['amount']
+        return self.cleaned_data['amount'], self.cleaned_data['action']
+
+        
+    
 
     
 # class ProfileForm(forms.ModelForm):

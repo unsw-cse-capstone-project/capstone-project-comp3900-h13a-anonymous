@@ -1,8 +1,5 @@
 from django.urls import path
 from . import views
-from .views import (
-    WatchListView
-)
 
 urlpatterns = [
     # 127.0.0.1:8000/
@@ -24,7 +21,8 @@ urlpatterns = [
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
     # Set Watch price 
-    path('set_watchprice/<str:code>/', views.set_watchprice, name='watchprice'),
+    path('set_watchprice/<str:code>/', views.set_watchprice, name='set_watchprice'),
+    path('remove_watchprice/<str:id>/', views.remove_watchprice, name='remove_watchprice'),
     
     # Alerts
     path('alerts/', views.alerts, name='alerts'),
