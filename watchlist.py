@@ -64,7 +64,7 @@ def add(code, user):
         errors['already_added'] = "Stock {} is already in your watchlist".format(code)
         return errors
     
-    WatchListItem.objects.create(user_id=user, stock=stock_to_add_in_wl, date=datetime.utcnow().timestamp())
+    WatchListItem.objects.create(user_id=user, stock=stock_to_add_in_wl, timestamp=datetime.utcnow().timestamp())
     '''
     with connection.cursor() as cursor:
         stock_count = cursor.execute("SELECT COUNT(*) FROM Stock WHERE CODE= %s", [code]).fetchone()[0]
@@ -105,7 +105,7 @@ def list_watchlist(user, errors):
         wlist_entry['code'] = code
         wlist_entry['name'] = row.stock.name
         wlist_entry['date'] = row.date
-        wlist_entry['timestamp'] = row.date
+        wlist_entry['timestamp'] = row.timestamp
 
         stockinfo = api.search(code)
 
