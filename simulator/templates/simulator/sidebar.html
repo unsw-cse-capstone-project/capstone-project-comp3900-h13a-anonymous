@@ -39,7 +39,8 @@
             </div>
 
             {% if user.is_authenticated %}
-            <p>Hello, {{ user.username }} </p>
+            <p style="color: white;">Hello, {{ user.username }} </p>
+            <p style="color: white;">Balance: {{ user.profile.balance }} </p>
             <ul class="list-unstyled components">
                 <p>Investment Simulator</p>
                 <li>
@@ -53,7 +54,7 @@
                             <a href="/my_watchlist/display=false/">My Watchlist</a>
                         </li>
                         <li>
-                            <a href="#">Alerts</a>
+                            <a href="/alerts/">Alerts</a>
                         </li>
                     </ul>
                 </li>

@@ -2,9 +2,6 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib import admin
 from . import views
-from .views import (
-    WatchListView
-)
 from .views import ChartView, get_data
 
 
@@ -29,6 +26,12 @@ urlpatterns = [
 
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
+    # Set Watch price 
+    path('set_watchprice/<str:code>/', views.set_watchprice, name='set_watchprice'),
+    path('remove_watchprice/<str:id>/', views.remove_watchprice, name='remove_watchprice'),
+    
+    # Alerts
+    path('alerts/', views.alerts, name='alerts'),
 
     # Display Chart
     path('charts/<str:code>/', views.ChartView.as_view(), name = 'charts'),
