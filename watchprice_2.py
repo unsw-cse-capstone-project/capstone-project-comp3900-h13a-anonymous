@@ -8,20 +8,24 @@ class Watchprice:
     def __init__(self):
         self.api = Api()
 
-    def check(self, user, code, original, price, action):
+    def check(self, user, code, price, action):
         while True:
             # db - retrive flag value from watchlist table
             # if flag is true:
             #   break
-            stock = Stock.objects.get(code=code)
-            # Get all alerts related to stock
-            stock = Stock.objects.get(code=code)
-            alerts = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
+            # stock = Stock.objects.get(code=code)
+            # # Get all alerts related to stock
+            # stock = Stock.objects.get(code=code)
+            
+            # Goes through untriggered alerts
+            alerts = WatchListAlert.objects.filter(user_id=user, triggered=False)
             for alert in alerts:
+                code = alert.stock.code
                 try:
                     current_price = self.api.search(code)['c']
                     if action == "sell":
-                        if current_price <= price and current_price >= original:
+                        # current price is greater than or equal to watchprice
+                        if current_price >= alert.watchprice:
                             # frontend - add new notification
                             alert.dateTriggered = pd.to_datetime(self.api.search(code)['t'], unit='s')
                             # db - set flag to true
@@ -29,7 +33,8 @@ class Watchprice:
                             alert.save()
                             return
                     elif action == "buy":
-                        if current_price >= price and current_price <= original:
+                        # current price is less than or equal to watchprice
+                        if current_price <= alert.watchprice:
                             # frontend - add new notification
                             alert.dateTriggered = pd.to_datetime(self.api.search(code)['t'], unit='s')
                             # db - set flag to true
@@ -42,7 +47,6 @@ class Watchprice:
     # frontend will use this method to set a watchprice
     # action is either "buy" or "sell"
     def set(self, code, price, user, action):
-        original_price = 0 # TO DO FIX self.api.search(code)['c']
         # db - add new watch price entry to database
         # db - get the wid from the insert
 
@@ -51,8 +55,7 @@ class Watchprice:
         errors = {}
         errors['watchprice_set'] = f"Successfully set trigger to {action} stock {code} at watch price {price}"
 
-        th = threading.Thread(target=self.check, args=(
-            user, code, original_price, price, action))
+        th = threading.Thread(target=self.check, args=(user, code, price, action))
         th.start()
 
         print("Returning errors")

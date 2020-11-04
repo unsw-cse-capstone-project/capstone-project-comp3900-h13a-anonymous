@@ -51,7 +51,7 @@
                 {% for alert in w.alerts %}
                 <tr>
                     <!-- Watchprice -->
-                    <th style="border:0;">{{alert.watchprice}}</th>
+                    <th style="border:0;">{{alert.watchprice}} {{alert.action}} alert </th>
                     <!-- Remove button -->
                     <th style="border:0;"><a href="/remove_watchprice/{{alert}}" class="btn btn-info">Remove</a></th>
                 </tr>

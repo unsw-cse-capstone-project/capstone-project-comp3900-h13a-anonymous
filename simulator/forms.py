@@ -101,8 +101,8 @@ class SetWatchPriceForm(forms.Form):
     amount = forms.DecimalField(label='Enter Watch Price to Trigger At')
     action_choices = (
         ('', 'Choose...'),
-        ('buy', 'Buy'),
-        ('sell', 'Sell')
+        ('buy', 'Buy Alert'),
+        ('sell', 'Sell Alert')
     )
     action = forms.ChoiceField(choices=action_choices)
 

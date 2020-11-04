@@ -109,14 +109,15 @@ def list_watchlist(user, errors):
 
         stockinfo = api.search(code)
 
-        wlist_entry['current'] = 0 # TO DO FIX  stockinfo['c']
-        wlist_entry['change'] = 0 # TO DO FIX  stockinfo['change']
+        wlist_entry['current'] = stockinfo['c']
+        wlist_entry['change'] = stockinfo['change']
         wlist.append(wlist_entry)
 
         # Get all alerts related to stock
         stock = Stock.objects.get(code=code)
         alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=True, shown=False)
         for alert in alerts_to_show:
+            # print('alert to show in watchlist' + alert.stock)
             errors[f'alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
             alert.shown=True
             alert.save()
