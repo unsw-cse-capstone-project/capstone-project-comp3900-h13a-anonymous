@@ -15,6 +15,7 @@ plot = "*"
 plotly = "*"
 django-mathfilters = "*"
 djangorestframework = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.7"
