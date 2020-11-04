@@ -13,7 +13,8 @@ def get_user_transactions(user_id):
             "price":t.price,
             "units":t.units,
             "price":round(t.price,2),
-            "datetime": pd.to_datetime(t.date, unit='s')
+            "datetime": pd.to_datetime(t.date, unit='s'),
+            "change": t.price * t.units
         }
         transactions_list.append(transactions_entry)
 
