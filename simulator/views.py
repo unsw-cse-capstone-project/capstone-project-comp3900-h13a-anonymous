@@ -178,8 +178,10 @@ def set_watchprice(request, code):
         form = SetWatchPriceForm(request.POST)
         if form.is_valid():
             price, action = form.save()
-            w = Watchprice()
-            errors = w.set(code, price, request.user, action)
+            stock = Stock.objects.get(code=code)
+            WatchListAlert.objects.create(user_id=request.user, stock=stock, watchprice=price, action=action)
+            errors = {}
+            errors['watchprice_set'] = "Successfully set watch price trigger for stock {} at {}".format(code, price)
             return my_watchlist_view(request, errors)
     else:
         form = SetWatchPriceForm()
@@ -187,8 +189,15 @@ def set_watchprice(request, code):
 
 @login_required
 def remove_watchprice(request, id):
-    w = Watchprice()
-    errors = w.remove(request.user, id)
+    # w = Watchprice()
+    # errors = w.remove(request.user, id)
+
+    alert = WatchListAlert.objects.get(id=id)
+    code = alert.stock.code
+    price = alert.watchprice
+    alert.delete()
+    errors = {}
+    errors['rm_watchprice'] = "Successfully removed watch price trigger for stock {} at {}".format(code, price)
     return my_watchlist_view(request, errors)
 
 # class WatchListView(ListView):

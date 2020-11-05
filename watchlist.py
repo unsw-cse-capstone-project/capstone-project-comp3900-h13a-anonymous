@@ -115,12 +115,21 @@ def list_watchlist(user, errors):
 
         # Get all alerts related to stock
         stock = Stock.objects.get(code=code)
-        alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=True, shown=False)
+        alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock,triggered=False)
         for alert in alerts_to_show:
-            # print('alert to show in watchlist' + alert.stock)
-            errors[f'alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
-            alert.shown=True
-            alert.save()
+            # If sell, current price should be >= watchprice
+            if alert.action == "sell" and wlist_entry['current'] >= alert.watchprice:
+                alert.dateTriggered = pd.to_datetime(stockinfo['t'], unit='s')
+                errors[f'{alert.action} alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
+                alert.triggered=True
+                alert.save()
+            # If buy, current price should be <= watchprice 
+            elif alert.action == "buy" and wlist_entry['current'] <= alert.watchprice:
+                # print('alert to show in watchlist' + alert.stock)
+                alert.dateTriggered = pd.to_datetime(stockinfo['t'], unit='s')
+                errors[f'{alert.action} alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
+                alert.triggered=True
+                alert.save()
         
         # Column for watch prices not triggered yet
         alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
