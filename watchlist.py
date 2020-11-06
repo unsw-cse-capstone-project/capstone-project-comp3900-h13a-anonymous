@@ -108,9 +108,13 @@ def list_watchlist(user, errors):
         wlist_entry['timestamp'] = row.timestamp
 
         stockinfo = api.search(code)
-
-        wlist_entry['current'] = stockinfo['c']
-        wlist_entry['change'] = stockinfo['change']
+        if stockinfo is None:
+            wlist_entry['current'] = "N/A"
+            wlist_entry['change'] = "N/A"
+        else:
+            wlist_entry['current'] = stockinfo['c']
+            wlist_entry['change'] = stockinfo['change']
+        
         wlist.append(wlist_entry)
 
         # Get all alerts related to stock

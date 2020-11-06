@@ -13,6 +13,7 @@ class watchprice:
             # db - retrive flag value from watchlist table
             # if flag is true:
             #   break
+            time.sleep(5)
             item = WatchListItem.objects.get(user_id=uid, stock=code)
             if item.triggered:
                 break
