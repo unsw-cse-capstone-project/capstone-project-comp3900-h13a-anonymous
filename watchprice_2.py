@@ -30,7 +30,7 @@ class Watchprice:
                     # current price is greater than or equal to watchprice
                     if current_price >= alert.watchprice:
                         # frontend - add new notification
-                        alert.dateTriggered = datetime.utcnow()
+                        alert.dateTriggered = datetime.now().isoformat(' ', 'seconds')
                         # db - set flag to true
                         alert.triggered = True
                         alert.save()
@@ -39,7 +39,7 @@ class Watchprice:
                     # current price is less than or equal to watchprice
                     if current_price <= alert.watchprice:
                         # frontend - add new notification
-                        alert.dateTriggered = datetime.utcnow()
+                        alert.dateTriggered = datetime.now().isoformat(' ', 'seconds')
                         # db - set flag to true
                         alert.triggered = True
                         alert.save()
