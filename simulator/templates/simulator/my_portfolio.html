@@ -1,0 +1,51 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block content %}
+<h1>
+    My Purchases
+</h1>
+
+{% for key, value in errors.items %}
+<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+{% endfor %}
+<br></br>
+<h3>
+    Total Pofit/Loss of Portfolio
+</h3>
+{{total_portfolio_profit}}
+<br></br>
+
+<table style="width:100%" class="table">
+    <tr>
+    <th>Stock Code</th>
+    <th>Number of Outstanding Purchases</th>
+    <th>Total Number of Units</th>
+    <th>Total Paid</th>
+    <th>Current Price</th>
+    <th>Total Worth</th>
+    <th>Total Profit/Loss</th>
+    <th></th>
+    <th></th>
+    <th></th>
+    <th></th>
+
+    </tr>
+    {% for p in portfolio %}
+    <tr>
+    <td>{{p.code}}</td>
+    <td>{{p.noPurchases}}</td>
+    <td>{{p.totalUnits}}</td>
+    <td>{{p.totalPaid}}</td>
+    <td>{{p.currentPrice}}</td>
+    <td>{{p.totalWorth}}</td>
+    <td>{{p.totalProfit}}</td>
+    <td><a href="/buy/{{p.code}}" class="btn btn-info">Buy</a></td>
+    <td><a href="/sell/{{p.code}}" class="btn btn-info">Sell</a></td>
+    <td><a href="/purchases/{{p.code}}" class="btn btn-info">Purchases</a></td>
+    <td><a href=# class="btn btn-info">Graph</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

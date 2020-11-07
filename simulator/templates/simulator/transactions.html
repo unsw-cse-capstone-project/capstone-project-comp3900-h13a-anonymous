@@ -1,0 +1,39 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block content %}
+<h1>
+    My Transaction History
+</h1>
+
+{% for key, value in errors.items %}
+<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+{% endfor %}
+
+<table style="width:100%" class="table">
+    <tr>
+    <th>Stock Code</th>
+    <th>Action</th>
+    <th>Price</th>
+    <th>Number of Units</th>
+    <th>Change in User Balance</th>
+    <th>Date Added</th>
+
+    </tr>
+    {% for t in transactions %}
+    <tr>
+    <td>{{t.code}}</td>
+    <td>{{t.action}}</td> 
+    <td>{{t.price}}</td>
+    <td>{{t.units}}</td>
+    {% if t.action == 'buy' %}
+        <td>-{{t.change}}</td>
+    {% else %}
+        <td>{{t.change}}</td>
+    {% endif %}
+    <td>{{t.datetime}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

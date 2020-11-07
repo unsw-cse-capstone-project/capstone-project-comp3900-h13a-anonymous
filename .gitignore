@@ -1,6 +1,5 @@
 *.pyc
 .DS_Store
+.db.sqlite3
 simulator/migrations/*
-.cache/*
-.coverage
-htmlcov/*
+simulator/templates/simulator/graph.html

@@ -35,15 +35,27 @@ def save_user_profile(sender, instance, **kwargs):
 class WatchListItem(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
-    # image = models.ImageField(null = True, blank = True, upload_to="images/");
     date = models.DateTimeField(auto_now=True)
     timestamp = models.DecimalField(decimal_places=0, max_digits=10, default=0)
-    watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
-    tiggered = models.BooleanField(default=False)
 
     def __str__(self):
         return self.stock.code
 
+class WatchListAlert(models.Model):
+    id = models.AutoField(primary_key=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
+    watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    triggered = models.BooleanField(default=False)
+    shown = models.BooleanField(default=False)
+    dateTriggered = models.CharField(max_length=40)
+    action = models.CharField(max_length=4, default='buy') # buy / sell
+
+    def  __str__(self):
+        return str(self.id)
+
+    class Meta:
+        ordering = ('dateTriggered',)
 
 class Purchase(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

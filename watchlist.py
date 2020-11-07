@@ -84,9 +84,9 @@ def add(code, user):
         '''
     return errors
 
-def list_watchlist(user):
+def list_watchlist(user, errors):
     api = Api()
-    errors = {}
+    # errors = {}
     '''
     # connect to the database
     with connection.cursor() as cursor:
@@ -97,7 +97,7 @@ def list_watchlist(user):
     result = WatchListItem.objects.filter(user_id=user)
 
     wlist = []
-    # print("starting to iterate through wlist")
+    
     for row in result:
         #print(row)
         wlist_entry = {}
@@ -112,8 +112,23 @@ def list_watchlist(user):
         wlist_entry['current'] = stockinfo['c']
         wlist_entry['change'] = stockinfo['change']
         wlist.append(wlist_entry)
-    # print("finished appending to wlist")
-    return wlist
+
+        # Get all alerts related to stock
+        stock = Stock.objects.get(code=code)
+        alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=True, shown=False)
+        for alert in alerts_to_show:
+            # print('alert to show in watchlist' + alert.stock)
+            errors[f'alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
+            alert.shown=True
+            alert.save()
+        
+        # Column for watch prices not triggered yet
+        alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
+        wlist_entry['alerts'] = []
+        for alert in alerts_not_triggered_yet:
+            wlist_entry['alerts'].append(alert)
+    
+    return wlist, errors
 
 
 def remove(code,  user):
@@ -126,8 +141,13 @@ def remove(code,  user):
     #     errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
     #     return errors
 
+    untriggered_alerts = WatchListAlert.objects.filter(user_id=user, stock=stock_to_remove_from_wl, triggered=False)
+    for alert in untriggered_alerts:
+        alert.delete()
+
     wl.delete()
-    errors['removed_from_wl'] = "Stock {} has been removed from your watchlist".format(code)
+
+    errors['removed_from_wl'] = "Stock {} and untriggered alerts have been removed from your watchlist".format(code)
     return errors
 
 '''
@@ -204,5 +224,6 @@ def plot_watchlist(code, time, path):
 
 
 if __name__ == "__main__":
-    add("IC MARKETS:1", 1)
-    remove("IC MARKETS:1", 1)
+    # add("IC MARKETS:1", 1)
+    # remove("IC MARKETS:1", 1)
+    print("Hello world")

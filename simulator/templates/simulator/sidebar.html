@@ -26,7 +26,7 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
         integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
         crossorigin="anonymous"></script>
-
+    {% include 'base/bootstrap_defaults.html' %}
 </head>
 
 <body>
@@ -39,7 +39,8 @@
             </div>
 
             {% if user.is_authenticated %}
-            <p>Hello, {{ user.username }} </p>
+            <p style="color: white;">Hello, {{ user.username }} </p>
+            <p style="color: white;">Balance: {{ user.profile.balance }} </p>
             <ul class="list-unstyled components">
                 <p>Investment Simulator</p>
                 <li>
@@ -53,7 +54,7 @@
                             <a href="/my_watchlist/display=false/">My Watchlist</a>
                         </li>
                         <li>
-                            <a href="#">Alerts</a>
+                            <a href="/alerts/">Alerts</a>
                         </li>
                     </ul>
                 </li>
@@ -62,12 +63,15 @@
                         class="dropdown-toggle">Portfolio</a>
                     <ul class="collapse list-unstyled" id="portfolioSubmenu">
                         <li>
-                            <a href="#">Purchase list</a>
+                            <a href="/purchases/">Purchase list</a>
                         </li>
                         <li>
-                            <a href="#">My Portfolio</a>
+                            <a href="/portfolio/">My Portfolio</a>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <a href="/transactions/">Transaction History</a>
                 </li>
                 <li>
                     <a href="#">Leaderboard</a>

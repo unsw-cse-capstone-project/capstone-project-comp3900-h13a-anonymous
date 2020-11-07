@@ -2,9 +2,6 @@ from django.urls import path
 from django.conf.urls import url
 from django.contrib import admin
 from . import views
-from .views import (
-    WatchListView
-)
 from .views import ChartView, get_data
 
 
@@ -29,6 +26,12 @@ urlpatterns = [
 
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
+    # Set Watch price 
+    path('set_watchprice/<str:code>/', views.set_watchprice, name='set_watchprice'),
+    path('remove_watchprice/<str:id>/', views.remove_watchprice, name='remove_watchprice'),
+    
+    # Alerts
+    path('alerts/', views.alerts, name='alerts'),
 
     # Display Chart
     path('charts/<str:code>/', views.ChartView.as_view(), name = 'charts'),
@@ -40,6 +43,17 @@ urlpatterns = [
     path('buy/<str:code>/', views.buy_stock, name='buy'),
     path('sell/<str:code>/', views.sell_stock, name='sell'),
 
+    # Transactions
+    path('transactions/', views.transactions_view, name='transactions'),
+
+    # Purchases
+    path('purchases/', views.purchases_view, name='purchases'),
+    path('purchasesIncludeSold/', views.purchasesIncludeSold_view, name='purchasesIncludeSold'),
+    path('purchases/<str:defaultCode>/', views.purchases_view, name='purchasesCode'),
+    path('purchasesIncludeSold/<str:defaultCode>/', views.purchasesIncludeSold_view, name='purchasesIncludeSoldCode'),
+
+    # Portfolio
+    path('portfolio/', views.portfolio_view, name='portfolio'),
     # Generate graph
     path('my_watchlist/<str:code>/<str:date>', views.gen_graph, name='gen_graph'),
 
