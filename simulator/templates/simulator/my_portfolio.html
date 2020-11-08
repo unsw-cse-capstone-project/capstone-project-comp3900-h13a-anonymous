@@ -50,9 +50,16 @@
     <td><a href="/buy/{{p.code}}" class="btn btn-info">Buy</a></td>
     <td><a href="/sell/{{p.code}}" class="btn btn-info">Sell</a></td>
     <td><a href="/purchases/{{p.code}}" class="btn btn-info">Purchases</a></td>
-    <td><a href="/my_watchlist/{{p.code}}/{{p.timestamp}}" onclick="load()" class="btn btn-info">Graph</a></td>
+    <td><a href="/my_portfolio/{{p.code}}/{{p.timestamp}}" onclick="load()" class="btn btn-info">Graph</a></td>
     </tr>
     {% endfor %}
 </table>
+<div id="graph" style=" height: 70vh;"></div>
+
+<script>
+    if ('{{display}}' == 'true') {
+        load();
+    }
+</script>
 
 {% endblock %}

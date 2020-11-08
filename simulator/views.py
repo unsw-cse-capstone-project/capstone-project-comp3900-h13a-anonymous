@@ -151,9 +151,9 @@ def purchasesIncludeSold_view(request, defaultCode=""):
     return render(request, 'simulator/purchases.html', context)
 
 @login_required
-def portfolio_view(request):
+def portfolio_view(request, display='false'):
     portfolio_summary, total_portfolio_profit = purchases.get_portfolio_info(request.user)
-    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit}
+    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit, 'display': display}
     return render(request, 'simulator/my_portfolio.html', context)
 
 @login_required
@@ -166,6 +166,10 @@ def gen_graph(request, code, date):
 def show_graph(request):
     return render(request, 'simulator/graph.html')
 
+@login_required
+def gen_graph(request, code, date):
+    historical2.get_historical(code, date)
+    return HttpResponseRedirect('../../my_portfolio/display=true/')
 
 @login_required
 def alerts(request):
