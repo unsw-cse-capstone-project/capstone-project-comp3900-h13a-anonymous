@@ -160,7 +160,8 @@ def portfolio_view(request):
 @login_required
 def leaderboard_view(request):
     lboard = leaderboard.get_leaderboard_info()
-    context = {'leaderboard':lboard}
+    username = request.user.get_username()
+    context = {'leaderboard':lboard, 'username':username}
     return render(request, 'simulator/leaderboard.html', context)
 
 @login_required

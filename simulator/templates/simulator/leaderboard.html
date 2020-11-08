@@ -11,6 +11,14 @@
 {% endfor %}
 <br></br>
 
+{% for l in leaderboard %}
+{% if l.name == username %}
+<h3>
+    Your current rank is {{l.rank}} out if {{ leaderboard|length }}
+</h3>
+{% endif %}
+{% endfor %}
+
 
 <table style="width:100%" class="table">
     <tr>
@@ -22,13 +30,23 @@
 
     </tr>
     {% for l in leaderboard %}
-    <tr>
-    <td>{{l.rank}}</td>
-    <td>{{l.name}}</td>
-    <td>{{l.balance}}</td>
-    <td>{{l.portfolio_worth}}</td>
-    <td>{{l.total_worth}}</td>
+    {% if l.name == username %}
+    <tr style="font-weight:bold">
+        <td>{{l.rank}}</td>
+        <td>{{l.name}}</td>
+        <td>{{l.balance}}</td>
+        <td>{{l.portfolio_worth}}</td>
+        <td>{{l.total_worth}}</td>
     </tr>
+    {% else %}
+    <tr>
+        <td>{{l.rank}}</td>
+        <td>{{l.name}}</td>
+        <td>{{l.balance}}</td>
+        <td>{{l.portfolio_worth}}</td>
+        <td>{{l.total_worth}}</td>
+    </tr>
+    {% endif %}
     {% endfor %}
 </table>
 
