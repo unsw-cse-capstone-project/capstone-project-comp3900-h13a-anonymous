@@ -1,0 +1,35 @@
+{% extends "sidebar.html" %}
+{% load static %}
+
+{% block content %}
+<h1>
+    Leaderboard
+</h1>
+
+{% for key, value in errors.items %}
+<center><h5 style="color:#FF0000;">{{value}}</h5></center>
+{% endfor %}
+<br></br>
+
+
+<table style="width:100%" class="table">
+    <tr>
+    <th>Rank</th>
+    <th>Username</th>
+    <th>Account Balance</th>
+    <th>Portfolio Worth</th>
+    <th>Total Worth</th>
+
+    </tr>
+    {% for l in leaderboard %}
+    <tr>
+    <td>{{l.rank}}</td>
+    <td>{{l.name}}</td>
+    <td>{{l.balance}}</td>
+    <td>{{l.portfolio_worth}}</td>
+    <td>{{l.total_worth}}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

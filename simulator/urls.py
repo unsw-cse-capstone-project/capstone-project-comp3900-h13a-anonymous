@@ -54,6 +54,10 @@ urlpatterns = [
 
     # Portfolio
     path('portfolio/', views.portfolio_view, name='portfolio'),
+
+    # Leaderboard
+    path('leaderboard/', views.leaderboard_view, name='leaderboard'),
+
     # Generate graph
     path('my_watchlist/<str:code>/<str:date>', views.gen_graph, name='gen_graph'),
 
