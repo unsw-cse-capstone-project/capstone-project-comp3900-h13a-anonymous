@@ -1,4 +1,4 @@
-from api.search_v2 import Api
+from api.search import Api
 import json
 import sqlite3
 from datetime import datetime

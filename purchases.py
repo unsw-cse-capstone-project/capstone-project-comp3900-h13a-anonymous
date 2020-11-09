@@ -1,7 +1,7 @@
 from simulator.models import *
 from django.db.models import F
 import decimal
-from api.search_v2 import Api
+from api.search import Api
 import pandas as pd
 import time
 

@@ -5,7 +5,7 @@ from django.views.generic import View
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api import historical2
+from api import historical
 import api
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,14 +15,14 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Stock, WatchListItem, WatchListAlert
-from api.search_v2 import Api
+from api.search import Api
 import watchlist
 import prediction
 from django.views.generic import (
     ListView
 )
 import buy_sell
-from watchprice_2 import Watchprice
+from watchprice import Watchprice
 import transactions
 import purchases
 import pandas as pd
@@ -158,7 +158,7 @@ def portfolio_view(request, display='false'):
 
 @login_required
 def gen_graph(request, code, date):
-    historical2.get_historical(code, date)
+    historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_watchlist/display=true/')
 
 
