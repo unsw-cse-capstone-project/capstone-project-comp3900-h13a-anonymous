@@ -1,5 +1,5 @@
 from simulator.models import *
-from api.search_v2 import Api
+from api.search import Api
 from django.db.models import F
 
 

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from watchprice_2 import Watchprice
+from watchprice import Watchprice
 from django.contrib.auth.models import User
 from simulator.models import Stock
 

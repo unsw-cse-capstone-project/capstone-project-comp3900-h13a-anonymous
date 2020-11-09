@@ -142,6 +142,3 @@ XS_SHARING_ALLOWED_METHODS = ['POST','GET','OPTIONS', 'PUT', 'DELETE']
 
 DJANGO_AUTH_MODEL="hermes.User"
 
-import django
-django.setup()
-

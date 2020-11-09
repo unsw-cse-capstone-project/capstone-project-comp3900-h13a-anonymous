@@ -3,12 +3,13 @@ import threading
 from simulator.models import *
 import time
 import pandas as pd
+from datetime import datetime
 
 class Watchprice:
     def __init__(self):
         self.api = Api()
 
-    def check(self, user, code, price, action):
+    def check(self, alertId):
         while True:
             # db - retrive flag value from watchlist table
             # if flag is true:
@@ -16,33 +17,35 @@ class Watchprice:
             # stock = Stock.objects.get(code=code)
             # # Get all alerts related to stock
             # stock = Stock.objects.get(code=code)
-            
-            # Goes through untriggered alerts
-            alerts = WatchListAlert.objects.filter(user_id=user, triggered=False)
-            for alert in alerts:
-                code = alert.stock.code
-                try:
-                    current_price = self.api.search(code)['c']
-                    if action == "sell":
-                        # current price is greater than or equal to watchprice
-                        if current_price >= alert.watchprice:
-                            # frontend - add new notification
-                            alert.dateTriggered = pd.to_datetime(self.api.search(code)['t'], unit='s')
-                            # db - set flag to true
-                            alert.triggered = True
-                            alert.save()
-                            return
-                    elif action == "buy":
-                        # current price is less than or equal to watchprice
-                        if current_price <= alert.watchprice:
-                            # frontend - add new notification
-                            alert.dateTriggered = pd.to_datetime(self.api.search(code)['t'], unit='s')
-                            # db - set flag to true
-                            alert.triggered = True
-                            alert.save()
-                            return
-                except:
-                    pass
+            time.sleep(10)
+            alert = WatchListAlert.objects.get(id=alertId)
+            # print("found")
+            if alert.triggered:
+                return
+            code = alert.stock.code
+            action = alert.action
+            try:
+                current_price = self.api.search(code)['c']
+                if action == "sell":
+                    # current price is greater than or equal to watchprice
+                    if current_price >= alert.watchprice:
+                        # frontend - add new notification
+                        alert.dateTriggered = datetime.now().isoformat(' ', 'seconds')
+                        # db - set flag to true
+                        alert.triggered = True
+                        alert.save()
+                        return
+                elif action == "buy":
+                    # current price is less than or equal to watchprice
+                    if current_price <= alert.watchprice:
+                        # frontend - add new notification
+                        alert.dateTriggered = datetime.now().isoformat(' ', 'seconds')
+                        # db - set flag to true
+                        alert.triggered = True
+                        alert.save()
+                        return
+            except:
+                pass
 
     # frontend will use this method to set a watchprice
     # action is either "buy" or "sell"
@@ -51,16 +54,24 @@ class Watchprice:
         # db - get the wid from the insert
 
         stock = Stock.objects.get(code=code)
-        WatchListAlert.objects.create(user_id=user, stock=stock, watchprice=price, action=action)
+        alert = WatchListAlert.objects.create(user_id=user, stock=stock, watchprice=price, action=action)
         errors = {}
         errors['watchprice_set'] = f"Successfully set trigger to {action} stock {code} at watch price {price}"
 
-        th = threading.Thread(target=self.check, args=(user, code, price, action))
+        alertId = alert.pk
+
+        th = threading.Thread(target=self.check, args=(alertId,))
         th.start()
 
         print("Returning errors")
 
         return errors
+
+    def start_up(self):
+        alerts = WatchListAlert.objects.filter(triggered = False)
+        for alert in alerts:
+            th = threading.Thread(target=self.check, args=(alert.id,))
+            th.start()
 
     def remove(self, user, alert):
         alert_obj = WatchListAlert.objects.get(user_id=user, id=alert)

@@ -176,7 +176,7 @@ def show_graph(request):
 
 @login_required
 def gen_graph(request, code, date):
-    historical2.get_historical(code, date)
+    historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_portfolio/display=true/')
 
 @login_required
