@@ -22,7 +22,7 @@ def predict(code, day):
     data2 = data[1]
     data3 = data[2]
     data4 = data[3]
-    print(data1)
+    
     x = []
     for i in range(0, len(data1)):
         x.append(i)
