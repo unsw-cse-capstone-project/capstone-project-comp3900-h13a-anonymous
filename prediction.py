@@ -22,24 +22,28 @@ def predict(code, day):
     data2 = data[1]
     data3 = data[2]
     data4 = data[3]
+    print(data1)
     x = []
     for i in range(0, len(data1)):
         x.append(i)
     y = [0]*len(data1)
     newX = np.vstack((x,y)).T
     reg.fit(newX,data1)
+
     x = []
     for i in range(0, len(data1)):
         x.append(i)
     y = [0]*len(data2)
     newX = np.vstack((x,y)).T
     reg2.fit(newX,data2)
+
     x = []
     for i in range(0, len(data1)):
         x.append(i)
     y = [0]*len(data3)
     newX = np.vstack((x,y)).T
     reg3.fit(newX,data3)
+
     x = []
     for i in range(0, len(data4)):
         x.append(i)
