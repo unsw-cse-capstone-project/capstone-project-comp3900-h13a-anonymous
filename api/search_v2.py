@@ -20,12 +20,11 @@ class Api():
             change = (search_result['c'] - search_result['pc']) / search_result['pc']
             search_result["change"] = round(change, 4)
             return search_result
-        except Exception :
-            pass
+        except Exception as e:
+            print(repr(e))
 
     def company_profile(self, code):
-        r = requests.get(
-            f'{self.base_url}stock/profile2?symbol={code}&token={self.token}')
+        r = requests.get(f'{self.base_url}stock/profile2?symbol={code}&token={self.token}')
         if r.json() == {}:
             return "invalid stock code"
         return r.json()
