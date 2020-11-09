@@ -5,7 +5,7 @@ from django.views.generic import View
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from api import historical2
+from api import historical
 import api
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
@@ -15,16 +15,17 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Stock, WatchListItem, WatchListAlert
-from api.search_v2 import Api
+from api.search import Api
 import watchlist
 import prediction
 from django.views.generic import (
     ListView
 )
 import buy_sell
-from watchprice_2 import Watchprice
+from watchprice import Watchprice
 import transactions
 import purchases
+import leaderboard
 import pandas as pd
 from datetime import datetime
 import requests
@@ -151,14 +152,21 @@ def purchasesIncludeSold_view(request, defaultCode=""):
     return render(request, 'simulator/purchases.html', context)
 
 @login_required
-def portfolio_view(request):
+def portfolio_view(request, display='false'):
     portfolio_summary, total_portfolio_profit = purchases.get_portfolio_info(request.user)
-    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit}
+    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit, 'display': display}
     return render(request, 'simulator/my_portfolio.html', context)
 
 @login_required
+def leaderboard_view(request):
+    lboard = leaderboard.get_leaderboard_info()
+    username = request.user.get_username()
+    context = {'leaderboard':lboard, 'username':username}
+    return render(request, 'simulator/leaderboard.html', context)
+
+@login_required
 def gen_graph(request, code, date):
-    historical2.get_historical(code, date)
+    historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_watchlist/display=true/')
 
 
@@ -166,6 +174,10 @@ def gen_graph(request, code, date):
 def show_graph(request):
     return render(request, 'simulator/graph.html')
 
+@login_required
+def gen_graph(request, code, date):
+    historical.get_historical(code, date)
+    return HttpResponseRedirect('../../my_portfolio/display=true/')
 
 @login_required
 def alerts(request):

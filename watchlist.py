@@ -1,4 +1,4 @@
-from api.search_v2 import Api
+from api.search import Api
 import json
 import sqlite3
 import pandas as pd
@@ -7,7 +7,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
 from django.db import connection
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from simulator.models import *
 from datetime import datetime
 
