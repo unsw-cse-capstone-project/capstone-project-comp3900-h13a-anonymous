@@ -1,5 +1,5 @@
 from sklearn import linear_model
-from api.historical2 import *
+from api.historical import *
 import numpy as np
 import random
 from datetime import date, timedelta
