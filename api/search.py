@@ -1,47 +1,32 @@
-# https://pypi.org/project/websocket_client/
-import websocket
+import requests
 
-token = 'btkkvsv48v6r1ugbcp70'
-code = None
-data = None
+class Api(): 
+    def __init__(self):
+        self.token = 'btkkvsv48v6r1ugbcp70'
+        self.base_url = 'https://finnhub.io/api/v1/'
 
-def search(c):
-    global code
-    global token
-    global data
-    code = c
-    websocket.enableTrace(True)
-    ws = websocket.WebSocketApp("wss://ws.finnhub.io?token={}".format(token),
-                              on_message = on_message,
-                              on_error = on_error,
-                              on_close = on_close)
+    def search(self, code):
+        try:
+            r = requests.get(f'{self.base_url}quote?symbol={code}&token={self.token}')
+            if r.json()['t'] == 0:
+                return "The stock code you searched was invalid"
+            profile = self.company_profile(code)
+            search_result = r.json()
+            search_result["code"] = code
+            search_result["name"] = profile["name"]
+            change = (search_result['c'] - search_result['pc']) / search_result['pc']
+            search_result["change"] = round(change,4)
 
-    ws.on_open = on_open
-    ws.run_forever()
-    return data
+            return search_result
+        except Exception :
+            pass
 
-def on_message(ws, message):
-    global data
-    data = message
-    ws.keep_running=False
+    def company_profile(self, code):
+        r = requests.get(f'{self.base_url}stock/profile2?symbol={code}&token={self.token}')
+        if r.json()['name'] == "":
+            return "invalid stock code"
+        return r.json()
 
-
-def on_error(ws, error):
-    print(error)
-
-
-def on_close(ws):
-    print("### closed ###")
-
-
-def on_open(ws):
-    global code
-    ws.send('{"type":"subscribe","symbol":"'+code+'"}')
-    # ws.send('{"type":"subscribe","symbol":"AAPL"}')
-    # ws.send('{"type":"subscribe","symbol":"AMZN"}')
-    # ws.send('{"type":"subscribe","symbol":"BINANCE:BTCUSDT"}')
-    # ws.send('{"type":"subscribe","symbol":"IC MARKETS:1"}')
-
-
-if __name__ == "__main__":
-    print(search("IC MARKETS:1"))
+if __name__ == '__main__':
+    api = Api()
+    print(api.search('AAPL'))
