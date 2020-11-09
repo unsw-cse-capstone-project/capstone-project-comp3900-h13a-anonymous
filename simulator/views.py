@@ -25,6 +25,7 @@ import buy_sell
 from watchprice import Watchprice
 import transactions
 import purchases
+import leaderboard
 import pandas as pd
 from datetime import datetime
 import requests
@@ -155,6 +156,13 @@ def portfolio_view(request, display='false'):
     portfolio_summary, total_portfolio_profit = purchases.get_portfolio_info(request.user)
     context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit, 'display': display}
     return render(request, 'simulator/my_portfolio.html', context)
+
+@login_required
+def leaderboard_view(request):
+    lboard = leaderboard.get_leaderboard_info()
+    username = request.user.get_username()
+    context = {'leaderboard':lboard, 'username':username}
+    return render(request, 'simulator/leaderboard.html', context)
 
 @login_required
 def gen_graph(request, code, date):
