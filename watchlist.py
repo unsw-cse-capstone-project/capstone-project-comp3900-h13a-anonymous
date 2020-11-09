@@ -7,7 +7,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
 from django.db import connection
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from simulator.models import *
 from datetime import datetime
 
