@@ -15,7 +15,7 @@ def predict(code, day):
     reg3 = linear_model.BayesianRidge()
     reg4 = linear_model.BayesianRidge()
     today = datetime.today()
-    tgt = today - timedelta(days=day)
+    tgt = today - timedelta(days=70)
     ts = time.mktime(tgt.timetuple())
     data = get_historical_data(code, ts)
     data1 = data[0]
@@ -53,12 +53,11 @@ def predict(code, day):
 
     for i in range(0,day):
         da = date.today() + timedelta(days=i+1)
-        #sb =  random.uniform(-3,2)
-        pre = float(reg.predict([[i+1+len(data1),0]]) + reg2.predict([[i+1+len(data1),0]]) - reg3.predict([[i+1+len(data1),0]]) + reg4.predict([[i+1+len(data1),0]]))/2
+        pre = float(reg.predict([[i+1+len(data1),0]]) + reg2.predict([[i+1+len(data1),0]])- reg3.predict([[i+1+len(data1),0]]) + reg4.predict([[i+1+len(data1),0]]))/2
         result.append((da,pre))
     print(result)
     return result
 
 
 if __name__ == "__main__":
-    predict("BABA", 30)
+    predict("AAPL", 30)
