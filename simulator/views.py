@@ -111,7 +111,7 @@ def buy_stock(request, code):
         if form.is_valid():
             amount = form.save()
             errors = buy_sell.buy(code, amount, request.user)
-            return my_watchlist_view(request, errors)
+            return purchases_view(request, errors=errors)
             # return redirect('watchlist', errors=errors)
     else:
         form = BuyForm()
@@ -125,7 +125,7 @@ def sell_stock(request, code):
         if form.is_valid():
             amount = form.save()
             errors = buy_sell.sell(code, amount, request.user)
-            return my_watchlist_view(request, errors)
+            return portfolio_view(request, errors=errors)
     else:
         form = SellForm()
     return render(request, 'simulator/sell_form.html', {'form': form})
@@ -138,10 +138,10 @@ def transactions_view(request):
     return render(request, 'simulator/transactions.html', context)
 
 @login_required
-def purchases_view(request, defaultCode=""):
+def purchases_view(request, defaultCode="", errors={}):
     purchase_summary = purchases.get_purchases_info(request.user, False)
     codes = purchases.get_unique_purchases_codes(request.user, False)
-    context = {'purchases':purchase_summary, 'codes':codes, "defaultCode":defaultCode}
+    context = {'purchases':purchase_summary, 'codes':codes, "defaultCode":defaultCode, 'errors': errors}
     return render(request, 'simulator/purchases.html', context)
 
 @login_required
@@ -152,9 +152,9 @@ def purchasesIncludeSold_view(request, defaultCode=""):
     return render(request, 'simulator/purchases.html', context)
 
 @login_required
-def portfolio_view(request, display='false'):
+def portfolio_view(request, display='false', errors={}):
     portfolio_summary, total_portfolio_profit = purchases.get_portfolio_info(request.user)
-    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit, 'display': display}
+    context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit, 'display': display, 'errors': errors}
     return render(request, 'simulator/my_portfolio.html', context)
 
 @login_required
@@ -176,7 +176,7 @@ def show_graph(request):
 
 @login_required
 def gen_graph(request, code, date):
-    historical2.get_historical(code, date)
+    historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_portfolio/display=true/')
 
 @login_required

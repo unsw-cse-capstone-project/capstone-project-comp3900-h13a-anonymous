@@ -1,4 +1,4 @@
-from api.historical2 import get_historical
+from api.historical import get_historical
 from datetime import datetime
 from django.test import TestCase
 

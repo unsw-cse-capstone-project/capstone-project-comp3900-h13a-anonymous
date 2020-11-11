@@ -40,8 +40,8 @@ def buy(code, units, user):
         errors['purchase_complete'] = "Successfully bought {} shares of Stock {} costing {}".format(units, 
             code, round(money, 2))
     else:
-        errors['insufficient_fund'] = "Insufficient funds for buying Stock {}".format(
-            code)
+        errors['insufficient_fund'] = "Insufficient funds in balance for buying {} units of Stock {} for ${}".format(
+            units, code, round(money,2))
     return errors
 
 
@@ -89,7 +89,7 @@ def sell(code, units, user):
         Transaction.objects.create(
             user_id=user, stock = st, units = units, price = price, action = "sell", date=now)
     else:
-        errors['insufficient_share'] = "Insufficient share for selling Stock {}".format(code)
+        errors['insufficient_share'] = "Insufficient number of shares in Stock {} to sell {} units".format(code, units)
         return errors
 
 

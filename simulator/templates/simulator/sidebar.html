@@ -43,7 +43,7 @@
 
             {% if user.is_authenticated %}
             <p style="color: black; text-align: center; margin-top: 1em; font-size:larger;">Hello, {{ user.username }} </p>
-            <p style="color: purple; text-align: center; font-weight: bold">Balance: {{ user.profile.balance }} </p>
+            <p style="color: purple; text-align: center; font-weight: bold">Balance: ${{ user.profile.balance|floatformat:2 }} </p>
             <ul class="list-unstyled components">
                 <li>
                     <a href="/" style="font-weight :bold"><i class="fa fa-home" aria-hidden="true"></i> Investment Simulator</a>
@@ -79,7 +79,7 @@
                     <a href="/transactions/"><i class="fa fa-history" aria-hidden="true"></i> Transaction History</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-trophy" aria-hidden="true"></i> Leaderboard</a>
+                    <a href="/leaderboard/"><i class="fa fa-trophy" aria-hidden="true"></i> Leaderboard</a>
                 </li>
             </ul>
             {% endif %}
