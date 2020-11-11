@@ -3,6 +3,7 @@ from django.db.models import F
 import decimal
 from api.search import Api
 import pandas as pd
+import time
 
 
 def get_total_owned_units(user_id, code):
@@ -51,7 +52,8 @@ def get_purchases_info(user_id, include_sold):
         summary_entry['c'] = cprice_cache[purchase.stock.code]
         summary_entry['worth'] = summary_entry['unitsOwned'] * summary_entry['c']
         summary_entry['profit'] = round(float(summary_entry['worth']) - float(summary_entry['paid']),2)
-
+        summary_entry['timestamp'] = round(float(purchase.dateBought))
+        print(purchase.dateBought)
         purchase_summary.append(summary_entry)
     
     return purchase_summary
@@ -85,6 +87,7 @@ class PortfolioEntry():
         self.currentPrice = purchase_entry['c']
         self.totalWorth = purchase_entry['worth']
         self.totalProfit = purchase_entry['profit']
+        self.timestamp = purchase_entry['timestamp']
 
     def add_purchase(self, purchase_entry):
         self.noPurchases = self.noPurchases + 1
@@ -92,6 +95,7 @@ class PortfolioEntry():
         self.totalPaid = self.totalPaid + purchase_entry['paid']
         self.totalWorth = self.totalWorth + purchase_entry['worth']
         self.totalProfit = self.totalProfit + purchase_entry['profit']
+        self.timestamp = time.time()
 
     def to_json(self):
         purchase_entry = {
@@ -101,7 +105,8 @@ class PortfolioEntry():
             'totalPaid': self.totalPaid,
             'currentPrice': self.currentPrice,
             'totalWorth': self.totalWorth,
-            'totalProfit': self.totalProfit
+            'totalProfit': self.totalProfit,
+            'timestamp': self.timestamp
         }
         return purchase_entry
     

@@ -20,13 +20,13 @@
 
 <table style="width:100%" class="table">
     <tr>
-    <th>Stock Code</th>
-    <th>Stock Name</th>
-    <th>Date Added</th>
-    <th>Current Price</th>
-    <th>Change Since Last Closing</th>
-    <th>Watch Prices </th>
-    <th></th>
+        <th>Stock Code</th>
+        <th>Stock Name</th>
+        <th>Date Added</th>
+        <th>Current Price</th>
+        <th>Change Since Last Closing</th>
+        <th>Watch Prices </th>
+        <th></th>
 
     </tr>
     {% for w in wlist %}
@@ -37,7 +37,7 @@
         <td>{{w.current}}</td>
         <td>{{w.change}}</td>
         <!-- <td> <a href="/charts/" class="btn btn-info" onclick="displayStock()" >Display</a> -->
-        <td> 
+        <td>
             <table style="border: 0px; border-collapse: collapse; ">
                 <!-- Header -->
                 <tr style="border:0;">
@@ -45,8 +45,8 @@
                     <th style="border:0;"></th>
                     <!-- Remove button -->
                     <th style="border:0;"> </th>
-                </tr>  
-                
+                </tr>
+
                 <!-- Rows -->
                 {% for alert in w.alerts %}
                 <tr>
@@ -57,13 +57,11 @@
                 </tr>
                 {% endfor %}
             </table>
-            
+
             <a href="/set_watchprice/{{w.code}}" class="btn btn-info"> Add </a>
         </td>
         <td>
-            <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">
-                Display
-            </a>
+            <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">Display</a>
         </td>
         <td> <a href="/charts/{{w.code}}" class="btn btn-info">Predict</a>
         <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>

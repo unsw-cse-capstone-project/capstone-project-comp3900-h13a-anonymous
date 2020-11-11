@@ -11,7 +11,7 @@
 ## py.test --cov=. --cov-report html
 
 
-from api.search_v2 import Api
+from api.search import Api
 from django.test import TestCase
 
 class test_search(TestCase):
