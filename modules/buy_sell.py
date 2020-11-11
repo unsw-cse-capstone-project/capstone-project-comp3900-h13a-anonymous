@@ -1,30 +1,36 @@
 from api.search import Api
-import json
-import sqlite3
 from datetime import datetime
-from django.db.models import Sum
 from simulator.models import *
 import decimal
-import purchases
+import modules.purchases as purchases
 
-# {id: , 'email: , sddd}
-# {'profile': {}}
+'''
+Purchases a given number of units of a stock, provided the given user has 
+suffiecent funds in their account balance.
 
+parameters
+    code : string
+    units : int
+    user : User model
+returns
+    messages : {string : string}
+'''
 def buy(code, units, user):
+    code = code.upper()
     api = Api()
-    errors = {}
-    tgt = api.search(code)
+    messages = {}
+    try:
+        tgt = api.search(code)
+    except Exception as e:
+        messages['error'] = str(e)
+        return messages
     stocks = Stock.objects.filter(code=code)
     if(stocks.count() != 1):
         Stock.objects.create(name=tgt["name"], code=code)
     st = Stock.objects.get(code=code)
-
-
     price = tgt['c']
     print(price)
     price = decimal.Decimal(float(price))
-
-
     money = price * units
 
     now = datetime.now().timestamp()
@@ -37,18 +43,33 @@ def buy(code, units, user):
             user_id=user, stock=st, price=price, dateBought=now, orignialUnitBought=units, unitSold=0)
         Transaction.objects.create(
             user_id=user, stock = st, units = units, price = price, action = "buy", date=now)
-        errors['purchase_complete'] = "Successfully bought {} shares of Stock {} costing {}".format(units, 
+        messages['success'] = "Successfully bought {} shares of Stock {} costing {}".format(units, 
             code, round(money, 2))
     else:
-        errors['insufficient_fund'] = "Insufficient funds in balance for buying {} units of Stock {} for ${}".format(
+        messages['error'] = "Insufficient funds in balance for buying {} units of Stock {} for ${}".format(
             units, code, round(money,2))
-    return errors
+    return messages
 
+'''
+Sells a given number of units of a stock, provided the given user has 
+suffiecent units of the stock in their portfolio.
 
+parameters
+    code : string
+    units : int
+    user : User model
+returns
+    messages : {string : string}
+'''
 def sell(code, units, user):
+    code = code.upper()
     api = Api()
-    errors = {}
-    tgt = api.search(code)
+    messages = {}
+    try:
+        tgt = api.search(code)
+    except Exception as e:
+        messages['error'] = str(e)
+        return messages
     stocks = Stock.objects.filter(code=code)
     if(stocks.count() != 1):
         Stock.objects.create(name=tgt["name"], code=code)
@@ -59,7 +80,6 @@ def sell(code, units, user):
     money = price * units
 
     current_units = purchases.get_total_owned_units(user,code)
-    #currentUnit = Purchase.objects.get(user_id=email, code=code).all().aggregate(Sum(orignialUnitBought - UnitSold))
     balance = user.profile.balance
     remaining_sell_units = units
     if current_units >= units:
@@ -89,8 +109,8 @@ def sell(code, units, user):
         Transaction.objects.create(
             user_id=user, stock = st, units = units, price = price, action = "sell", date=now)
     else:
-        errors['insufficient_share'] = "Insufficient number of shares in Stock {} to sell {} units".format(code, units)
-        return errors
+        messages['error'] = "Insufficient number of shares in Stock {} to sell {} units".format(code, units)
+    return messages
 
 
 

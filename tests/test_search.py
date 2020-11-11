@@ -26,6 +26,10 @@ class test_search(TestCase):
         assert self.api.search("aapl") != {}
 
     def test_invalid(self):
-        assert self.api.search("abcd") == "The stock code you searched was invalid"
-        assert self.api.search("goog") == "The stock code you searched was invalid"
+        try:
+            info = self.api.search("abcd")
+        except Exception as e:
+            assert str(e) == "The stock code you searched was invalid"
+        else:
+            assert 1 == 2
     

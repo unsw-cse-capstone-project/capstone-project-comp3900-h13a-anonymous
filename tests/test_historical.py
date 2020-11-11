@@ -11,6 +11,3 @@ class test_historical(TestCase):
 
     def test_lower(self):
         assert get_historical('aapl', self.now) is not None
-
-    def test_invalidName(self):
-        assert get_historical('apl', self.now) is None

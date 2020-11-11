@@ -15,7 +15,6 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 
 def get_historical(code, time):
-
     time = datetime.fromtimestamp(int(float(time)))
     time = time - timedelta(weeks=1)
     time = datetime.timestamp(time)
