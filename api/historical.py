@@ -41,8 +41,9 @@ def get_historical_data(code, time):
     now = round(now)
     df = pd.read_csv(
         f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=D&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
-    return list(df['c'])
+    return [list(df['c']),list(df['o']),list(df['h']),list(df['l'])]
 
 
 if __name__ == "__main__":
-    get_historical("AAPL", 1601577795)
+    #get_historical("AAPL", 1601577795)
+    print(get_historical_data("AAPL",1601577795))

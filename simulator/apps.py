@@ -6,6 +6,9 @@ from django.db.models.signals import pre_save
 class SimulatorConfig(AppConfig):
     name = 'simulator'
     def ready(self):
-        from modules.watchprice import Watchprice
-        Watchprice = Watchprice()
-        Watchprice.start_up()
+        try:
+            from modules.watchprice import Watchprice
+            Watchprice = Watchprice()
+            Watchprice.start_up()
+        except:
+            pass

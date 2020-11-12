@@ -7,7 +7,10 @@ class test_historical(TestCase):
         self.now = datetime.now().timestamp()
 
     def test_upper(self):
-        assert get_historical('AAPL', self.now) is not None
+        assert len(get_historical('AAPL', self.now)) > 0
 
     def test_lower(self):
-        assert get_historical('aapl', self.now) is not None
+        assert len(get_historical('aapl', self.now)) > 0
+
+    def test_invalid(self):
+        assert len(get_historical('abcd', self.now)) == 0
