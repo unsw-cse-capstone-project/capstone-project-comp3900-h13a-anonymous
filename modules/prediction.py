@@ -15,7 +15,7 @@ def predict(code, day):
     reg3 = linear_model.BayesianRidge()
     reg4 = linear_model.BayesianRidge()
     today = datetime.today()
-    tgt = today - timedelta(days=day)
+    tgt = today - timedelta(days=50)
     ts = time.mktime(tgt.timetuple())
     data = get_historical_data(code, ts)
     data1 = data[0]
