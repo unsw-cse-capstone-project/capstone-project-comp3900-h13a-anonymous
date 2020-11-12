@@ -40,10 +40,25 @@
     <td>{{p.currentPrice}}</td>
     <td>{{p.totalWorth}}</td>
     <td>{{p.totalProfit}}</td>
-    <td><a href="/buy/{{p.code}}" class="btn btn-info">Buy</a></td>
-    <td><a href="/sell/{{p.code}}" class="btn btn-info">Sell</a></td>
-    <td><a href="/purchases/{{p.code}}" class="btn btn-info">Purchases</a></td>
-    <td><a href=# class="btn btn-info">Graph</a></td>
+    <td><div class="dropdown">
+        <a
+        class="btn btn-info dropdown-toggle"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-toggle="dropdown"
+        aria-expanded="false"
+        >
+        Actions
+        </a>
+  
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><a href="/purchases/{{p.code}}" class="dropdown-item">Purchases</a></li>
+        <li><a href=# class="dropdown-item">Graph</a></li>
+        <li><a class="dropdown-item" href="/buy/{{w.code}}">Buy</a></li>
+        <li><a href="/sell/{{p.code}}" class="dropdown-item">Sell</a></li>
+        </ul>
+  </div> </td>
     </tr>
     {% endfor %}
 </table>
