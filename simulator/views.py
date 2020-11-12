@@ -55,18 +55,16 @@ def stock_detail(request, code):
     stock['name'] = stockObj.name
     stock['current'] = stockinfo['c']
     stock['change'] = stockinfo['change']
-    alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=request.user, stock=stock, triggered=False)
+    
+    
+    stock['alerts'] = []
+    alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=request.user, stock=stockObj, triggered=False)
     if alerts_not_triggered_yet.count() == 0:
         stock['alert'] = "No alerts to display"
     else:
         stock['alert'] = ""
-    stock['alerts'] = []
-    for alert in alerts_not_triggered_yet:
-        stock['alerts'].append(alert)
-
-    watchlist_item = WatchListItem.objects.get(user_id=request.user, stock=stockObj)
-    stock['timestamp'] = date = watchlist_item.timestamp
-    historical2.get_historical(code, date)
+        for alert in alerts_not_triggered_yet:
+            stock['alerts'].append(alert)
 
     return render(request, 'simulator/stock_detail.html', {'stock': stock})
 
