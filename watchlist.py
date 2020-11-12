@@ -146,9 +146,9 @@ def remove(code,  user):
 
     stock_to_remove_from_wl = Stock.objects.get(code=code)
     wl = WatchListItem.objects.get(user_id=user, stock=stock_to_remove_from_wl)
-    # if(wl.count() == 0):
-    #     errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
-    #     return errors
+    if(wl.count() == 0):
+        errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
+        return errors
 
     untriggered_alerts = WatchListAlert.objects.filter(user_id=user, stock=stock_to_remove_from_wl, triggered=False)
     for alert in untriggered_alerts:

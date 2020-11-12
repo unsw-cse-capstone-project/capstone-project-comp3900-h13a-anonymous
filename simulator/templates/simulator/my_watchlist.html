@@ -58,16 +58,29 @@
                 {% endfor %}
             </table>
             
-            <a href="/set_watchprice/{{w.code}}" class="btn btn-info"> Add </a>
+            <a href="/set_watchprice/{{w.code}}" class="btn btn-info" style="top:-2px"> Add </a>
         </td>
         <td>
-            <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">
-                Display
-            </a>
+            <div class="dropdown">
+                <a
+                class="btn btn-info dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-expanded="false"
+                >
+                Actions
+                </a>
+          
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/my_watchlist/{{w.code}}/{{w.timestamp}}">Display</a></li>
+                <li><a class="dropdown-item" href="/charts/{{w.code}}">Predict</a></li>
+                <li><a class="dropdown-item" href="/buy/{{w.code}}">Buy</a></li>
+                <li><a class="dropdown-item" href="/remove_watchlist/{{w.code}}">Remove</a></li>
+                </ul>
+          </div> 
         </td>
-        <td> <a href="/charts/{{w.code}}" class="btn btn-info">Predict</a>
-        <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
-        <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove</a></td>
     </tr>
     {% endfor %}
 </table>

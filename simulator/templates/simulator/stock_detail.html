@@ -4,6 +4,51 @@
 {% block title %}{{ stock.name }}{% endblock %}
 {% block content %}
 
-<h1> Stock name: {{stock.name}} </h1>
-  <h1> Stock code: {{stock.code}} </h1>
+<h3> Stock name: {{stock.name}} </h3>
+<h3> Stock code: {{stock.code}} </h3>
+<h3> Current price: {{stock.current}} </h3>
+<h3> Change: {{stock.change}} </h3>
+
+<h3> Watch prices to alert: {{stock.alert}} </h3>
+{% for alert in stock.alerts %}
+<h4>{{alert.watchprice}} {{alert.action}} alert </h4> <a href="/remove_watchprice/{{alert}}" class="btn btn-info">Remove</a>
+{% endfor %}
+<a href="/set_watchprice/{{stock.code}}" class="btn btn-info"> Add Watchprice </a> 
+
+
+
+<!-- <h3> Profit / loss: {{stock.profit}} </h3> -->
+
+
+<a href="/my_watchlist/{{stock.code}}/{{stock.timestamp}}" class="btn btn-info">
+    Display
+</a>
+<!-- <a href="/charts/{{stock.code}}" class="btn btn-info">Predict</a> -->
+<div id="graph" style=" height: 70vh;"></div>
+
+<script>
+    if ('{{display}}' == 'true') {
+        load();
+    }
+</script>
+
+
+<div class='row'>
+    <h1>{{code}} Price Prediction</h1>
+    <div class='col-sm-12' style="display:flex;align-items: center;justify-content: center;">
+        <div class='col-sm-6' >
+            <canvas id="myChart" width="400" height="400"></canvas>
+        </div>
+        <div class='col-sm-6' >
+            <canvas id="myChart2" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+
+<a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from Watchlist</a>
+
+
+<a href="/buy/{{stock.code}}" class="btn btn-info">Buy</a> 
+<a href="/sell/{{stock.code}}" class="btn btn-info">Sell</a>
+
 {% endblock %}
