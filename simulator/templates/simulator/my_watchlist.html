@@ -5,15 +5,15 @@
 <h1>
     My Watch List
 </h1>
-
 <br>
 <h4> Click on the stock name to view more information about the stock </h4>
 <br>
-
-{% for key, value in errors.items %}
-<center>
-    <h5 style="color:#FF0000;">{{value}}</h5>
-</center>
+{% for key, value in messages.items %}
+    {% if key == "error" %}
+        <center><h5 style="color:#FF0000;">{{value}}</h5></center>
+    {% else %}
+        <center><h5 style="color:#008000;">{{value}}</h5></center>
+    {% endif %}
 {% endfor %}
 <script>
     function load() {

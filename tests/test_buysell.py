@@ -1,5 +1,5 @@
 from django.test import TestCase
-from buy_sell import *
+from modules.buy_sell import *
 from django.contrib.auth.models import User
 
 

@@ -47,6 +47,7 @@ class WatchListAlert(models.Model):
     stock = models.ForeignKey(Stock, on_delete=models.CASCADE)
     watchprice = models.DecimalField(decimal_places=2, max_digits=10, default=0)
     triggered = models.BooleanField(default=False)
+    shown = models.BooleanField(default=False)
     dateTriggered = models.CharField(max_length=40)
     action = models.CharField(max_length=4, default='buy') # buy / sell
 

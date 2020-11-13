@@ -15,7 +15,6 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 
 def get_historical(code, time):
-
     time = datetime.fromtimestamp(int(float(time)))
     time = time - timedelta(weeks=1)
     time = datetime.timestamp(time)
@@ -42,8 +41,9 @@ def get_historical_data(code, time):
     now = round(now)
     df = pd.read_csv(
         f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=D&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
-    return list(df['c'])
+    return [list(df['c']),list(df['o']),list(df['h']),list(df['l'])]
 
 
 if __name__ == "__main__":
-    get_historical("AAPL", 1601577795)
+    #get_historical("AAPL", 1601577795)
+    print(get_historical_data("AAPL",1601577795))
