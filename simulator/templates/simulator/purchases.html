@@ -15,7 +15,14 @@
 {% endfor %}
 <br></br>
 
-<h2>My Customers</h2>
+{% if includeSold %}
+<a href="/purchases/" style="float: right;" class="btn btn-info">Exclude purchases with no remaining units</a>
+{% else %}
+<a href="/purchasesIncludeSold/" style="float: right;" class="btn btn-info">Include purchases with no remaining units</a>
+{% endif %}
+
+
+<h3>Stock Filter</h3>
 <select id="mylist" onchange="myFunction()" class='form-control'>
 <option></option>
 {% for c in codes %}
@@ -26,12 +33,6 @@
     {% endif %}
 {% endfor %}
 </select>
-
-{% if includeSold %}
-<a href="/purchases/" style="float: right;" class="btn btn-info">Exclude purchases with no remaining units</a>
-{% else %}
-<a href="/purchasesIncludeSold/" style="float: right;" class="btn btn-info">Include purchases with no remaining units</a>
-{% endif %}
 
 <table style="width:100%" class="table" id="myTable">
     <tr>

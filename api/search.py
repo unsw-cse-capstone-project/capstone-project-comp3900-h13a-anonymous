@@ -1,4 +1,5 @@
 import requests
+from datetime import datetime, timedelta, date
 
 '''
 Exception class for finnhub API errors
@@ -65,4 +66,3 @@ class Api():
 
 if __name__ == '__main__':
     api = Api()
-    print(api.search('aapl'))

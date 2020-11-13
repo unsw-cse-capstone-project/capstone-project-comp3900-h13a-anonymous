@@ -105,6 +105,8 @@ def sell(code, units, user):
         newBalance = balance + decimal.Decimal(float(money))
         user.profile.balance=newBalance
         user.save()
+        messages['success'] = "Successfully sold {} shares of Stock {} costing {}".format(units, 
+            code, round(money, 2))
         now = datetime.now().timestamp()
         Transaction.objects.create(
             user_id=user, stock = st, units = units, price = price, action = "sell", date=now)

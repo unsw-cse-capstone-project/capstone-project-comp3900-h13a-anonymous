@@ -128,8 +128,10 @@ def buy_stock(request, code):
         if form.is_valid():
             amount = form.save()
             messages = buy_sell.buy(code, amount, request.user)
-            return purchases_view(request, messages=messages)
+            #return purchases_view(request, messages=messages)
             # return redirect('watchlist', messages=messages)
+            request.session['messages'] = messages
+            return HttpResponseRedirect('../../purchases/')
     else:
         form = BuyForm()
     return render(request, 'simulator/buy_form.html', {'form': form})
@@ -142,7 +144,9 @@ def sell_stock(request, code):
         if form.is_valid():
             amount = form.save()
             messages = buy_sell.sell(code, amount, request.user)
-            return portfolio_view(request, messages=messages)
+            #return portfolio_view(request, messages=messages)
+            request.session['messages'] = messages
+            return HttpResponseRedirect('../../my_portfolio/display=false/')
     else:
         form = SellForm()
     return render(request, 'simulator/sell_form.html', {'form': form})
@@ -155,7 +159,12 @@ def transactions_view(request):
     return render(request, 'simulator/transactions.html', context)
 
 @login_required
-def purchases_view(request, defaultCode="", messages={}):
+def purchases_view(request, defaultCode=""):
+    messages={}
+    if 'messages' in request.session.keys():
+        messages.update(request.session['messages'])
+        del request.session['messages']
+        request.session.modified = True
     purchase_summary, messages2 = purchases.get_purchases_info(request.user, False)
     messages.update(messages2)
     codes = purchases.get_unique_purchases_codes(request.user, False)
@@ -170,7 +179,12 @@ def purchasesIncludeSold_view(request, defaultCode=""):
     return render(request, 'simulator/purchases.html', context)
 
 @login_required
-def portfolio_view(request, display='false', messages={}):
+def portfolio_view(request, display='false'):
+    messages={}
+    if 'messages' in request.session.keys():
+        messages.update(request.session['messages'])
+        del request.session['messages']
+        request.session.modified = True
     portfolio_summary, total_portfolio_profit, messages2 = purchases.get_portfolio_info(request.user)
     messages.update(messages2)
     context = {'portfolio':portfolio_summary, 'total_portfolio_profit':total_portfolio_profit, 'display': display, 'messages': messages}
