@@ -193,7 +193,7 @@ def show_graph(request):
     return render(request, 'simulator/graph.html')
 
 @login_required
-def gen_graph(request, code, date):
+def gen_graph_port(request, code, date):
     historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_portfolio/display=true/')
 
