@@ -33,16 +33,15 @@ def buy(code, units, user):
     price = decimal.Decimal(float(price))
     money = price * units
 
-    now = datetime.now().timestamp()
     balance = user.profile.balance
     if balance >= money:
         newBalance = balance - money
         user.profile.balance = newBalance
         user.save()
         Purchase.objects.create(
-            user_id=user, stock=st, price=price, dateBought=now, orignialUnitBought=units, unitSold=0)
+            user_id=user, stock=st, price=price, orignialUnitBought=units, unitSold=0)
         Transaction.objects.create(
-            user_id=user, stock = st, units = units, price = price, action = "buy", date=now)
+            user_id=user, stock = st, units = units, price = price, action = "buy")
         messages['success'] = "Successfully bought {} shares of Stock {} costing {}".format(units, 
             code, round(money, 2))
     else:
@@ -107,9 +106,8 @@ def sell(code, units, user):
         user.save()
         messages['success'] = "Successfully sold {} shares of Stock {} costing {}".format(units, 
             code, round(money, 2))
-        now = datetime.now().timestamp()
         Transaction.objects.create(
-            user_id=user, stock = st, units = units, price = price, action = "sell", date=now)
+            user_id=user, stock = st, units = units, price = price, action = "sell")
     else:
         messages['error'] = "Insufficient number of shares in Stock {} to sell {} units".format(code, units)
     return messages

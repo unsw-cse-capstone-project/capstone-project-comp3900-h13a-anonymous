@@ -85,7 +85,7 @@ def get_purchases_info(user_id, include_sold):
     for purchase in purchases:
         summary_entry = {}
         summary_entry['code'] = purchase.stock.code
-        summary_entry['dateBought'] = pd.to_datetime(purchase.dateBought, unit='s')
+        summary_entry['dateBought'] = purchase.dateBought
         summary_entry['price'] = purchase.price
         summary_entry['orignialUnitBought'] = purchase.orignialUnitBought
         summary_entry['unitsSold'] = purchase.unitSold
@@ -103,7 +103,7 @@ def get_purchases_info(user_id, include_sold):
         summary_entry['c'] = cprice_cache[purchase.stock.code]
         summary_entry['worth'] = summary_entry['unitsOwned'] * summary_entry['c']
         summary_entry['profit'] = round(float(summary_entry['worth']) - float(summary_entry['paid']),2)
-        summary_entry['timestamp'] = round(float(purchase.dateBought))
+        summary_entry['timestamp'] = purchase.dateBought
         purchase_summary.append(summary_entry)
     
     return purchase_summary, messages
