@@ -49,7 +49,23 @@ def stock_list(request):
 
 @login_required
 def stock_detail(request, code):
-    stock = Stock.objects.get(code=code)
+    stockObj = Stock.objects.get(code=code)
+    api = Api()
+    stockinfo = api.search(code)
+    stock = {}
+    stock['code'] = stockObj.code
+    stock['name'] = stockObj.name
+    stock['current'] = stockinfo['c']
+    stock['change'] = stockinfo['change']
+    stock['alerts'] = []
+    alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=request.user, stock=stockObj, triggered=False)
+    if alerts_not_triggered_yet.count() == 0:
+        stock['alert'] = "No alerts to display"
+    else:
+        stock['alert'] = ""
+        for alert in alerts_not_triggered_yet:
+            stock['alerts'].append(alert)
+
     return render(request, 'simulator/stock_detail.html', {'stock': stock})
 
 
@@ -178,7 +194,7 @@ def show_graph(request):
     return render(request, 'simulator/graph.html')
 
 @login_required
-def gen_graph(request, code, date):
+def gen_graph_port(request, code, date):
     historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_portfolio/display=true/')
 

@@ -22,12 +22,12 @@ class Watchprice:
     def check(self, alertId):
         while True:
             time.sleep(10)
-            alert = WatchListAlert.objects.get(id=alertId)
-            if alert.triggered:
-                return
-            code = alert.stock.code
-            action = alert.action
             try:
+                alert = WatchListAlert.objects.get(id=alertId)
+                if alert.triggered:
+                    return
+                code = alert.stock.code
+                action = alert.action
                 current_price = self.api.search(code)['c']
                 if action == "sell":
                     # current price is greater than or equal to watchprice
@@ -48,7 +48,8 @@ class Watchprice:
                         alert.save()
                         return
             except:
-                pass
+                # ID cant be found exception because watch price was deleted. End thread
+                return
 
 
     '''
