@@ -119,12 +119,21 @@ def list_watchlist(user, errors):
 
         # Get all alerts related to stock
         stock = Stock.objects.get(code=code)
-        alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=True, shown=False)
+        alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock,triggered=False)
         for alert in alerts_to_show:
-            # print('alert to show in watchlist' + alert.stock)
-            errors[f'alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
-            alert.shown=True
-            alert.save()
+            # If sell, current price should be >= watchprice
+            if alert.action == "sell" and wlist_entry['current'] >= alert.watchprice:
+                alert.dateTriggered = pd.to_datetime(stockinfo['t'], unit='s')
+                errors[f'{alert.action} alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
+                alert.triggered=True
+                alert.save()
+            # If buy, current price should be <= watchprice 
+            elif alert.action == "buy" and wlist_entry['current'] <= alert.watchprice:
+                # print('alert to show in watchlist' + alert.stock)
+                alert.dateTriggered = pd.to_datetime(stockinfo['t'], unit='s')
+                errors[f'{alert.action} alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
+                alert.triggered=True
+                alert.save()
         
         # Column for watch prices not triggered yet
         alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=False)
@@ -141,9 +150,9 @@ def remove(code,  user):
 
     stock_to_remove_from_wl = Stock.objects.get(code=code)
     wl = WatchListItem.objects.get(user_id=user, stock=stock_to_remove_from_wl)
-    # if(wl.count() == 0):
-    #     errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
-    #     return errors
+    if(wl.count() == 0):
+        errors['not_in_wl'] = "Stock {} is not in your watchlist".format(code)
+        return errors
 
     untriggered_alerts = WatchListAlert.objects.filter(user_id=user, stock=stock_to_remove_from_wl, triggered=False)
     for alert in untriggered_alerts:

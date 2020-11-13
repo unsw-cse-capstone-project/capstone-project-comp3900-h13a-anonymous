@@ -6,6 +6,10 @@
     My Watch List
 </h1>
 
+<br>
+<h4> Click on the stock name to view more information about the stock </h4>
+<br>
+
 {% for key, value in errors.items %}
 <center>
     <h5 style="color:#FF0000;">{{value}}</h5>
@@ -32,7 +36,7 @@
     {% for w in wlist %}
     <tr>
         <td>{{w.code}}</td>
-        <td> <a href="/stock/{{w.code}}"> {{w.name}} </a> </td>
+        <td> <a href="/stock/{{w.code}}" class="watchlist_entry_"> {{w.name}} </a> </td>
         <td>{{w.date}}</td>
         <td>{{w.current}}</td>
         <td>{{w.change}}</td>
@@ -57,15 +61,30 @@
                 </tr>
                 {% endfor %}
             </table>
-
-            <a href="/set_watchprice/{{w.code}}" class="btn btn-info"> Add </a>
+            
+            <a href="/set_watchprice/{{w.code}}" class="btn btn-info" style="top:-2px"> Add </a>
         </td>
         <td>
-            <a href="/my_watchlist/{{w.code}}/{{w.timestamp}}" class="btn btn-info">Display</a>
+            <div class="dropdown">
+                <a
+                class="btn btn-info dropdown-toggle"
+                href="#"
+                role="button"
+                id="dropdownMenuLink"
+                data-toggle="dropdown"
+                aria-expanded="false"
+                >
+                Actions
+                </a>
+          
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" href="/my_watchlist/{{w.code}}/{{w.timestamp}}">Display</a></li>
+                <li><a class="dropdown-item" href="/charts/{{w.code}}">Predict</a></li>
+                <li><a class="dropdown-item" href="/buy/{{w.code}}">Buy</a></li>
+                <li><a class="dropdown-item" href="/remove_watchlist/{{w.code}}">Remove</a></li>
+                </ul>
+          </div> 
         </td>
-        <td> <a href="/charts/{{w.code}}" class="btn btn-info">Predict</a>
-        <td> <a href="/buy/{{w.code}}" class="btn btn-info">Buy</a>
-        <td> <a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove</a></td>
     </tr>
     {% endfor %}
 </table>

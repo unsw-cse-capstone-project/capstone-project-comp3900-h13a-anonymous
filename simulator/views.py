@@ -47,8 +47,26 @@ def stock_list(request):
 
 @login_required
 def stock_detail(request, code):
-    # stock = get_object_or_404(Stock, code=code)
-    stock = Stock.objects.get(code=code)
+    # stockObj = get_object_or_404(Stock, code=code)
+    stockObj = Stock.objects.get(code=code)
+    api = Api()
+    stockinfo = api.search(code)
+    stock = {}
+    stock['code'] = stockObj.code
+    stock['name'] = stockObj.name
+    stock['current'] = stockinfo['c']
+    stock['change'] = stockinfo['change']
+    
+    
+    stock['alerts'] = []
+    alerts_not_triggered_yet = WatchListAlert.objects.filter(user_id=request.user, stock=stockObj, triggered=False)
+    if alerts_not_triggered_yet.count() == 0:
+        stock['alert'] = "No alerts to display"
+    else:
+        stock['alert'] = ""
+        for alert in alerts_not_triggered_yet:
+            stock['alerts'].append(alert)
+
     return render(request, 'simulator/stock_detail.html', {'stock': stock})
 
 
@@ -190,8 +208,10 @@ def set_watchprice(request, code):
         form = SetWatchPriceForm(request.POST)
         if form.is_valid():
             price, action = form.save()
-            w = Watchprice()
-            errors = w.set(code, price, request.user, action)
+            stock = Stock.objects.get(code=code)
+            WatchListAlert.objects.create(user_id=request.user, stock=stock, watchprice=price, action=action)
+            errors = {}
+            errors['watchprice_set'] = "Successfully set watch price trigger for stock {} at {}".format(code, price)
             return my_watchlist_view(request, errors)
     else:
         form = SetWatchPriceForm()
@@ -199,8 +219,15 @@ def set_watchprice(request, code):
 
 @login_required
 def remove_watchprice(request, id):
-    w = Watchprice()
-    errors = w.remove(request.user, id)
+    # w = Watchprice()
+    # errors = w.remove(request.user, id)
+
+    alert = WatchListAlert.objects.get(id=id)
+    code = alert.stock.code
+    price = alert.watchprice
+    alert.delete()
+    errors = {}
+    errors['rm_watchprice'] = "Successfully removed watch price trigger for stock {} at {}".format(code, price)
     return my_watchlist_view(request, errors)
 
 # class WatchListView(ListView):
