@@ -22,7 +22,7 @@ urlpatterns = [
     # Watchlist
     path('add_watchlist/<str:code>/', views.add_to_watchlist, name='add'),
     path('my_watchlist/display=<str:display>/', views.my_watchlist_view, name='watchlist'),
-
+    path('my_portfolio/display=<str:display>/', views.portfolio_view, name='graph'),
 
     # path('my_watchlist/', WatchListView.as_view(), name='add'),
     path('remove_watchlist/<str:code>/', views.remove_watchlist, name='remove'),
@@ -54,9 +54,19 @@ urlpatterns = [
 
     # Portfolio
     path('portfolio/', views.portfolio_view, name='portfolio'),
+
+    # Leaderboard
+    path('leaderboard/', views.leaderboard_view, name='leaderboard'),
+
     # Generate graph
     path('my_watchlist/<str:code>/<str:date>', views.gen_graph, name='gen_graph'),
 
     # Show graph
-    path('my_watchlist/graph.html/', views.show_graph, name='plot')
+    path('my_watchlist/graph.html/', views.show_graph, name='plot'),
+
+    # Generate graph
+    path('my_portfolio/<str:code>/<str:date>', views.gen_graph_port, name='portfolio_graph'),
+
+    # Show graph
+    path('my_portfolio/graph.html/', views.show_graph, name='portfolio_plot')
 ]

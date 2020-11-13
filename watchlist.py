@@ -1,4 +1,4 @@
-from api.search_v2 import Api
+from api.search import Api
 import json
 import sqlite3
 import pandas as pd
@@ -7,7 +7,7 @@ from datetime import datetime
 import plotly.graph_objects as go
 import plotly.express as px
 from django.db import connection
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from simulator.models import *
 from datetime import datetime
 
@@ -108,9 +108,13 @@ def list_watchlist(user, errors):
         wlist_entry['timestamp'] = row.timestamp
 
         stockinfo = api.search(code)
-
-        wlist_entry['current'] = stockinfo['c']
-        wlist_entry['change'] = stockinfo['change']
+        if stockinfo is None:
+            wlist_entry['current'] = "N/A"
+            wlist_entry['change'] = "N/A"
+        else:
+            wlist_entry['current'] = stockinfo['c']
+            wlist_entry['change'] = stockinfo['change']
+        
         wlist.append(wlist_entry)
 
         # Get all alerts related to stock

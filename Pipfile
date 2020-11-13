@@ -13,7 +13,6 @@ pandas = "*"
 "django.db" = "*"
 plot = "*"
 plotly = "*"
-django-mathfilters = "*"
 djangorestframework = "*"
 sklearn = "*"
 
