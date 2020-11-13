@@ -19,9 +19,13 @@ p {
 a,
 a:hover,
 a:focus {
-    color: inherit;
+    color: white;
     text-decoration: none;
     transition: all 0.3s;
+}
+
+.watchlist_entry_:hover {
+    color: #7386D5 ! important;
 }
 
 .navbar {

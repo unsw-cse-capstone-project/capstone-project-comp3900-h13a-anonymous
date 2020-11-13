@@ -4,6 +4,28 @@
 {% block title %}{{ stock.name }}{% endblock %}
 {% block content %}
 
-<h1> Stock name: {{stock.name}} </h1>
-  <h1> Stock code: {{stock.code}} </h1>
+<h3> Stock name: </h3> <h4> {{stock.name}} </h4>
+
+<br>
+<h3> Stock code: </h3> <h4> {{stock.code}} </h4>
+
+<br>
+<h3> Current price: </h3> <h4> {{stock.current}} </h4>
+
+<br>
+<h3> Change: </h3> <h4> {{stock.change}} </h4>
+
+<br>
+<h3> Watch prices to alert: </h3> <h4> {{stock.alert}} </h4>
+{% for alert in stock.alerts %}
+<h4>{{alert.watchprice}} {{alert.action}} alert <a href="/remove_watchprice/{{alert}}" class="btn btn-info">Remove</a> </h4> 
+{% endfor %}
+<br>
+
+
+<a href="/set_watchprice/{{stock.code}}" class="btn btn-info"> Add Watchprice </a> 
+<a href="/remove_watchlist/{{w.code}}" class="btn btn-info">Remove from Watchlist</a>
+<a href="/buy/{{stock.code}}" class="btn btn-info">Buy</a> 
+<a href="/sell/{{stock.code}}" class="btn btn-info">Sell</a>
+
 {% endblock %}
