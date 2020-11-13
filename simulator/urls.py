@@ -65,7 +65,7 @@ urlpatterns = [
     path('my_watchlist/graph.html/', views.show_graph, name='plot'),
 
     # Generate graph
-    path('my_portfolio/<str:code>/<str:date>', views.gen_graph, name='portfolio_graph'),
+    path('my_portfolio/<str:code>/<str:date>', views.gen_graph_port, name='portfolio_graph'),
 
     # Show graph
     path('my_portfolio/graph.html/', views.show_graph, name='portfolio_plot')
