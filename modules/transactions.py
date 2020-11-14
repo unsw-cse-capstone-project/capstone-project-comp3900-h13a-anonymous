@@ -21,7 +21,7 @@ def get_user_transactions(user_id):
             "price":t.price,
             "units":t.units,
             "price":round(t.price,2),
-            "datetime": pd.to_datetime(t.date, unit='s').tz_localize('Australia/Sydney'),
+            "datetime": t.date,
             "change": t.price * t.units
         }
         transactions_list.append(transactions_entry)
