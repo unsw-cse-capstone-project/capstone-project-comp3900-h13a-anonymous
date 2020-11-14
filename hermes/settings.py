@@ -25,11 +25,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '4wei8&0vk2y7kf)jmjz#ci_!$sz1f!utkn4czoxpz(#el*i+2@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 LOGIN_REDIRECT_URL = 'stock_list'
 LOGOUT_REDIRECT_URL = '/'
