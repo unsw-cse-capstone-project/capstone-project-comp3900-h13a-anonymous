@@ -65,7 +65,6 @@ def predict(code, day):
         da = date.today() + timedelta(days=i+1)
         pre = float(reg.predict([[i+1+len(data1),0]]) + reg2.predict([[i+1+len(data1),0]])- reg3.predict([[i+1+len(data1),0]]) + reg4.predict([[i+1+len(data1),0]]))/2
         result.append((da,pre))
-    print(result)
     return result
 
 

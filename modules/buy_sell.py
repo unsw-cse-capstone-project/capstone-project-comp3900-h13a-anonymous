@@ -29,7 +29,6 @@ def buy(code, units, user):
         Stock.objects.create(name=tgt["name"], code=code)
     st = Stock.objects.get(code=code)
     price = tgt['c']
-    print(price)
     price = decimal.Decimal(float(price))
     money = price * units
 
@@ -75,7 +74,6 @@ def sell(code, units, user):
     st = Stock.objects.get(code=code)
 
     price = tgt['c']
-    print(price)
     money = price * units
 
     current_units = purchases.get_total_owned_units(user,code)
@@ -84,19 +82,14 @@ def sell(code, units, user):
     if current_units >= units:
         ps = purchases.get_unsold_purhases(user,code)
         for p in ps:
-            print('Units bought in this purchase' + str(p.orignialUnitBought))
             if(remaining_sell_units == 0):
-                print('breaking')
                 break
             unsold_purchased_units = p.orignialUnitBought - p.unitSold
-            print('unsold_purchased_units: ' + str(unsold_purchased_units))
             if(unsold_purchased_units <= remaining_sell_units):
-                print('first')
                 remaining_sell_units = remaining_sell_units - unsold_purchased_units
                 p.unitSold=p.orignialUnitBought
                 p.save()
             else:
-                print('second')
                 p.unitSold=p.unitSold + remaining_sell_units
                 p.save()
                 remaining_sell_units = 0

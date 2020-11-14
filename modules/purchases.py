@@ -92,7 +92,6 @@ def get_purchases_info(user_id, include_sold):
         summary_entry['unitsOwned'] = purchase.orignialUnitBought - purchase.unitSold
         summary_entry['paid'] = summary_entry['unitsOwned'] * summary_entry['price']
         if purchase.stock.code not in cprice_cache.keys():
-            print("caching")
             try:
                 stockinfo = api.search(purchase.stock.code)
             except Exception as e:

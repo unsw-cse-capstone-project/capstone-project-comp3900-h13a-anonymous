@@ -23,7 +23,6 @@ def get_historical(code, time):
     now = round(now)
     df = pd.read_csv(
         f'https://finnhub.io/api/v1/stock/candle?symbol={code}&resolution=1&from={time}&to={now}&token=btkkvsv48v6r1ugbcp70&format=csv')
-    print(df)
     date = []
     for d in df['t']:
         date.append(datetime.fromtimestamp(d))
