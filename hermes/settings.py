@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '4wei8&0vk2y7kf)jmjz#ci_!$sz1f!utkn4czoxpz(#el*i+2@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
