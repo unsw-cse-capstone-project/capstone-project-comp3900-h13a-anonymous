@@ -35,6 +35,8 @@ import modules.leaderboard as leaderboard
 import modules.watchlist as watchlist
 import modules.prediction as prediction
 from modules.watchprice import Watchprice
+from datetime import datetime
+import time
 
 
 '''
@@ -211,6 +213,8 @@ def show_graph(request):
 
 @login_required
 def gen_graph_port(request, code, date):
+    now = datetime.now()
+    date = datetime.timestamp(now)
     historical.get_historical(code, date)
     return HttpResponseRedirect('../../my_portfolio/display=true/')
 
