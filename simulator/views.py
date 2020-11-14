@@ -110,7 +110,9 @@ def add_to_watchlist(request, code):
 
 @login_required
 def my_watchlist_view(request, messages={}, display='false'):
-    wlist, messages_2 = watchlist.list_watchlist(request.user, messages)
+    messages_2 = {}
+    wlist, messages_2 = watchlist.list_watchlist(request.user, messages_2)
+    messages.update(messages_2)
     context = {'wlist': wlist, 'messages': messages_2, 'display': display}
     return render(request, 'simulator/my_watchlist.html', context)
 

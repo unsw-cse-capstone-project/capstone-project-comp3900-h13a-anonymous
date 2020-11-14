@@ -85,6 +85,7 @@ def list_watchlist(user, messages):
         # Get all alerts related to stock
         stock = Stock.objects.get(code=code)
         alerts_to_show = WatchListAlert.objects.filter(user_id=user, stock=stock, triggered=True, shown=False)
+        print(len(alerts_to_show))
         for alert in alerts_to_show:
             messages[f'alert at {alert.dateTriggered} for {alert.stock.code}'] = f"Stock {alert.stock.name} hit {alert.watchprice} at {alert.dateTriggered}"
             alert.shown=True
