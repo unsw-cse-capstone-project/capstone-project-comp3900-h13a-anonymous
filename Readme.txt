@@ -52,3 +52,7 @@ Run tests with the following command:
     $ python3 manage.py test tests.<name_of_testfile> 
     e.g.
     $ python3 manage.py test tests.test_search
+
+The version of the application deployed on the internet can be accessed through the following url:
+    invest-simu.herokuapp.com
+Note that since the Heroku server used to deploy the app is located in USA, all times are in that timezone.
