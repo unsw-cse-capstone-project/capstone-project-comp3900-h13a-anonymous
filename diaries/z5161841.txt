@@ -1,1 +1,60 @@
-TODO
+Week 1
+This week the group formed, and after much discussion and debate, we decided to do the investment
+Simulator project. We had a meeting on Monday to break down the problem into user stories, and decided to
+add watch prices and a prediction algorithm as additional features. We ended the meeting by dividing up
+the user stores between us to complete. I was assigned the portfolio and purchases user stories.
+In this meeting I also volunteered to be the scrum-master of our team.
+
+Week 2
+This week the group set up our Jira account and github classroom repo. We had a meeting were we 
+consolidated all our user stories and entered them into Jira. We also discussed the project proposal, and
+who was going to tackle each section. I was assigned the story board section of the proposal, as well
+as the sprint planning.
+
+Week 3
+This week we completed the project proposal, and it was time to start coding in our first sprint. We were all assigned different
+user stories to complete. I was assigned the Front end tickets for searching a stock and adding a stock to a
+watchlist.
+
+Week 4
+This week we completed our first sprint, and I successfully completed the stories I was assigned (i.e. front end
+for searching stocks and adding stocks to a watchlist) with little to no issues. We started sprint 2 this week, 
+where I was assigned the front end tickets for removing a stock from a watchlist, and viewing the watchlist 
+(including the graph)
+
+Week 5
+This week the team worked on our user stories, completed sprint 2, and worked on the progress demo. We also ran into a first major obstacle,
+which involved our sqlite database. We realised part way into development that Django (the web framework we decided
+to use) has inbuilt database functionaity, which will intergrate much easier with our front and backend code than 
+a seperate SQLite3 database. Thus, after the demo, we decided to migrate our exisitng database into djangos database.
+Since I was more focused on the demo this week, I did not complete my ticket, Thus, they were rolled over into the next
+sprint (sprint 3).
+
+Week 6
+This week was the uni break, meaning the team had extra time to make progress on the project. The group met in person
+to work on the project at uni, where we finally sorted out the new django database. We decidied to mix up who was working
+on which tickets so we could better play to each others strengths. I reassigned my front end tickets to Ryan (who is 
+currently taking a frontend course), and I assinged the backend buy and sell stock tickets to myself. Note the these
+tickets had already been started by Daniel, however extra work was need to intergate the functions with the new database.
+This week also marked the end of sprint 3 and the start of sprint 4.
+
+Week 7
+This week went a lot more smoothly than the previous 2 weeks, with no major issues and all my tickets being completed
+on time. The team closed sprint 4 and started sprint 5, where I was assigned the view purchases/portfolio functionality.
+
+Week 8
+This week marked the end of sprint 5, where I had successfully finished my view purchases/portfolio tickets on time.
+By the end of the week, all the tickets that were initally created in week two were either complete or very close to completion. 
+Despite it not being in our intial proposal, I decided to create a new ticket for Leaderboard functionaity, and
+assigned it to myself to work on over the next week. I was also tasked with doing an overall 'code cleanup', which
+involves ensuring all funcitons are documented, code is structured neatly, and files are grouped into logical
+directories.
+
+Week 9
+This week I successfully completed the Leaderboard functionaity and code cleanup, as well as worked on my assigned
+sections of the report (i.e. The User Manual). We also fixed up any remaining bugs in our code. The code
+and report were both fully completed on the sunday of week nine, more than 24 hours before the due date. Next week
+the teams plans to prepare and present our project demo.
+
+Week 10
+Prepare/present project demo
