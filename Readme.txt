@@ -5,7 +5,8 @@ CSE Machine setup
             - $ pip3 install pipenv
         3. Install project dependencies with 
             - $ python3 -m pipenv install
-        4. Activate the projects virtual environment with 'python3 -m pipenv shell'
+        4. Activate the projects virtual environment: 
+            - $ python3 -m pipenv shell
         5. Setup database with the following 2 commands:
             - $ python3 manage.py makemigrations
             - $ python3 manage.py migrate
