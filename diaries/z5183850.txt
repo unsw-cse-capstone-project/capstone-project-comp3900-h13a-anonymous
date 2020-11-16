@@ -1,0 +1,36 @@
+week1
+group formed. I created the discord channel for the team to communicate.
+ I also found and discussed with the team all available software tools and
+libraries that we can use for the project.
+I was assigned with Jeff to do the back end programming. We decided to use python.
+
+Week2
+I wrote some user stories before the discussion, and these drafts were later used in the discussion which we summorised 5 epic stories and put other 
+detailed story under it. Late that week I post the user stories of the initial version to the jira issue board. Which will be later modified by Reily.
+
+Week3
+After finishing the user stories, I worked on the background statement in the project proposal. Reily modified it a bit afterall. I also post the user stories 
+stuff alone with screenshots in the report, explaining which user story does what.
+
+Week4
+We had a few meeting discussing things about spliting the work, and I was assigned to do the buy/sell function, I wrote some code later that week.
+
+Week5
+I have a face to face meeting with Ryan and Jeff, we wrote some code together and discussed the data structure. We were working on some fix about the search function, 
+the buy /sell function and database query and adding some error checking. The function works correctly.
+
+Week6-7 
+We are making great progress on implementing the backend and the frontend. We had a face to face meeting on Week6 Thursday and during that 
+time Ryan and Reily were working on the new data base query, and I help jeff to finish the set watch price function. After finishing implementing the function of 
+buy and sell, Ryan made some modification to it so it worked properly with the backend. I then did some research on the price perdiction staff
+and plan to do that in week8.
+
+Week 8
+Working on the prediction function and the algorithm, finishing up with a basic model which takes 60 days of previous data and generate a linear functions
+that showing the expecting results of the following week. It's a little messed up and looks just like a straight line in the graph, so I added some random factors to
+the line. Reliy and Ryan doesn't like that random factor much, so I am going to remove it and try some different model to make it looks like not a smooth line.
+
+Week 9
+I've tried SVM,Bayesian, logstic algorithm, they either don't work out or just inappropriate, so I turned back to simple linear regression. I used 4 factor, highest/lowest price,
+and opening/closing price as factors of predication. The final result is still linear, but teammate all agreed on that. I also made some changes to the function that
+fetch the historical data to fit for the changes.
